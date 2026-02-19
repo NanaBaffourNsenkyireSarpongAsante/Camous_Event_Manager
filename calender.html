@@ -3,10 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calender</title>
+    <title>Campus Event Manager | Calendar</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-           <a href="index.html"><span class="logo">Campus Event Manager</span></a>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-calendar-alt"></i>
+                Campus Event Manager
+            </div>
+            
+            <div class="menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
 
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="organizers.html">Organizers</a></li>
+                <li><a href="tickets.html">Tickets</a></li>
+                <li><a href="calendar.html" class="active">Calendar</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Events Calendar</h1>
+            <p>Plan your month with our interactive calendar</p>
+        </div>
+    </section>
+
+    <!-- Calendar Section -->
+    <section class="calendar-section">
+        <div class="container">
+            <div class="calendar-wrapper">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="calendar-nav" id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                        <h2 id="currentMonth">March 2024</h2>
+                        <button class="calendar-nav" id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    
+                    <div class="calendar-weekdays">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    
+                    <div class="calendar-days" id="calendarDays">
+                        <!-- Calendar days will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="calendar-sidebar">
+                    <div class="calendar-events-list">
+                        <h3>March Events</h3>
+                        <div class="monthly-events">
+                            <div class="calendar-event-item">
+                                <div class="event-date-badge">15</div>
+                                <div class="event-info">
+                                    <h4>Tech Conference 2024</h4>
+                                    <p><i class="fas fa-clock"></i> 9:00 AM - 5:00 PM</p>
+                                    <p><i class="fas fa-map-marker-alt"></i> KNUST CCB</p>
+                                </div>
+                            </div>
+                            <div class="calendar-event-item">
+                                <div class="event-date-badge">22</div>
+                                <div class="event-info">
+                                    <h4>Music Festival</h4>
+                                    <p><i class="fas fa-clock"></i> 4:00 PM - 11:00 PM</p>
+                                    <p><i class="fas fa-map-marker-alt"></i> Cultural Centre</p>
+                                </div>
+                            </div>
+                            <div class="calendar-event-item">
+                                <div class="event-date-badge">28</div>
+                                <div class="event-info">
+                                    <h4>Startup Meetup</h4>
+                                    <p><i class="fas fa-clock"></i> 6:00 PM - 8:00 PM</p>
+                                    <p><i class="fas fa-map-marker-alt"></i> Impact Hub</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-legend">
+                        <h4>Legend</h4>
+                        <div class="legend-item">
+                            <span class="legend-color today-color"></span>
+                            <span>Today</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color event-color"></span>
+                            <span>Event Day</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color selected-color"></span>
+                            <span>Selected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Events Preview -->
+    <section class="upcoming-preview">
+        <div class="container">
+            <h2>Coming Up Next</h2>
+            <div class="mini-events-grid">
+                <div class="mini-event-card">
+                    <div class="mini-event-date">APR 5</div>
+                    <h4>Art Exhibition</h4>
+                    <p>National Cultural Centre</p>
+                    <a href="tickets.html" class="btn-small">Get Tickets</a>
+                </div>
+                <div class="mini-event-card">
+                    <div class="mini-event-date">APR 12</div>
+                    <h4>Food Fair</h4>
+                    <p>KNUST Stadium</p>
+                    <a href="tickets.html" class="btn-small">Get Tickets</a>
+                </div>
+                <div class="mini-event-card">
+                    <div class="mini-event-date">APR 20</div>
+                    <h4>Career Fair</h4>
+                    <p>College of Engineering</p>
+                    <a href="tickets.html" class="btn-small">Get Tickets</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EventHub</h3>
+                    <p>Making events memorable since 2024</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="organizers.html">Organizers</a></li>
+                        <li><a href="tickets.html">Tickets</a></li>
+                        <li><a href="calendar.html">Calendar</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +233 24 123 4567</li>
+                        <li><i class="fas fa-envelope"></i> info@eventhub.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> KNUST, Kumasi</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Campus Event Manager. All rights reserved. Created by Nana B with Spark ✨</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
