@@ -3,87 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Events</title>
+    <title>Campus Event Manager | Events</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Upcoming Events</h1>
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Event 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Event 1</h5>
-                        <p class="card-text">Category: Music</p>
-                        <p><strong>Date:</strong> 2026-03-01</p>
-                        <p><strong>Location:</strong> New York</p>
-                        <a href="#" class="btn btn-primary">Register</a>
-                    </div>
-                </div>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-calendar-alt"></i>
+                Campus Event Manager
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Event 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Event 2</h5>
-                        <p class="card-text">Category: Art</p>
-                        <p><strong>Date:</strong> 2026-04-15</p>
-                        <p><strong>Location:</strong> Los Angeles</p>
-                        <a href="#" class="btn btn-primary">Register</a>
-                    </div>
-                </div>
+            
+            <div class="menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Event 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Event 3</h5>
-                        <p class="card-text">Category: Technology</p>
-                        <p><strong>Date:</strong> 2026-05-20</p>
-                        <p><strong>Location:</strong> San Francisco</p>
-                        <a href="#" class="btn btn-primary">Register</a>
-                    </div>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="events.html" class="active">Events</a></li>
+                <li><a href="organizers.html">Organizers</a></li>
+                <li><a href="tickets.html">Tickets</a></li>
+                <li><a href="calendar.html">Calendar</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>All Events</h1>
+            <p>Discover amazing events happening near you</p>
+        </div>
+    </section>
+
+    <!-- Events Filter -->
+    <section class="events-filter">
+        <div class="container">
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label for="category">Category:</label>
+                    <select id="category">
+                        <option value="all">All Categories</option>
+                        <option value="tech">Tech</option>
+                        <option value="music">Music</option>
+                        <option value="business">Business</option>
+                        <option value="arts">Arts</option>
+                        <option value="food">Food</option>
+                    </select>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Event 4">
-                    <div class="card-body">
-                        <h5 class="card-title">Event 4</h5>
-                        <p class="card-text">Category: Sports</p>
-                        <p><strong>Date:</strong> 2026-06-10</p>
-                        <p><strong>Location:</strong> Chicago</p>
-                        <a href="#" class="btn btn-primary">Register</a>
-                    </div>
+                <div class="filter-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date">
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Event 5">
-                    <div class="card-body">
-                        <h5 class="card-title">Event 5</h5>
-                        <p class="card-text">Category: Food</p>
-                        <p><strong>Date:</strong> 2026-07-25</p>
-                        <p><strong>Location:</strong> Seattle</p>
-                        <a href="#" class="btn btn-primary">Register</a>
-                    </div>
+                <div class="filter-group">
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" placeholder="Enter location">
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Event 6">
-                    <div class="card-body">
-                        <h5 class="card-title">Event 6</h5>
-                        <p class="card-text">Category: Education</p>
-                        <p><strong>Date:</strong> 2026-08-30</p>
-                        <p><strong>Location:</strong> Boston</p>
-                        <a href="#" class="btn btn-primary">Register</a>
-                    </div>
-                </div>
+                <button class="btn btn-primary filter-btn">Apply Filters</button>
             </div>
         </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    </section>
+
+    <!-- All Events -->
+    <section class="all-events">
+        <div class="container">
+            <div class="events-grid">
+                <!-- Event Card 1 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="day">15</span>
+                        <span class="month">MAR</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Tech Conference 2024</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> KNUST CCB</p>
+                        <p><i class="fas fa-clock"></i> 9:00 AM - 5:00 PM</p>
+                        <p><i class="fas fa-tag"></i> Tech</p>
+                        <div class="event-footer">
+                            <span class="price">Free</span>
+                            <a href="tickets.html" class="btn-small">Get Ticket</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 2 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="day">22</span>
+                        <span class="month">MAR</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Music Festival</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Kumasi Cultural Centre</p>
+                        <p><i class="fas fa-clock"></i> 4:00 PM - 11:00 PM</p>
+                        <p><i class="fas fa-tag"></i> Music</p>
+                        <div class="event-footer">
+                            <span class="price">₵50</span>
+                            <a href="tickets.html" class="btn-small">Get Ticket</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 3 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="day">28</span>
+                        <span class="month">MAR</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Startup Meetup</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Impact Hub</p>
+                        <p><i class="fas fa-clock"></i> 6:00 PM - 8:00 PM</p>
+                        <p><i class="fas fa-tag"></i> Business</p>
+                        <div class="event-footer">
+                            <span class="price">Free</span>
+                            <a href="tickets.html" class="btn-small">Get Ticket</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 4 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="day">05</span>
+                        <span class="month">APR</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Art Exhibition</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> National Cultural Centre</p>
+                        <p><i class="fas fa-clock"></i> 10:00 AM - 6:00 PM</p>
+                        <p><i class="fas fa-tag"></i> Arts</p>
+                        <div class="event-footer">
+                            <span class="price">₵20</span>
+                            <a href="tickets.html" class="btn-small">Get Ticket</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 5 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="day">12</span>
+                        <span class="month">APR</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Food Fair</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> KNUST Stadium</p>
+                        <p><i class="fas fa-clock"></i> 12:00 PM - 8:00 PM</p>
+                        <p><i class="fas fa-tag"></i> Food</p>
+                        <div class="event-footer">
+                            <span class="price">₵30</span>
+                            <a href="tickets.html" class="btn-small">Get Ticket</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 6 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="day">20</span>
+                        <span class="month">APR</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Career Fair</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> College of Engineering</p>
+                        <p><i class="fas fa-clock"></i> 9:00 AM - 3:00 PM</p>
+                        <p><i class="fas fa-tag"></i> Business</p>
+                        <div class="event-footer">
+                            <span class="price">Free</span>
+                            <a href="tickets.html" class="btn-small">Get Ticket</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 7 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="day">25</span>
+                        <span class="month">APR</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Hackathon</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> CS Department</p>
+                        <p><i class="fas fa-clock"></i> 8:00 AM - 8:00 PM</p>
+                        <p><i class="fas fa-tag"></i> Tech</p>
+                        <div class="event-footer">
+                            <span class="price">Free</span>
+                            <a href="tickets.html" class="btn-small">Get Ticket</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 8 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="day">30</span>
+                        <span class="month">APR</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Jazz Night</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Alliance Française</p>
+                        <p><i class="fas fa-clock"></i> 7:00 PM - 10:00 PM</p>
+                        <p><i class="fas fa-tag"></i> Music</p>
+                        <div class="event-footer">
+                            <span class="price">₵40</span>
+                            <a href="tickets.html" class="btn-small">Get Ticket</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 9 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="day">05</span>
+                        <span class="month">MAY</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Photography Workshop</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Cultural Centre</p>
+                        <p><i class="fas fa-clock"></i> 10:00 AM - 2:00 PM</p>
+                        <p><i class="fas fa-tag"></i> Arts</p>
+                        <div class="event-footer">
+                            <span class="price">₵25</span>
+                            <a href="tickets.html" class="btn-small">Get Ticket</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <a href="#" class="page-link">4</a>
+                <a href="#" class="page-link">Next</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EventHub</h3>
+                    <p>Making events memorable since 2024</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="organizers.html">Organizers</a></li>
+                        <li><a href="tickets.html">Tickets</a></li>
+                        <li><a href="calendar.html">Calendar</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +233 24 123 4567</li>
+                        <li><i class="fas fa-envelope"></i> info@eventhub.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> KNUST, Kumasi</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 EventHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
