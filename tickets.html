@@ -3,13 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tickets</title>
+    <title>Campus Event Manager | Tickets</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-            <a href="index.html"><span class="logo">Campus Event Manager</span></a>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-calendar-alt"></i>
+                Campus Event Manager
+            </div>
+            <div class="menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="organizers.html">Organizers</a></li>
+                <li><a href="tickets.html" class="active">Tickets</a></li>
+                <li><a href="calendar.html">Calendar</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <h1>Ticket Information</h1>
-    <p>Details about ticket purchasing and availability will be listed here.</p>
-    
-</body>
-</html>
+    <section class="page-header">
+        <div class="container">
+            <h1>Get Your Tickets</h1>
+            <p>Secure your spot at these amazing events</p>
+        </div>
+    </section>
+
+    <section class="tickets-page">
+        <div class="container">
+            <div class="tickets-grid">
+                <div class="ticket-card">
+                    <div class="ticket-header">
+                        <h3>Tech Conference 2024</h3>
+                        <p class="ticket-date">March 15, 2024</p>
+                    </div>
+                    <div class="ticket-body">
+                        <div class="ticket-price">₵0 <span>Free</span></div>
+                        <ul class="ticket-features">
+                            <li><i class="fas fa-check"></i> Access to all sessions</li>
+                            <li><i class="fas fa-check"></i> Workshop materials</li>
+                            <li><i class="fas fa-check"></i> Networking lunch</li>
+                            <li><i class="fas fa-check"></i> Certificate of attendance</li>
+                        </ul>
+                    </div>
+                    <div class="ticket-footer">
+                        <a href="#" class="btn btn-primary ticket-btn">Get Free Ticket</a>
+                    </div>
+                </div>
+
+                <div class="ticket-card featured">
+                    <div class="ticket-badge">Popular</div>
+                    <div class="ticket-header">
+                        <h3>Music Festival</h3>
+                        <p class="ticket-date">March 22, 2024</p>
+                    </div>
+                    <div class="ticket-body">
+                        <div class="ticket-price">₵50 <span>Regular</span></div>
+                        <ul class="ticket-features">
+                            <li><i class="fas fa-check"></i> General admission</li>
+                            <li><i class="fas fa-check"></i> Access to all stages</li>
+                            <li><i class="fas fa-check"></i> 1 free drink</li>
+                            <li><i class="fas fa-check"></i> Festival merchandise</li>
+                        </ul>
+                    </div>
+                    <div class="ticket-footer">
+                        <a href="#" class="btn btn-primary ticket-btn">Buy Now</a>
+                    </div>
+                </div>
+
+                <div class="ticket-card">
+                    <div class="ticket-header">
+                        <h3>VIP Experience</h3>
+                        <p class="ticket-date">All Access</p>
+                    </div>
+                    <div class="ticket-body">
+                        <div class="ticket-price">₵200 <span>VIP</span></div>
+                        <ul class="ticket-features">
+                            <li><i class="fas fa-check"></i> Priority entry</li>
+                            <li><i class="fas fa-check"></i> VIP lounge access</li>
+                            <li><i class="fas fa-check"></i> Meet & greet with artists</li>
+                            <li><i class="fas fa-check"></i> Complimentary drinks</li>
+                        </ul>
+                    </div>
+                    <div class="ticket-footer">
+                        <a href="#" class="btn btn-primary ticket-btn">Get VIP</a>
+                    </div>
+                </div>
+
+                <div class="ticket-card">
+                    <div class="ticket-header">
+                        <h3>Startup Meetup</h3>
+                        <p class="ticket-date">March 28, 2024</p>
+                    </div>
+                    <div class="ticket-body">
+                        <div class="ticket-price">Free</div>
+                        <ul class="ticket-features">
+                            <li><i class="fas fa-check"></i> Networking opportunities</li>
+                            <li><i class="fas fa-check"></i> Pitch session access</li>
+                            <li><i class="fas fa-check"></i> Light refreshments</li>
+                        </ul>
+                    </div>
+                    <div class="ticket-footer">
+                        <a href="#" class="btn btn-primary ticket-btn">RSVP</a>
+                    </div>
+                </div>
+
+                <div class="ticket-card">
+                    <div class="ticket-header">
+                        <h3>Art Exhibition</h3>
+                        <p class="ticket-date">April 5, 2024</p>
+                    </div>
+                    <div class="ticket-body">
+                        <div class="ticket-price">₵20 <span>Entry</span></div>
+                        <ul class="ticket-features">
+                            <li><i class="fas fa-check"></i> Gallery access</li>
+                            <li><i class="fas fa-check"></i> Guided tour</li>
+                            <li><i class="fas fa-check"></i> Exhibition catalog</li>
+                        </ul>
+                    </div>
+                    <div class="ticket-footer">
+                        <a href="#" class="btn btn-primary ticket-btn">Buy Ticket</a>
+                    </div>
+                </div>
+
+                <div class="ticket-card">
+                    <div class="ticket-header">
+                        <h3>Food Fair</h3>
+                        <p class="ticket-date">April 12, 2024</p>
+                    </div>
+                    <div class="ticket-body">
+                        <div class="ticket-price">₵30 <span>Entry</span></div>
+                        <ul class="ticket-features">
+                            <li><i class="fas fa-check"></i> Food tasting</li>
+                            <li><i class="fas fa-check"></i> Cooking demonstrations
