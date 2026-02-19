@@ -3,12 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organizer Dashboard</title>
+    <title>Campus Event Manager | Organizers</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <h1>Organizer Dashboard</h1>
-            <a href="index.html"><span class="logo">Campus Event Manager</span></a>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-calendar-alt"></i>
+                Campus Event Manager
+            </div>
+            <div class="menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="organizers.html" class="active">Organizers</a></li>
+                <li><a href="tickets.html">Tickets</a></li>
+                <li><a href="calendar.html">Calendar</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <p>Welcome to the organizer dashboard. Here you can manage events, view ticket sales, and access other administrative features.</p>
+    <section class="page-header">
+        <div class="container">
+            <h1>Event Organizers</h1>
+            <p>Meet the amazing people behind these events</p>
+        </div>
+    </section>
+
+    <section class="all-organizers">
+        <div class="container">
+            <div class="organizers-grid">
+                <div class="organizer-card">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Organizer">
+                    <h3>Kwame Mensah</h3>
+                    <p>Tech Events Specialist</p>
+                    <div class="organizer-stats">
+                        <span><i class="fas fa-calendar"></i> 15+ events</span>
+                        <span><i class="fas fa-star"></i> 4.8</span>
+                    </div>
+                    <button class="btn-small view-profile">View Profile</button>
+                </div>
+                <div class="organizer-card">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Organizer">
+                    <h3>Abena Osei</h3>
+                    <p>Music Festival Curator</p>
+                    <div class="organizer-stats">
+                        <span><i class="fas fa-calendar"></i> 23+ events</span>
+                        <span><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                    <button class="btn-small view-profile">View Profile</button>
+                </div>
+                <div class="organizer-card">
+                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Organizer">
+                    <h3>Yaw Asante</h3>
+                    <p>Conference Organizer</p>
+                    <div class="organizer-stats">
+                        <span><i class="fas fa-calendar"></i> 31+ events</span>
+                        <span><i class="fas fa-star"></i> 5.0</span>
+                    </div>
+                    <button class="btn-small view-profile">View Profile</button>
+                </div>
+                <div class="organizer-card">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Organizer">
+                    <h3>Esi Acquah</h3>
+                    <p>Art Exhibition Curator</p>
+                    <div class="organizer-stats">
+                        <span><i class="fas fa-calendar"></i> 12+ events</span>
+                        <span><i class="fas fa-star"></i> 4.7</span>
+                    </div>
+                    <button class="btn-small view-profile">View Profile</button>
+                </div>
+                <div class="organizer-card">
+                    <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Organizer">
+                    <h3>Kofi Asare</h3>
+                    <p>Food Fair Organizer</p>
+                    <div class="organizer-stats">
+                        <span><i class="fas fa-calendar"></i> 8+ events</span>
+                        <span><i class="fas fa-star"></i> 4.6</span>
+                    </div>
+                    <button class="btn-small view-profile">View Profile</button>
+                </div>
+                <div class="organizer-card">
+                    <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="Organizer">
+                    <h3>Akua Sarpong</h3>
+                    <p>Career Fair Coordinator</p>
+                    <div class="organizer-stats">
+                        <span><i class="fas fa-calendar"></i> 19+ events</span>
+                        <span><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                    <button class="btn-small view-profile">View Profile</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EventHub</h3>
+                    <p>Making events memorable since 2024</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="organizers.html">Organizers</a></li>
+                        <li><a href="tickets.html">Tickets</a></li>
+                        <li><a href="calendar.html">Calendar</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +233 24 123 4567</li>
+                        <li><i class="fas fa-envelope"></i> info@eventhub.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> KNUST, Kumasi</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 EventHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
