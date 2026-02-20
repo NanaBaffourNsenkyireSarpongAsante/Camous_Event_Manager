@@ -1411,3 +1411,432 @@ footer {
         justify-content: center;
     }
 }
+
+
+/* ===== SPLIT SCREEN WITH CHOO-CHOO TRAIN ON RIGHT ===== */
+.split-screen-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, var(--off-white) 0%, var(--white) 100%);
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+}
+
+.split-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    width: 100%;
+}
+
+/* LEFT SIDE STYLING */
+.split-left {
+    padding-right: 40px;
+}
+
+.split-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--royal-blue);
+    line-height: 1.2;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+}
+
+.split-description {
+    font-size: 1.2rem;
+    color: var(--gray);
+    line-height: 1.8;
+    margin-bottom: 40px;
+}
+
+.split-features {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.split-feature h3 {
+    font-size: 1.5rem;
+    color: var(--dark);
+    margin-bottom: 10px;
+    position: relative;
+    display: inline-block;
+}
+
+.split-feature h3::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--royal-blue);
+    border-radius: 3px;
+}
+
+.split-feature p {
+    color: var(--gray);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.split-btn {
+    padding: 15px 40px;
+    font-size: 1.1rem;
+}
+
+/* RIGHT SIDE - TRAIN SLIDESHOW */
+.split-right {
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    border-radius: 30px;
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(180deg, var(--royal-blue-soft) 0%, var(--white) 100%);
+    padding: 20px;
+}
+
+/* TRAIN STYLES (your existing train CSS, but make sure it fits) */
+.train-slideshow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.train-column {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.column-up {
+    animation: trainUp 15s linear infinite;
+}
+
+.column-down {
+    animation: trainDown 15s linear infinite;
+}
+
+.column-up:hover,
+.column-down:hover {
+    animation-play-state: paused;
+}
+
+.train-carriage {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 15px;
+    box-shadow: var(--shadow-md);
+    border-left: 6px solid var(--royal-blue);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    height: 100px;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.train-carriage:hover {
+    transform: scale(1.02) translateX(5px);
+    box-shadow: var(--shadow-lg);
+    border-left-width: 10px;
+    background: linear-gradient(90deg, var(--white), var(--royal-blue-soft));
+}
+
+.train-carriage .event-date {
+    background: var(--royal-blue);
+    color: var(--white);
+    padding: 10px;
+    border-radius: 12px;
+    min-width: 70px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+
+.train-carriage .event-info {
+    flex: 1;
+}
+
+.train-carriage h3 {
+    margin-bottom: 3px;
+    color: var(--dark);
+    font-size: 1rem;
+}
+
+.train-carriage p {
+    color: var(--gray);
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+}
+
+.train-carriage .price {
+    font-weight: 700;
+    color: var(--royal-blue);
+    font-size: 0.9rem;
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--royal-blue-soft);
+    border-radius: 20px;
+}
+
+@keyframes trainUp {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(calc(-100px * 3 - 30px)); }
+}
+
+@keyframes trainDown {
+    0% { transform: translateY(calc(-100px * 3 - 30px)); }
+    100% { transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .split-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .split-left {
+        padding-right: 0;
+        text-align: center;
+    }
+    
+    .split-feature h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .split-right {
+        height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .split-title {
+        font-size: 2.2rem;
+    }
+    
+    .train-slideshow {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .train-column {
+        height: 50%;
+    }
+}
+
+
+
+
+/* ===== HERO WITH CHOO-CHOO TRAIN - IMMEDIATELY VISIBLE ===== */
+.hero-train-section {
+    padding: 60px 0 80px;
+    background: linear-gradient(135deg, var(--off-white) 0%, var(--white) 100%);
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+}
+
+.hero-train-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    width: 100%;
+}
+
+/* LEFT SIDE - HERO CONTENT */
+.hero-train-left {
+    padding-right: 40px;
+}
+
+.hero-train-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--royal-blue);
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero-train-description {
+    font-size: 1.3rem;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.hero-train-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+/* RIGHT SIDE - TRAIN */
+.hero-train-right {
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 30px;
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(180deg, var(--royal-blue-soft) 0%, var(--white) 100%);
+    padding: 20px;
+}
+
+/* TRAIN STYLES */
+.train-slideshow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.train-column {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.column-up {
+    animation: trainUp 15s linear infinite;
+}
+
+.column-down {
+    animation: trainDown 15s linear infinite;
+}
+
+.column-up:hover,
+.column-down:hover {
+    animation-play-state: paused;
+}
+
+.train-carriage {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 15px;
+    box-shadow: var(--shadow-md);
+    border-left: 6px solid var(--royal-blue);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    height: 100px;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.train-carriage:hover {
+    transform: scale(1.02) translateX(5px);
+    box-shadow: var(--shadow-lg);
+    border-left-width: 10px;
+    background: linear-gradient(90deg, var(--white), var(--royal-blue-soft));
+}
+
+.train-carriage .event-date {
+    background: var(--royal-blue);
+    color: var(--white);
+    padding: 10px;
+    border-radius: 12px;
+    min-width: 70px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+
+.train-carriage .event-info {
+    flex: 1;
+}
+
+.train-carriage h3 {
+    margin-bottom: 3px;
+    color: var(--dark);
+    font-size: 1rem;
+}
+
+.train-carriage p {
+    color: var(--gray);
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+}
+
+.train-carriage .price {
+    font-weight: 700;
+    color: var(--royal-blue);
+    font-size: 0.9rem;
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--royal-blue-soft);
+    border-radius: 20px;
+}
+
+@keyframes trainUp {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(calc(-100px * 3 - 30px)); }
+}
+
+@keyframes trainDown {
+    0% { transform: translateY(calc(-100px * 3 - 30px)); }
+    100% { transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .hero-train-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .hero-train-left {
+        padding-right: 0;
+        text-align: center;
+    }
+    
+    .hero-train-buttons {
+        justify-content: center;
+    }
+    
+    .hero-train-right {
+        height: 450px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-train-title {
+        font-size: 2.5rem;
+    }
+    
+    .train-slideshow {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .train-column {
+        height: 50%;
+    }
+}
