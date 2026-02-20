@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Event Manger | Home</title>
+    <title>Campus Event Manager | Home</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation Bar (same on all pages) -->
+    <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
@@ -33,24 +33,128 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Discover Amazing Events</h1>
-            <p>Your gateway to the most exciting experiences in town</p>
-            <div class="hero-buttons">
-                <a href="event.html" class="btn btn-primary">Explore Events</a>
-                <a href="calendar.html" class="btn btn-outline">View Calendar</a>
+    <!-- HERO SECTION WITH CHOO-CHOO TRAIN - IMMEDIATELY VISIBLE -->
+    <section class="hero-train-section">
+        <div class="hero-train-container">
+            <!-- LEFT SIDE - HERO CONTENT -->
+            <div class="hero-train-left">
+                <h1 class="hero-train-title">Discover Amazing Events</h1>
+                <p class="hero-train-description">
+                    Your gateway to the most exciting experiences in town
+                </p>
+                
+                <div class="hero-train-buttons">
+                    <a href="events.html" class="btn btn-primary">Explore Events</a>
+                    <a href="calendar.html" class="btn btn-outline">View Calendar</a>
+                </div>
             </div>
-        </div>
-        <div class="hero-wave">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                <path fill="#ffffff" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,170.7C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-            </svg>
+
+            <!-- RIGHT SIDE - CHOO-CHOO TRAIN (IMMEDIATELY VISIBLE) -->
+            <div class="hero-train-right">
+                <div class="train-slideshow">
+                    <!-- LEFT COLUMN - MOVES UP -->
+                    <div class="train-column column-up">
+                        <div class="train-carriage">
+                            <div class="event-date">15 MAR</div>
+                            <div class="event-info">
+                                <h3>Tech Conference</h3>
+                                <p>KNUST CCB • 9:00 AM</p>
+                                <span class="price">Free</span>
+                            </div>
+                        </div>
+                        
+                        <div class="train-carriage">
+                            <div class="event-date">28 MAR</div>
+                            <div class="event-info">
+                                <h3>Startup Meetup</h3>
+                                <p>Impact Hub • 6:00 PM</p>
+                                <span class="price">Free</span>
+                            </div>
+                        </div>
+                        
+                        <div class="train-carriage">
+                            <div class="event-date">12 APR</div>
+                            <div class="event-info">
+                                <h3>Food Fair</h3>
+                                <p>KNUST Stadium • 12:00 PM</p>
+                                <span class="price">₵30</span>
+                            </div>
+                        </div>
+
+                        <!-- DUPLICATES for seamless loop -->
+                        <div class="train-carriage">
+                            <div class="event-date">15 MAR</div>
+                            <div class="event-info">
+                                <h3>Tech Conference</h3>
+                                <p>KNUST CCB • 9:00 AM</p>
+                                <span class="price">Free</span>
+                            </div>
+                        </div>
+                        
+                        <div class="train-carriage">
+                            <div class="event-date">28 MAR</div>
+                            <div class="event-info">
+                                <h3>Startup Meetup</h3>
+                                <p>Impact Hub • 6:00 PM</p>
+                                <span class="price">Free</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN - MOVES DOWN -->
+                    <div class="train-column column-down">
+                        <div class="train-carriage">
+                            <div class="event-date">22 MAR</div>
+                            <div class="event-info">
+                                <h3>Music Festival</h3>
+                                <p>Cultural Centre • 4:00 PM</p>
+                                <span class="price">₵50</span>
+                            </div>
+                        </div>
+                        
+                        <div class="train-carriage">
+                            <div class="event-date">05 APR</div>
+                            <div class="event-info">
+                                <h3>Art Exhibition</h3>
+                                <p>National Cultural Centre • 10:00 AM</p>
+                                <span class="price">₵20</span>
+                            </div>
+                        </div>
+                        
+                        <div class="train-carriage">
+                            <div class="event-date">20 APR</div>
+                            <div class="event-info">
+                                <h3>Career Fair</h3>
+                                <p>College of Engineering • 9:00 AM</p>
+                                <span class="price">Free</span>
+                            </div>
+                        </div>
+
+                        <!-- DUPLICATES for seamless loop -->
+                        <div class="train-carriage">
+                            <div class="event-date">22 MAR</div>
+                            <div class="event-info">
+                                <h3>Music Festival</h3>
+                                <p>Cultural Centre • 4:00 PM</p>
+                                <span class="price">₵50</span>
+                            </div>
+                        </div>
+                        
+                        <div class="train-carriage">
+                            <div class="event-date">05 APR</div>
+                            <div class="event-info">
+                                <h3>Art Exhibition</h3>
+                                <p>National Cultural Centre • 10:00 AM</p>
+                                <span class="price">₵20</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- Features Section (now below the hero/train) -->
     <section class="features">
         <div class="container">
             <div class="section-header">
@@ -83,74 +187,7 @@
         </div>
     </section>
 
-    <!-- Upcoming Events Preview -->
-    <section class="events-preview">
-        <div class="container">
-            <div class="section-header">
-                <h2>Upcoming Events</h2>
-                <p>Discover what's happening near you</p>
-            </div>
-
-            <div class="events-grid">
-                <!-- Event Card 1 -->
-                <div class="event-card">
-                    <div class="event-date">
-                        <span class="day">15</span>
-                        <span class="month">MAR</span>
-                    </div>
-                    <div class="event-details">
-                        <h3>Tech Conference 2024</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> KNUST CCB</p>
-                        <p><i class="fas fa-clock"></i> 9:00 AM - 5:00 PM</p>
-                        <div class="event-footer">
-                            <span class="price">Free</span>
-                            <a href="tickets.html" class="btn-small">Tickets</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Event Card 2 -->
-                <div class="event-card">
-                    <div class="event-date">
-                        <span class="day">22</span>
-                        <span class="month">MAR</span>
-                    </div>
-                    <div class="event-details">
-                        <h3>Music Festival</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> Kumasi Cultural Centre</p>
-                        <p><i class="fas fa-clock"></i> 4:00 PM - 11:00 PM</p>
-                        <div class="event-footer">
-                            <span class="price">₵50</span>
-                            <a href="tickets.html" class="btn-small">Tickets</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Event Card 3 -->
-                <div class="event-card">
-                    <div class="event-date">
-                        <span class="day">28</span>
-                        <span class="month">MAR</span>
-                    </div>
-                    <div class="event-details">
-                        <h3>Startup Meetup</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> Impact Hub</p>
-                        <p><i class="fas fa-clock"></i> 6:00 PM - 8:00 PM</p>
-                        <div class="event-footer">
-                            <span class="price">Free</span>
-                            <a href="tickets.html" class="btn-small">Tickets</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="center-btn">
-                <a href="events.html" class="btn btn-primary">View All Events</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer (same on all pages) -->
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -179,7 +216,7 @@
                     <h4>Contact Info</h4>
                     <ul>
                         <li><i class="fas fa-phone"></i> +233 24 123 4567</li>
-                        <li><i class="fas fa-envelope"></i> info@eventhub.com</li>
+                        <li><i class="fas fa-envelope"></i> info@campusevents.com</li>
                         <li><i class="fas fa-map-marker-alt"></i> KNUST, Kumasi</li>
                     </ul>
                 </div>
@@ -190,6 +227,6 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
