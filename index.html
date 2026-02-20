@@ -3,149 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Event Manager | Home</title>
+    <title>KEM | Home</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <i class="fas fa-calendar-alt"></i>
-                Campus Event Manager
+    <!-- FLOATING NAVBAR with LOGO outside pill -->
+    <nav class="kem-nav">
+        <div class="kem-nav-container">
+            <!-- Logo outside the pill -->
+            <div class="kem-logo">
+                <img src="https://via.placeholder.com/40x40/1e3a8a/ffffff?text=KEM" alt="KEM Logo" class="kem-logo-img">
+                <!-- You can replace with your actual logo later -->
             </div>
             
-            <div class="menu-btn" id="menuBtn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="event.html">Events</a></li>
-                <li><a href="organizers.html">Organizers</a></li>
-                <li><a href="tickets.html">Tickets</a></li>
-                <li><a href="calendar.html">Calendar</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- HERO SECTION WITH CHOO-CHOO TRAIN - IMMEDIATELY VISIBLE -->
-    <section class="hero-train-section">
-        <div class="hero-train-container">
-            <!-- LEFT SIDE - HERO CONTENT -->
-            <div class="hero-train-left">
-                <h1 class="hero-train-title">Discover Amazing Events</h1>
-                <p class="hero-train-description">
-                    Your gateway to the most exciting experiences in town
-                </p>
-                
-                <div class="hero-train-buttons">
-                    <a href="events.html" class="btn btn-primary">Explore Events</a>
-                    <a href="calendar.html" class="btn btn-outline">View Calendar</a>
+            <!-- White pill containing navigation -->
+            <div class="kem-nav-pill">
+                <div class="kem-pill-content">
+                    <span class="kem-brand">KEM</span>
+                    
+                    <div class="kem-nav-links">
+                        <a href="index.html" class="active">Home</a>
+                        <a href="event.html">Events</a>
+                        <a href="organizers.html">Organizer</a>
+                        <a href="tickets.html" class="kem-btn-pill">Get Started</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- RIGHT SIDE - CHOO-CHOO TRAIN (IMMEDIATELY VISIBLE) -->
-            <div class="hero-train-right">
-                <div class="train-slideshow">
-                    <!-- LEFT COLUMN - MOVES UP -->
-                    <div class="train-column column-up">
-                        <div class="train-carriage">
-                            <div class="event-date">15 MAR</div>
-                            <div class="event-info">
-                                <h3>Tech Conference</h3>
-                                <p>KNUST CCB • 9:00 AM</p>
-                                <span class="price">Free</span>
+            <!-- Mobile menu button -->
+            <div class="kem-menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <!-- Mobile navigation (hidden on desktop) -->
+        <div class="kem-mobile-nav" id="mobileNav">
+            <a href="index.html" class="active">Home</a>
+            <a href="event.html">Events</a>
+            <a href="organizers.html">Organizer</a>
+            <a href="tickets.html" class="kem-mobile-btn">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION with LEFT CONTENT and RIGHT TRAIN -->
+    <section class="kem-hero">
+        <div class="kem-hero-container">
+            <!-- LEFT SIDE - Main content -->
+            <div class="kem-hero-left">
+                <h1 class="kem-hero-title">UNFORGETTABLE<br>CELEBRATIONS & EVENTS</h1>
+                <p class="kem-hero-description">
+                    A modern platform to discover, manage and participate in campus events.
+                </p>
+                
+                <a href="event.html" class="kem-hero-btn">View Upcoming Events</a>
+            </div>
+
+            <!-- RIGHT SIDE - ELECTRIC TRAIN (Choo-choo! 🚂) -->
+            <div class="kem-hero-right">
+                <div class="kem-train-container">
+                    <div class="kem-train-slideshow">
+                        <!-- LEFT COLUMN - MOVES UP -->
+                        <div class="kem-train-column kem-column-up">
+                            <!-- AI Seminar -->
+                            <div class="kem-train-carriage" data-event-id="ai-seminar">
+                                <div class="kem-carriage-content">
+                                    <h3>AI Seminar</h3>
+                                    <p class="kem-datetime">2026-02-10 | 10:00 AM</p>
+                                    <div class="kem-carriage-footer">
+                                        <span class="kem-badge kem-badge-free">Free</span>
+                                        <div class="kem-carriage-actions">
+                                            <a href="event-details.html?id=ai-seminar" class="kem-details-link">View Details</a>
+                                            <a href="tickets.html?event=ai-seminar" class="kem-ticket-link">Get Ticket</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="train-carriage">
-                            <div class="event-date">28 MAR</div>
-                            <div class="event-info">
-                                <h3>Startup Meetup</h3>
-                                <p>Impact Hub • 6:00 PM</p>
-                                <span class="price">Free</span>
+                            
+                            <!-- Freshers Party -->
+                            <div class="kem-train-carriage" data-event-id="freshers-party">
+                                <div class="kem-carriage-content">
+                                    <h3>Freshers Party</h3>
+                                    <p class="kem-datetime">2026-02-15 | 6:00 PM</p>
+                                    <div class="kem-carriage-footer">
+                                        <span class="kem-badge kem-badge-ticketed">Ticketed</span>
+                                        <div class="kem-carriage-actions">
+                                            <a href="event-details.html?id=freshers-party" class="kem-details-link">View Details</a>
+                                            <a href="tickets.html?event=freshers-party" class="kem-ticket-link">Buy Ticket</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="train-carriage">
-                            <div class="event-date">12 APR</div>
-                            <div class="event-info">
-                                <h3>Food Fair</h3>
-                                <p>KNUST Stadium • 12:00 PM</p>
-                                <span class="price">₵30</span>
+                            
+                            <!-- Tech Conference -->
+                            <div class="kem-train-carriage" data-event-id="tech-conference">
+                                <div class="kem-carriage-content">
+                                    <h3>Tech Conference</h3>
+                                    <p class="kem-datetime">2026-03-01 | 9:00 AM</p>
+                                    <div class="kem-carriage-footer">
+                                        <span class="kem-badge kem-badge-free">Free</span>
+                                        <div class="kem-carriage-actions">
+                                            <a href="event-details.html?id=tech-conference" class="kem-details-link">View Details</a>
+                                            <a href="tickets.html?event=tech-conference" class="kem-ticket-link">Get Ticket</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- DUPLICATES for seamless loop -->
+                            <div class="kem-train-carriage" data-event-id="ai-seminar">
+                                <div class="kem-carriage-content">
+                                    <h3>AI Seminar</h3>
+                                    <p class="kem-datetime">2026-02-10 | 10:00 AM</p>
+                                    <div class="kem-carriage-footer">
+                                        <span class="kem-badge kem-badge-free">Free</span>
+                                        <div class="kem-carriage-actions">
+                                            <a href="event-details.html?id=ai-seminar" class="kem-details-link">View Details</a>
+                                            <a href="tickets.html?event=ai-seminar" class="kem-ticket-link">Get Ticket</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="kem-train-carriage" data-event-id="freshers-party">
+                                <div class="kem-carriage-content">
+                                    <h3>Freshers Party</h3>
+                                    <p class="kem-datetime">2026-02-15 | 6:00 PM</p>
+                                    <div class="kem-carriage-footer">
+                                        <span class="kem-badge kem-badge-ticketed">Ticketed</span>
+                                        <div class="kem-carriage-actions">
+                                            <a href="event-details.html?id=freshers-party" class="kem-details-link">View Details</a>
+                                            <a href="tickets.html?event=freshers-party" class="kem-ticket-link">Buy Ticket</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- DUPLICATES for seamless loop -->
-                        <div class="train-carriage">
-                            <div class="event-date">15 MAR</div>
-                            <div class="event-info">
-                                <h3>Tech Conference</h3>
-                                <p>KNUST CCB • 9:00 AM</p>
-                                <span class="price">Free</span>
+                        <!-- RIGHT COLUMN - MOVES DOWN -->
+                        <div class="kem-train-column kem-column-down">
+                            <!-- Art Workshop -->
+                            <div class="kem-train-carriage" data-event-id="art-workshop">
+                                <div class="kem-carriage-content">
+                                    <h3>Art Workshop</h3>
+                                    <p class="kem-datetime">2026-02-18 | 2:00 PM</p>
+                                    <div class="kem-carriage-footer">
+                                        <span class="kem-badge kem-badge-ticketed">₵20</span>
+                                        <div class="kem-carriage-actions">
+                                            <a href="event-details.html?id=art-workshop" class="kem-details-link">View Details</a>
+                                            <a href="tickets.html?event=art-workshop" class="kem-ticket-link">Buy Ticket</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="train-carriage">
-                            <div class="event-date">28 MAR</div>
-                            <div class="event-info">
-                                <h3>Startup Meetup</h3>
-                                <p>Impact Hub • 6:00 PM</p>
-                                <span class="price">Free</span>
+                            
+                            <!-- Career Fair -->
+                            <div class="kem-train-carriage" data-event-id="career-fair">
+                                <div class="kem-carriage-content">
+                                    <h3>Career Fair</h3>
+                                    <p class="kem-datetime">2026-02-22 | 11:00 AM</p>
+                                    <div class="kem-carriage-footer">
+                                        <span class="kem-badge kem-badge-free">Free</span>
+                                        <div class="kem-carriage-actions">
+                                            <a href="event-details.html?id=career-fair" class="kem-details-link">View Details</a>
+                                            <a href="tickets.html?event=career-fair" class="kem-ticket-link">Get Ticket</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                            
+                            <!-- Music Night -->
+                            <div class="kem-train-carriage" data-event-id="music-night">
+                                <div class="kem-carriage-content">
+                                    <h3>Music Night</h3>
+                                    <p class="kem-datetime">2026-02-28 | 7:00 PM</p>
+                                    <div class="kem-carriage-footer">
+                                        <span class="kem-badge kem-badge-ticketed">₵50</span>
+                                        <div class="kem-carriage-actions">
+                                            <a href="event-details.html?id=music-night" class="kem-details-link">View Details</a>
+                                            <a href="tickets.html?event=music-night" class="kem-ticket-link">Buy Ticket</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <!-- RIGHT COLUMN - MOVES DOWN -->
-                    <div class="train-column column-down">
-                        <div class="train-carriage">
-                            <div class="event-date">22 MAR</div>
-                            <div class="event-info">
-                                <h3>Music Festival</h3>
-                                <p>Cultural Centre • 4:00 PM</p>
-                                <span class="price">₵50</span>
+                            <!-- DUPLICATES for seamless loop -->
+                            <div class="kem-train-carriage" data-event-id="art-workshop">
+                                <div class="kem-carriage-content">
+                                    <h3>Art Workshop</h3>
+                                    <p class="kem-datetime">2026-02-18 | 2:00 PM</p>
+                                    <div class="kem-carriage-footer">
+                                        <span class="kem-badge kem-badge-ticketed">₵20</span>
+                                        <div class="kem-carriage-actions">
+                                            <a href="event-details.html?id=art-workshop" class="kem-details-link">View Details</a>
+                                            <a href="tickets.html?event=art-workshop" class="kem-ticket-link">Buy Ticket</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="train-carriage">
-                            <div class="event-date">05 APR</div>
-                            <div class="event-info">
-                                <h3>Art Exhibition</h3>
-                                <p>National Cultural Centre • 10:00 AM</p>
-                                <span class="price">₵20</span>
-                            </div>
-                        </div>
-                        
-                        <div class="train-carriage">
-                            <div class="event-date">20 APR</div>
-                            <div class="event-info">
-                                <h3>Career Fair</h3>
-                                <p>College of Engineering • 9:00 AM</p>
-                                <span class="price">Free</span>
-                            </div>
-                        </div>
-
-                        <!-- DUPLICATES for seamless loop -->
-                        <div class="train-carriage">
-                            <div class="event-date">22 MAR</div>
-                            <div class="event-info">
-                                <h3>Music Festival</h3>
-                                <p>Cultural Centre • 4:00 PM</p>
-                                <span class="price">₵50</span>
-                            </div>
-                        </div>
-                        
-                        <div class="train-carriage">
-                            <div class="event-date">05 APR</div>
-                            <div class="event-info">
-                                <h3>Art Exhibition</h3>
-                                <p>National Cultural Centre • 10:00 AM</p>
-                                <span class="price">₵20</span>
+                            
+                            <div class="kem-train-carriage" data-event-id="career-fair">
+                                <div class="kem-carriage-content">
+                                    <h3>Career Fair</h3>
+                                    <p class="kem-datetime">2026-02-22 | 11:00 AM</p>
+                                    <div class="kem-carriage-footer">
+                                        <span class="kem-badge kem-badge-free">Free</span>
+                                        <div class="kem-carriage-actions">
+                                            <a href="event-details.html?id=career-fair" class="kem-details-link">View Details</a>
+                                            <a href="tickets.html?event=career-fair" class="kem-ticket-link">Get Ticket</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -154,75 +224,46 @@
         </div>
     </section>
 
-    <!-- Features Section (now below the hero/train) -->
-    <section class="features">
+    <!-- Features Section -->
+    <section class="kem-features">
         <div class="container">
-            <div class="section-header">
-                <h2>Why Choose Campus Event Manager?</h2>
-                <p>We make event management seamless and enjoyable</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card">
+            <div class="kem-features-grid">
+                <div class="kem-feature">
                     <i class="fas fa-ticket-alt"></i>
                     <h3>Easy Ticketing</h3>
-                    <p>Simple and secure ticket purchasing for all events</p>
                 </div>
-                <div class="feature-card">
+                <div class="kem-feature">
                     <i class="fas fa-calendar-check"></i>
                     <h3>Smart Calendar</h3>
-                    <p>Never miss an event with our interactive calendar</p>
                 </div>
-                <div class="feature-card">
+                <div class="kem-feature">
                     <i class="fas fa-users"></i>
-                    <h3>Expert Organizers</h3>
-                    <p>Connect with the best event organizers in town</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-clock"></i>
-                    <h3>24/7 Support</h3>
-                    <p>We're always here to help you</p>
+                    <h3>Campus Community</h3>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="kem-footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Campus Event Manager</h3>
-                    <p>Making events memorable since 2024</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                    </div>
+            <div class="kem-footer-content">
+                <div class="kem-footer-section">
+                    <h3>KEM</h3>
+                    <p>Campus Event Manager</p>
                 </div>
-                <div class="footer-section">
+                <div class="kem-footer-section">
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="events.html">Events</a></li>
+                        <li><a href="event.html">Events</a></li>
                         <li><a href="organizers.html">Organizers</a></li>
                         <li><a href="tickets.html">Tickets</a></li>
-                        <li><a href="calendar.html">Calendar</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact Info</h4>
-                    <ul>
-                        <li><i class="fas fa-phone"></i> +233 24 123 4567</li>
-                        <li><i class="fas fa-envelope"></i> info@campusevents.com</li>
-                        <li><i class="fas fa-map-marker-alt"></i> KNUST, Kumasi</li>
                     </ul>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Campus Event Manager. All rights reserved. Created by Nana B with Spark ✨</p>
+            <div class="kem-footer-bottom">
+                <p>&copy; 2026 KEM. Created by Nana B with Spark ⚡</p>
             </div>
         </div>
     </footer>
