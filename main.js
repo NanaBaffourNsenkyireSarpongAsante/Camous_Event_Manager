@@ -1,27 +1,46 @@
-// Make train carriages clickable
+// Make train carriages clickable - redirects to event-details
 document.addEventListener('DOMContentLoaded', function() {
-    const carriages = document.querySelectorAll('.train-carriage');
+    const trainCarriages = document.querySelectorAll('.kem-train-carriage');
     
-    carriages.forEach(carriage => {
+    trainCarriages.forEach(carriage => {
         carriage.addEventListener('click', function(e) {
-            // Get event info
-            const eventName = this.querySelector('h3').textContent;
-            const eventDate = this.querySelector('.event-date').textContent;
+            // Don't trigger if clicking on links inside
+            if (e.target.tagName === 'A' || e.target.closest('a')) {
+                return;
+            }
             
-            // You can replace this with navigation to tickets page
-            console.log(`Clicked: ${eventName} on ${eventDate}`);
-            // window.location.href = 'tickets.html';
+            // Get event ID and redirect to event details
+            const eventId = this.dataset.eventId;
+            if (eventId) {
+                window.location.href = `event-details.html?id=${eventId}`;
+            }
         });
     });
     
-    // Mobile menu toggle (keep this if you had it before)
-    const menuBtn = document.getElementById('menuBtn');
-    const navLinks = document.getElementById('navLinks');
+    // Handle "View Details" links separately
+    document.querySelectorAll('.kem-details-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent train carriage click
+            // Link already has href, so it will navigate naturally
+        });
+    });
     
-    if (menuBtn && navLinks) {
+    // Handle "Get Ticket"/"Buy Ticket" links
+    document.querySelectorAll('.kem-ticket-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent train carriage click
+            // Link already has href with event ID, so it will go to tickets page
+        });
+    });
+    
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    
+    if (menuBtn && mobileNav) {
         menuBtn.addEventListener('click', () => {
             menuBtn.classList.toggle('active');
-            navLinks.classList.toggle('active');
+            mobileNav.classList.toggle('active');
         });
     }
 });
