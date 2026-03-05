@@ -3,10 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ</title>
+    <title>Campus Event Manager | FAQ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-          <a href="index.html"><span class="logo">Campus Event Manager</span></a>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-calendar-alt"></i>
+                Campus Event Manager
+            </div>
+            
+            <div class="menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
 
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="organizers.html">Organizers</a></li>
+                <li><a href="tickets.html">Tickets</a></li>
+                <li><a href="calendar.html">Calendar</a></li>
+                <li><a href="faq.html" class="active">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about our events</p>
+        </div>
+    </section>
+
+    <!-- FAQ Search -->
+    <section class="faq-search">
+        <div class="container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search for questions..." id="faqSearch">
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Categories -->
+    <section class="faq-categories">
+        <div class="container">
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="all">All</button>
+                <button class="category-tab" data-category="tickets">Tickets</button>
+                <button class="category-tab" data-category="events">Events</button>
+                <button class="category-tab" data-category="payments">Payments</button>
+                <button class="category-tab" data-category="organizers">Organizers</button>
+                <button class="category-tab" data-category="general">General</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-grid">
+                <!-- Tickets Category -->
+                <div class="faq-item" data-category="tickets">
+                    <div class="faq-question">
+                        <h3>How do I purchase tickets?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can purchase tickets directly from our website by visiting the Tickets page, selecting your preferred event, and clicking the "Buy Now" button. Payment can be made via mobile money, credit card, or bank transfer. After successful payment, you'll receive a confirmation email with your e-ticket.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="tickets">
+                    <div class="faq-question">
+                        <h3>Can I get a refund?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Refunds are available up to 7 days before the event. Please contact our support team with your ticket reference number to process a refund. Some events may have different refund policies, so always check the event details before purchasing.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="tickets">
+                    <div class="faq-question">
+                        <h3>Are tickets transferable?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, most tickets are transferable. You can transfer your ticket to someone else by logging into your account and using the "Transfer Ticket" option. The new attendee will receive an email with their updated e-ticket.</p>
+                    </div>
+                </div>
+
+                <!-- Events Category -->
+                <div class="faq-item" data-category="events">
+                    <div class="faq-question">
+                        <h3>What time should I arrive?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We recommend arriving at least 30 minutes before the event starts to allow time for check-in and seating. For popular events, arriving earlier is advised. Check your ticket or the event page for specific door opening times.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="events">
+                    <div class="faq-question">
+                        <h3>Is there an age restriction?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Age restrictions vary by event. Check the specific event page for age requirements. Some events are all-ages, while others may be 18+ or 21+. Valid ID may be required for age-restricted events.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="events">
+                    <div class="faq-question">
+                        <h3>Can I take photos/videos?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Photography and video policies vary by event. Most events allow personal photos, but professional equipment may be restricted. Check the event guidelines or look for signage at the venue. Some performances may have strict no-photo policies.</p>
+                    </div>
+                </div>
+
+                <!-- Payments Category -->
+                <div class="faq-item" data-category="payments">
+                    <div class="faq-question">
+                        <h3>What payment methods do you accept?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We accept various payment methods including Mobile Money (MTN, Vodafone, AirtelTigo), Visa/Mastercard credit/debit cards, and bank transfers. All payments are processed securely through our payment partners.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="payments">
+                    <div class="faq-question">
+                        <h3>Is my payment information secure?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! We use industry-standard encryption and security measures to protect your payment information. We never store your full payment details on our servers. All transactions are processed through secure, PCI-compliant payment gateways.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="payments">
+                    <div class="faq-question">
+                        <h3>Do you offer group discounts?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Many events offer group discounts for parties of 5 or more. Contact our support team with your event of interest and group size, and we'll provide you with a custom quote and discount code.</p>
+                    </div>
+                </div>
+
+                <!-- Organizers Category -->
+                <div class="faq-item" data-category="organizers">
+                    <div class="faq-question">
+                        <h3>How do I become an organizer?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>If you're interested in organizing events on our platform, please visit our "Partner With Us" page or contact us through the email: partnerships@eventhub.com. We'd love to discuss partnership opportunities and help bring your event ideas to life.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="organizers">
+                    <div class="faq-question">
+                        <h3>What are the fees for organizers?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our fee structure varies based on event type, size, and services required. Generally, we charge a small percentage of ticket sales plus a fixed fee per ticket. Contact our partnerships team for a detailed quote tailored to your event.</p>
+                    </div>
+                </div>
+
+                <!-- General Category -->
+                <div class="faq-item" data-category="general">
+                    <div class="faq-question">
+                        <h3>Is there parking available?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Most venues offer parking facilities. Check the specific event page for parking information. Some central locations may have limited parking, so we recommend using public transport when possible. Paid parking may apply at some venues.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="general">
+                    <div class="faq-question">
+                        <h3>What items are prohibited?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Prohibited items typically include weapons, illegal substances, outside food and beverages, large bags, and professional recording equipment. Check the event page or contact the venue for their specific prohibited items list.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="general">
+                    <div class="faq-question">
+                        <h3>Is the venue accessible?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We strive to make all events accessible. Most venues have wheelchair access, accessible restrooms, and special accommodations. If you have specific accessibility needs, please contact us before the event so we can ensure the best experience.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Still Have Questions -->
+            <div class="still-questions">
+                <h3>Still have questions?</h3>
+                <p>Can't find the answer you're looking for? Please contact our support team.</p>
+                <a href="#" class="btn btn-primary">Contact Support</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EventHub</h3>
+                    <p>Making events memorable since 2024</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="organizers.html">Organizers</a></li>
+                        <li><a href="tickets.html">Tickets</a></li>
+                        <li><a href="calendar.html">Calendar</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +233 24 123 4567</li>
+                        <li><i class="fas fa-envelope"></i> info@eventhub.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> KNUST, Kumasi</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 EventHub. All rights reserved. Created by Nana B with Spark ✨</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
 </body>
 </html>

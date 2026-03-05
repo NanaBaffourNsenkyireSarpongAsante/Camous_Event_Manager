@@ -3,13 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tickets</title>
+    <title>KEM | Tickets</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-            <a href="index.html"><span class="logo">Campus Event Manager</span></a>
+    <nav class="kem-nav">
+        <div class="kem-nav-container">
+            <div class="kem-logo">
+                <img src="https://via.placeholder.com/40x40/1e3a8a/ffffff?text=KEM" alt="KEM Logo" class="kem-logo-img">
+            </div>
+            <div class="kem-nav-pill">
+                <div class="kem-pill-content">
+                    <span class="kem-brand">KEM</span>
+                    <div class="kem-nav-links">
+                        <a href="index.html">Home</a>
+                        <a href="event.html">Events</a>
+                        <a href="organizers.html">Organizer</a>
+                        <a href="tickets.html" class="active kem-btn-pill">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            <div class="kem-menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="kem-mobile-nav" id="mobileNav">
+            <a href="index.html">Home</a>
+            <a href="event.html">Events</a>
+            <a href="organizers.html">Organizer</a>
+            <a href="tickets.html" class="active kem-mobile-btn">Get Started</a>
+        </div>
+    </nav>
 
-    <h1>Ticket Information</h1>
-    <p>Details about ticket purchasing and availability will be listed here.</p>
-    
+    <section class="kem-page-header">
+        <div class="container">
+            <h1>Your Tickets</h1>
+            <p>You're one step away from the experience!</p>
+        </div>
+    </section>
+
+    <section class="kem-tickets-section">
+        <div class="container">
+            <div class="kem-ticket-checkout">
+                <h2>Complete Your Purchase</h2>
+                <p>Ticket selection will appear here based on the event you clicked.</p>
+                <a href="event.html" class="kem-btn kem-btn-primary">Browse More Events</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="kem-footer">
+        <div class="container">
+            <div class="kem-footer-content">
+                <div class="kem-footer-section">
+                    <h3>KEM</h3>
+                    <p>Campus Event Manager</p>
+                </div>
+                <div class="kem-footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="event.html">Events</a></li>
+                        <li><a href="organizers.html">Organizers</a></li>
+                        <li><a href="tickets.html">Tickets</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="kem-footer-bottom">
+                <p>&copy; 2026 KEM. Created by Nana B with Spark ⚡</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
 </body>
 </html>

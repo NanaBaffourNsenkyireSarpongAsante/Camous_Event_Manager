@@ -3,14 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Details</title>
+    <title>KEM | Event Details</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-            <a href="index.html"><span class="logo">Campus Event Manager</span></a>
+    <nav class="kem-nav">
+        <div class="kem-nav-container">
+            <div class="kem-logo">
+                <img src="https://via.placeholder.com/40x40/1e3a8a/ffffff?text=KEM" alt="KEM Logo" class="kem-logo-img">
+            </div>
+            <div class="kem-nav-pill">
+                <div class="kem-pill-content">
+                    <span class="kem-brand">KEM</span>
+                    <div class="kem-nav-links">
+                        <a href="index.html">Home</a>
+                        <a href="event.html">Events</a>
+                        <a href="organizers.html">Organizer</a>
+                        <a href="tickets.html" class="kem-btn-pill">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            <div class="kem-menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="kem-mobile-nav" id="mobileNav">
+            <a href="index.html">Home</a>
+            <a href="event.html">Events</a>
+            <a href="organizers.html">Organizer</a>
+            <a href="tickets.html" class="kem-mobile-btn">Get Started</a>
+        </div>
+    </nav>
 
-    <h1>Event Title</h1>
-    <p>Date: January 1, 2024</p>
-    <p>Location: Campus Auditorium</p>
-    <p>Description: This is a detailed description of the event.</p>
+    <section class="kem-details-hero">
+        <div class="container">
+            <a href="event.html" class="kem-back-btn"><i class="fas fa-arrow-left"></i> Back to Events</a>
+        </div>
+    </section>
+
+    <section class="kem-event-details">
+        <div class="container">
+            <div class="kem-details-grid">
+                <!-- LEFT COLUMN - Main Event Info -->
+                <div class="kem-details-main">
+                    <div class="kem-details-header">
+                        <h1 id="event-title">AI Seminar</h1>
+                        <div class="kem-details-badges">
+                            <span class="kem-badge kem-badge-free" id="event-badge">Free</span>
+                            <span class="kem-details-category">Tech</span>
+                        </div>
+                    </div>
+
+                    <div class="kem-details-meta">
+                        <div class="kem-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span id="event-date">2026-02-10</span>
+                        </div>
+                        <div class="kem-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="event-time">10:00 AM</span>
+                        </div>
+                        <div class="kem-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="event-location">KNUST CCB, Kumasi</span>
+                        </div>
+                        <div class="kem-meta-item">
+                            <i class="fas fa-user"></i>
+                            <span id="event-organizer">Tech Students Association</span>
+                        </div>
+                    </div>
+
+                    <div class="kem-details-description">
+                        <h2>About This Event</h2>
+                        <p id="event-description">
+                            Join us for an insightful AI Seminar featuring industry experts and researchers. 
+                            Learn about the latest advancements in artificial intelligence, machine learning, 
+                            and how AI is shaping the future of technology. Perfect for students and tech enthusiasts!
+                        </p>
+                        
+                        <h3>What to Expect:</h3>
+                        <ul class="kem-details-list">
+                            <li><i class="fas fa-check"></i> Keynote speeches from AI experts</li>
+                            <li><i class="fas fa-check"></i> Interactive Q&A sessions</li>
+                            <li><i class="fas fa-check"></i> Networking opportunities</li>
+                            <li><i class="fas fa-check"></i> Light refreshments</li>
+                        </ul>
+
+                        <h3>Schedule:</h3>
+                        <div class="kem-schedule-item">
+                            <span class="kem-schedule-time">10:00 AM</span>
+                            <span class="kem-schedule-activity">Registration & Welcome</span>
+                        </div>
+                        <div class="kem-schedule-item">
+                            <span class="kem-schedule-time">10:30 AM</span>
+                            <span class="kem-schedule-activity">Keynote Speech: "Future of AI"</span>
+                        </div>
+                        <div class="kem-schedule-item">
+                            <span class="kem-schedule-time">11:30 AM</span>
+                            <span class="kem-schedule-activity">Panel Discussion</span>
+                        </div>
+                        <div class="kem-schedule-item">
+                            <span class="kem-schedule-time">12:30 PM</span>
+                            <span class="kem-schedule-activity">Networking Lunch</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN - Ticket Info & Actions -->
+                <div class="kem-details-sidebar">
+                    <div class="kem-ticket-card">
+                        <h3>Get Your Ticket</h3>
+                        <div class="kem-ticket-price" id="ticket-price">Free</div>
+                        <p class="kem-ticket-availability" id="ticket-availability">120+ spots available</p>
+                        
+                        <div class="kem-quantity-selector">
+                            <label for="ticket-quantity">Quantity:</label>
+                            <select id="ticket-quantity">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+
+                        <a href="#" class="kem-btn kem-btn-primary kem-full-width" id="purchase-ticket">
+                            <i class="fas fa-ticket-alt"></i> Get Ticket
+                        </a>
+
+                        <div class="kem-ticket-info">
+                            <p><i class="fas fa-info-circle"></i> Tickets include full access to all sessions</p>
+                            <p><i class="fas fa-clock"></i> Doors open at 9:30 AM</p>
+                        </div>
+                    </div>
+
+                    <div class="kem-share-card">
+                        <h4>Share This Event</h4>
+                        <div class="kem-share-links">
+                            <a href="#"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="kem-organizer-card">
+                        <h4>Organized by</h4>
+                        <p><strong>Tech Students Association</strong></p>
+                        <p><i class="fas fa-envelope"></i> tech@knust.edu.gh</p>
+                        <p><i class="fas fa-phone"></i> +233 24 123 4567</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="kem-related-events">
+        <div class="container">
+            <h2>You Might Also Like</h2>
+            <div class="kem-related-grid">
+                <!-- Related Event 1 -->
+                <div class="kem-related-card" onclick="window.location.href='event-details.html?id=tech-conference'">
+                    <h4>Tech Conference</h4>
+                    <p>2026-03-01 | 9:00 AM</p>
+                    <span class="kem-badge kem-badge-free">Free</span>
+                </div>
+                
+                <!-- Related Event 2 -->
+                <div class="kem-related-card" onclick="window.location.href='event-details.html?id=music-night'">
+                    <h4>Music Night</h4>
+                    <p>2026-02-28 | 7:00 PM</p>
+                    <span class="kem-badge kem-badge-ticketed">₵50</span>
+                </div>
+                
+                <!-- Related Event 3 -->
+                <div class="kem-related-card" onclick="window.location.href='event-details.html?id=art-workshop'">
+                    <h4>Art Workshop</h4>
+                    <p>2026-02-18 | 2:00 PM</p>
+                    <span class="kem-badge kem-badge-ticketed">₵20</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="kem-footer">
+        <div class="container">
+            <div class="kem-footer-content">
+                <div class="kem-footer-section">
+                    <h3>KEM</h3>
+                    <p>Campus Event Manager</p>
+                </div>
+                <div class="kem-footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="event.html">Events</a></li>
+                        <li><a href="organizers.html">Organizers</a></li>
+                        <li><a href="tickets.html">Tickets</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="kem-footer-bottom">
+                <p>&copy; 2026 KEM. Created by Nana B with Spark ⚡</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Simple script to load event details based on URL parameter
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventId = urlParams.get('id');
+            
+            // You can expand this with real data later
+            console.log('Loading event:', eventId);
+            
+            // For now, just handle ticket button
+            document.getElementById('purchase-ticket').addEventListener('click', function(e) {
+                e.preventDefault();
+                const quantity = document.getElementById('ticket-quantity').value;
+                window.location.href = `tickets.html?event=${eventId}&qty=${quantity}`;
+            });
+        });
+    </script>
 </body>
 </html>
