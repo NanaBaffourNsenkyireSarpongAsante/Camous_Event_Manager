@@ -3,13 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tickets</title>
+    <title>KEM | Tickets</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-            <a href="index.html"><span class="logo">Campus Event Manager</span></a>
+<!-- FLOATING NAVBAR with LOGO outside pill -->
+    <nav class="kem-nav">
+        <div class="kem-nav-container">
+            <!-- Logo outside the pill -->
+            <div class="kem-logo">
+                <img src="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0" alt="KEM Logo" class="kem-logo-img">
+            </div>
+            
+            <!-- White pill containing navigation -->
+            <div class="kem-nav-pill">
+                <div class="kem-pill-content">
+                    <span class="kem-brand">KEM</span>
+                    
+                    <div class="kem-nav-links">
+                        <a href="index.html" class="active">Home</a>
+                        <a href="#" onclick="showEvents()">Events</a>
+                        <a href="#" onclick="showDashboard()">Organizer</a>
+                        <div class="dropdown">
+                            <button class="dropdown-btn">Explore <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-content">
+                                <a href="calendar.html">Calendar</a>
+                                <a href="faq.html">FAQ</a>
+                                <a href="tickets.html">Tickets</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <h1>Ticket Information</h1>
-    <p>Details about ticket purchasing and availability will be listed here.</p>
-    
+            <!-- Mobile menu button -->
+            <div class="kem-menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <!-- Mobile navigation -->
+        <div class="kem-mobile-nav" id="mobileNav">
+            <a href="index.html" class="active">Home</a>
+            <a href="#" onclick="showEvents()">Events</a>
+            <a href="#" onclick="showDashboard()">Organizer</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="faq.html">FAQ</a>
+        </div>
+    </nav>
+
+    <section class="kem-page-header">
+        <div class="container">
+            <h1>Your Tickets</h1>
+            <p>View and manage your purchased tickets</p>
+        </div>
+    </section>
+
+    <section class="kem-tickets">
+        <div class="container">
+            <div id="ticketsList" class="kem-tickets-grid"></div>
+        </div>
+    </section>
+
+    <footer class="kem-footer">
+        <div class="container">
+            <div class="kem-footer-bottom">
+                <p>&copy; 2026 KNUST EVENT MANAGEMENT(KEM). </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function loadTickets() {
+            const registrations = JSON.parse(localStorage.getItem('kem_registrations')) || [];
+            const events = JSON.parse(localStorage.getItem('kem_events')) || [];
+            const container = document.getElementById('ticketsList');
+            
+            if (registrations.length === 0) {
+                container.innerHTML = `
+                    <div class="kem-empty-state">
+                        <i class="fas fa-ticket-alt"></i>
+                        <h3>No tickets yet</h3>
+                        <p>Browse events and get your tickets today!</p>
+                        <a href="index.html#events" class="kem-btn kem-btn-primary">Browse Events</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = registrations.map(reg => {
+                const event = events.find(e => e.id == reg.eventId);
+                if (!event) return '';
+                
+                const isFree = event.ticket == 0;
+                const priceDisplay = isFree ? 'Free' : '₵' + event.ticket;
+                
+                return `
+                    <div class="kem-ticket-card">
+                        <div class="kem-ticket-header">
+                            <h3>${event.title}</h3>
+                            <span class="kem-badge ${isFree ? 'kem-badge-free' : 'kem-badge-ticketed'}">
+                                ${priceDisplay}
+                            </span>
+                        </div>
+                        <div class="kem-ticket-body">
+                            <p><i class="fas fa-calendar"></i> ${event.date} at ${event.time}</p>
+                            <p><i class="fas fa-map-marker-alt"></i> ${event.venue}</p>
+                            <p><i class="fas fa-user"></i> ${reg.name}</p>
+                            <p><i class="fas fa-tag"></i> Quantity: ${reg.quantity}</p>
+                        </div>
+                        <div class="kem-ticket-footer">
+                            <span class="kem-ticket-id">#${reg.id}</span>
+                            <span class="kem-ticket-date">Booked: ${new Date(reg.date).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        loadTickets();
+    </script>
 </body>
 </html>
