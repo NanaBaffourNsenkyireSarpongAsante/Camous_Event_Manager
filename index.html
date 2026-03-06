@@ -3,29 +3,381 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camous Event Manager</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+4nameuJ3r8GiIb2DE2hGSguCClDphfCTxnXk8G" crossorigin="anonymous">
+    <title>KEM | Campus Event Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0">
+    <!-- Added inline styles for the new hero background -->
+    <style>
+        .hero-bg {
+            background-image: url('https://th.bing.com/th/id/OIP.bqiccBN1xTBAeR_T3-qKmAHaE8?w=252&h=183&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            min-height: 500px;  /* increased from 400px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            width: 100%;
+        }
+        .hero-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 3rem;      /* increased padding */
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-overlay h1 {
+            font-size: 3.5rem;   /* larger heading */
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        .hero-overlay p {
+            font-size: 1.5rem;   /* larger paragraph */
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        .hero-overlay .kem-hero-btn {
+            background: #ffc107;
+            color: #000;
+            border: none;
+            padding: 1rem 3rem;  /* larger button */
+            font-size: 1.3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .hero-overlay .kem-hero-btn:hover {
+            background: #e0a800;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center my-5">Welcome to Camous Event Manager</h1>
-        <p class="lead text-center">Manage your events efficiently with our platform.</p>
-        <div class="row mt-5">
-            <div class="col-md-4 text-center">
-                <h2>Feature 1</h2>
-                <p>Description of feature 1.</p>
+    <!-- FLOATING NAVBAR with LOGO outside pill -->
+    <nav class="kem-nav">
+        <div class="kem-nav-container">
+            <!-- Logo outside the pill -->
+            <div class="kem-logo">
+                <img src="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0" alt="KEM Logo" class="kem-logo-img">
             </div>
-            <div class="col-md-4 text-center">
-                <h2>Feature 2</h2>
-                <p>Description of feature 2.</p>
+            
+            <!-- White pill containing navigation -->
+            <div class="kem-nav-pill">
+                <div class="kem-pill-content">
+                    <span class="kem-brand">KEM</span>
+                    
+                    <div class="kem-nav-links">
+                        <a href="index.html" class="active">Home</a>
+                        <a href="#" onclick="showEvents()">Events</a>
+                        <a href="#" onclick="showDashboard()">Organizer</a>
+                        <div class="dropdown">
+                            <button class="dropdown-btn">Explore <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-content">
+                                <a href="calendar.html">Calendar</a>
+                                <a href="faq.html">FAQ</a>
+                                <a href="tickets.html">Tickets</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4 text-center">
-                <h2>Feature 3</h2>
-                <p>Description of feature 3.</p>
+
+            <!-- Mobile menu button -->
+            <div class="kem-menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
+        
+        <!-- Mobile navigation -->
+        <div class="kem-mobile-nav" id="mobileNav">
+            <a href="index.html" class="active">Home</a>
+            <a href="#" onclick="showEvents()">Events</a>
+            <a href="#" onclick="showDashboard()">Organizer</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="faq.html">FAQ</a>
+            <a href="tickets.html">Tickets</a>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT AREA - Dynamic views -->
+    <div id="mainContent">
+        <!-- HOME VIEW (Train animation) -->
+        <div id="homeView">
+            <!-- HERO SECTION with LEFT CONTENT and RIGHT TRAIN -->
+            <section class="kem-hero">
+                <div class="kem-hero-container">
+                    <!-- LEFT SIDE - New hero with background image and overlay -->
+                    <div class="kem-hero-left hero-bg">
+                        <div class="hero-overlay">
+                            <h1>UNFORGETTABLE<br>CELEBRATIONS & EVENTS</h1>
+                            <p>A modern platform to discover, manage and participate in campus events.</p>
+                            <a href="#" onclick="showEvents()" class="kem-hero-btn">View Upcoming Events</a>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT SIDE - ELECTRIC TRAIN (unchanged) -->
+                    <div class="kem-hero-right">
+                        <div class="kem-train-container">
+                            <div class="kem-train-slideshow" id="trainEvents">
+                                <!-- Events will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section (unchanged) -->
+            <section class="kem-features">
+                <div class="container">
+                    <div class="kem-features-grid">
+                        <a href="#" onclick="showTickets()">
+                            <div class="kem-feature">
+                                <i class="fas fa-ticket-alt"></i>
+                                <h3>Easy Ticketing</h3>
+                            </div>
+                        </a>
+                        <a href="calendar.html">
+                            <div class="kem-feature">
+                                <i class="fas fa-calendar-check"></i>
+                                <h3>Smart Calendar</h3>
+                            </div>
+                        </a>
+                        <a href="faq.html">
+                            <div class="kem-feature">
+                                <i class="fas fa-users"></i>
+                                <h3>Campus Community</h3>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- EVENTS VIEW (Grid layout with filter) -->
+        <div id="eventsView" style="display: none;">
+            <section class="kem-page-header">
+                <div class="container">
+                    <h1>All Events</h1>
+                    <p>Discover amazing events happening near you</p>
+                </div>
+            </section>
+
+            <section class="events-filter">
+                <div class="container">
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label for="categoryFilter"><i class="fas fa-filter"></i> Category:</label>
+                            <select id="categoryFilter" class="filter-select">
+                                <option value="All">All Categories</option>
+                                <option value="Academic">Academic</option>
+                                <option value="Social">Social</option>
+                                <option value="Tech">Technology</option>
+                                <option value="Music">Music</option>
+                                <option value="Arts">Arts</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="searchEvents"><i class="fas fa-search"></i> Search:</label>
+                            <input type="text" id="searchEvents" class="filter-input" placeholder="Search events...">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="all-events">
+                <div class="container">
+                    <div class="events-grid" id="eventsGrid"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- DASHBOARD VIEW (Organizer) -->
+        <div id="dashboardView" style="display: none;">
+            <section class="kem-page-header">
+                <div class="container">
+                    <h1>Organizer Dashboard</h1>
+                    <p>Manage your events and registrations</p>
+                </div>
+            </section>
+
+            <section class="dashboard-section">
+                <div class="container">
+                    <div class="dashboard-grid">
+                        <!-- Left Column - Event Form -->
+                        <div class="dashboard-card">
+                            <h2><i class="fas fa-plus-circle"></i> Add / Edit Event</h2>
+                            <form id="eventForm" class="event-form">
+                                <input type="hidden" id="editId">
+                                
+                                <div class="form-group">
+                                    <label for="title">Event Title</label>
+                                    <input type="text" id="title" class="form-control" required placeholder="e.g., AI Seminar">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="date">Date</label>
+                                        <input type="date" id="date" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="time">Time</label>
+                                        <input type="text" id="time" class="form-control" required placeholder="e.g., 10:00 AM">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="venue">Venue</label>
+                                    <input type="text" id="venue" class="form-control" required placeholder="e.g., KNUST CCB">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="category">Category</label>
+                                        <select id="category" class="form-control" required>
+                                            <option value="Academic">Academic</option>
+                                            <option value="Social">Social</option>
+                                            <option value="Tech">Technology</option>
+                                            <option value="Music">Music</option>
+                                            <option value="Arts">Arts</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ticket">Ticket Price (₵)</label>
+                                        <input type="number" id="ticket" class="form-control" required min="0" step="0.01" placeholder="0 for free">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea id="description" class="form-control" rows="4" required placeholder="Describe your event..."></textarea>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="kem-btn kem-btn-primary" onclick="saveEvent(event)">Save Event</button>
+                                    <button type="button" class="kem-btn kem-btn-secondary" onclick="clearForm()">Clear</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Right Column - Events List & Registrations -->
+                        <div class="dashboard-card">
+                            <h2><i class="fas fa-calendar-alt"></i> My Events</h2>
+                            <div class="table-responsive">
+                                <table class="dashboard-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Date</th>
+                                            <th>Category</th>
+                                            <th>Ticket</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="eventTable"></tbody>
+                                </table>
+                            </div>
+
+                            <h2 class="mt-4"><i class="fas fa-users"></i> Recent Registrations</h2>
+                            <div class="table-responsive">
+                                <table class="dashboard-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Event</th>
+                                            <th>Student ID</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="registrationsTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- EVENT DETAILS VIEW -->
+        <div id="detailsView" style="display: none;">
+            <section class="kem-details-hero">
+                <div class="container">
+                    <a href="#" onclick="showEvents()" class="kem-back-btn"><i class="fas fa-arrow-left"></i> Back to Events</a>
+                </div>
+            </section>
+
+            <section class="kem-event-details">
+                <div class="container">
+                    <div class="kem-details-grid" id="eventDetailsContainer">
+                        <!-- Event details will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <section class="kem-related-events">
+                <div class="container">
+                    <h2>You Might Also Like</h2>
+                    <div class="kem-related-grid" id="relatedEvents"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TICKETS VIEW -->
+        <div id="ticketsView" style="display: none;">
+            <section class="kem-page-header">
+                <div class="container">
+                    <h1>Your Tickets</h1>
+                    <p>You're one step away from the experience!</p>
+                </div>
+            </section>
+
+            <section class="kem-tickets-section">
+                <div class="container">
+                    <div class="kem-ticket-checkout" id="ticketCheckout">
+                        <!-- Ticket selection will be populated -->
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybqYFpJfNpb98VTVSDK3oFOG2B4ONQsg3dG6D3gp26Zf/qQ6" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-HfMj6S4Lo5QqaTo5q6+ihsynFHFf7dyjGFiMoLDbNZ3MXQ3B00z3v0sBZkD0RGy3" crossorigin="anonymous"></script>
+
+    <!-- Footer -->
+    <footer class="kem-footer">
+        <div class="container">
+            <div class="kem-footer-content">
+                <div class="kem-footer-section">
+                    <h3>KEM</h3>
+                    <p>Campus Event Manager</p>
+                </div>
+                <div class="kem-footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#" onclick="showHome()">Home</a></li>
+                        <li><a href="#" onclick="showEvents()">Events</a></li>
+                        <li><a href="#" onclick="showDashboard()">Organizer</a></li>
+                        <li><a href="#" onclick="showTickets()">Tickets</a></li>
+                        <li><a href="calendar.html">Calendar</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="kem-footer-bottom">
+                <p>&copy; 2026 KNUST EVENT MANAGEMENT(KEM). </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-notification"></div>
+
+    <script src="main.js"></script>
 </body>
 </html>
