@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KEM | Campus Event Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0">
+    <style>
+        /* Auth container styles */
+        .auth-container {
+            min-height: 100vh;
+            background: #0a1a3a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .auth-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .auth-card h2 {
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 2rem;
+        }
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .auth-tab {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 10px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .auth-tab.active {
+            color: #1e3a8a;
+            border-bottom-color: #1e3a8a;
+        }
+        .auth-form {
+            display: none;
+        }
+        .auth-form.active {
+            display: block;
+        }
+        .auth-form .form-group {
+            margin-bottom: 1rem;
+        }
+        .auth-form label {
+            display: block;
+            margin-bottom: 0.3rem;
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+        .auth-form input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .error-text {
+            color: #dc2626; /* red-600 */
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .auth-btn {
+            width: 100%;
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.3s;
+        }
+        .auth-btn:hover {
+            background: #2563eb;
+        }
+        .role-selection {
+            text-align: center;
+        }
+        .role-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .role-btn {
+            flex: 1;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .role-btn:hover {
+            border-color: #1e3a8a;
+            background: #e6efff;
+        }
+        .role-btn.selected {
+            border-color: #1e3a8a;
+            background: #1e3a8a;
+            color: white;
+        }
+        .main-app {
+            display: none;
+        }
+        /* Profile link in navbar (with image) */
+        .profile-link {
+            background: white;
+            border: none;
+            padding: 0.3rem 1rem 0.3rem 0.5rem;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+        .profile-link i {
+            font-size: 1.2rem;
+            color: #1e3a8a;
+        }
+        .profile-link img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        /* Profile page styles */
+        .profile-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #1e3a8a;
+        }
+        .profile-avatar-placeholder {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #1e3a8a;
+            border: 3px solid #1e3a8a;
+        }
+        .profile-field {
+            margin-bottom: 1.5rem;
+        }
+        .profile-field label {
+            display: block;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 0.3rem;
+        }
+        .profile-field input, .profile-field select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .profile-field input:read-only {
+            background: #f1f5f9;
+        }
+        .profile-save-btn {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-right: 1rem;
+        }
+        .profile-save-btn:hover {
+            background: #2563eb;
+        }
+        .profile-save-btn.logout {
+            background: #dc2626;
+        }
+        .profile-save-btn.logout:hover {
+            background: #b91c1c;
+        }
+        /* Hero background */
+        .hero-bg {
+            background-image: url('https://th.bing.com/th/id/OIP.bqiccBN1xTBAeR_T3-qKmAHaE8?w=252&h=183&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            min-height: 550px;
+            display: flex;
+            align-items: left;
+            justify-content: center;
+            overflow: hidden;
+            width: 100%;
+        }
+        .hero-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 3rem;
+            text-align: left;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-overlay h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        .hero-overlay p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        .hero-overlay .kem-hero-btn {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .hero-overlay .kem-hero-btn:hover {
+            background: #e0a800;
+        }
+        /* Dashboard form with preview */
+        .dashboard-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .form-column {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .preview-column {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .event-preview-card {
+            background: #f8fbff;
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            border-left: 4px solid #1e3a8a;
+        }
+        .preview-image {
+            width: 100%;
+            height: 180px;
+            background: #ddd;
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.9rem;
+            background-size: cover;
+            background-position: center;
+        }
+        .preview-field {
+            margin-bottom: 0.75rem;
+        }
+        .preview-label {
+            font-weight: 600;
+            color: #1e3a8a;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        .preview-value {
+            font-size: 1rem;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #ccc;
+            border-radius: var(--radius-md);
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .kem-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .kem-btn-primary {
+            background: #1e3a8a;
+            color: white;
+        }
+        .kem-btn-secondary {
+            background: #e2e8f0;
+            color: #333;
+        }
+        .mt-4 { margin-top: 2rem; }
+        .table-responsive { overflow-x: auto; }
+        .dashboard-table { width: 100%; border-collapse: collapse; }
+        .dashboard-table th, .dashboard-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        /* Calendar styles */
+        .calendar-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .calendar-header h2 {
+            font-size: 2rem;
+            color: #1e3a8a;
+        }
+        .nav-btn {
+            background: #f0f0f0;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #1e3a8a;
+            color: white;
+        }
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .weekday {
+            text-align: center;
+            font-weight: bold;
+            color: #1e3a8a;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 15px;
+        }
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        .day-cell {
+            aspect-ratio: 1;
+            background: #f8fafc;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .day-cell:hover {
+            background: #1e3a8a;
+            color: white;
+            transform: scale(1.05);
+        }
+        .day-cell.today {
+            background: #1e3a8a;
+            color: white;
+            border-color: #2563eb;
+        }
+        .day-cell.has-event {
+            background: #2563eb;
+            color: white;
+        }
+        .day-cell.other-month {
+            opacity: 0.4;
+        }
+        .events-list {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 20px;
+        }
+        .events-list h3 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .event-item {
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-left: 5px solid #2563eb;
+            cursor: pointer;
+        }
+        .event-item h4 {
+            color: #1e3a8a;
+            margin-bottom: 5px;
+        }
+        .event-item p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        /* FAQ styles */
+        .kem-faq-item {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1rem;
+            overflow: hidden;
+            background: white;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.3s ease;
+        }
+        .kem-faq-item:hover {
+            box-shadow: var(--shadow-md);
+        }
+        .kem-faq-question {
+            background: var(--bg-light);
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .kem-faq-question:hover {
+            background: rgba(30, 58, 138, 0.05);
+        }
+        .kem-faq-question h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .kem-faq-question i {
+            color: var(--primary);
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        .kem-faq-item.active .kem-faq-question i {
+            transform: rotate(45deg);
+        }
+        .kem-faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background: white;
+        }
+        .kem-faq-item.active .kem-faq-answer {
+            padding: 1.5rem;
+            max-height: 500px;
+        }
+        .kem-faq-answer p {
+            margin: 0;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        /* Tickets view spacing fix */
+        .kem-tickets-section {
+            padding: 6rem 0 4rem; /* increased top padding to clear navbar */
+        }
+        .kem-ticket-checkout {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        /* Related events section */
+        .kem-related-events {
+            margin-top: 3rem;
+            padding: 2rem 0;
+            background: #f8fafc;
+            border-radius: 20px;
+        }
+        .kem-related-grid {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .kem-related-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            min-width: 200px;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .kem-related-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        .text-muted {
+            color: #6b7280;
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.1rem;
+        }
+        /* Details hero spacing */
+        .kem-details-hero {
+            padding-top: 6rem;
+        }
+        @media (max-width: 768px) {
+            .dashboard-split {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- AUTH CONTAINER (shown first) -->
+    <div id="authContainer" class="auth-container">
+        <div class="auth-card">
+            <h2>KEM</h2>
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="loginTab" onclick="switchAuthTab('login')">Login</button>
+                <button class="auth-tab" id="signupTab" onclick="switchAuthTab('signup')">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form active">
+                <form onsubmit="handleLogin(event)" novalidate>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="loginEmail" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••">
+                    </div>
+                    <div id="loginError" class="error-text" style="display:none;"></div>
+                    <button type="submit" class="auth-btn">Login</button>
+                </form>
+            </div>
+
+            <!-- Signup Form (expanded) -->
+            <div id="signupForm" class="auth-form">
+                <form onsubmit="handleSignup(event)" novalidate>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="signupName" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="signupEmail" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="signupPhone" placeholder="+233 24 123 4567">
+                    </div>
+                    <div class="form-group">
+                        <label>Student ID</label>
+                        <input type="text" id="signupStudentId" placeholder="e.g., 20234567">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="signupPassword" placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="auth-btn">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROLE SELECTION CONTAINER (hidden initially) -->
+    <div id="roleContainer" style="display: none;" class="auth-container">
+        <div class="auth-card role-selection">
+            <h2>Choose Your Role</h2>
+            <p style="color:#64748b; margin-bottom:1.5rem;">Select how you want to use KEM</p>
+            <div class="role-buttons">
+                <div class="role-btn" onclick="selectRole('student')" id="roleStudent">
+                    <i class="fas fa-user-graduate" style="font-size:2rem; margin-bottom:0.5rem;"></i>
+                    <h3>Student</h3>
+                    <p style="font-size:0.9rem;">Browse events, get tickets</p>
+                </div>
+                <div class="role-btn" onclick="selectRole('organizer')" id="roleOrganizer">
+                    <i class="fas fa-calendar-alt" style="font-size:2rem; margin-bottom:0.5rem;"></i>
+                    <h3>Organizer</h3>
+                    <p style="font-size:0.9rem;">Create and manage events</p>
+                </div>
+            </div>
+            <button class="auth-btn" onclick="confirmRole()" style="margin-top:1.5rem;">Continue</button>
+        </div>
+    </div>
+
+    <!-- MAIN APP (hidden until role selected) -->
+    <div id="mainApp" class="main-app">
+        <!-- FLOATING NAVBAR with LOGO outside pill -->
+        <nav class="kem-nav">
+            <div class="kem-nav-container">
+                <div class="kem-logo">
+                    <img src="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0" alt="KEM Logo" class="kem-logo-img">
+                </div>
+                
+                <div class="kem-nav-pill">
+                    <div class="kem-pill-content">
+                        <span class="kem-brand">KEM</span>
+                        
+                        <div class="kem-nav-links">
+                            <a href="#" onclick="showHome()" class="active">Home</a>
+                            <a href="#" onclick="showEvents()">Events</a>
+                            <span id="organizerLink" style="display: none;">
+                                <a href="#" onclick="showDashboard()">Organizer</a>
+                            </span>
+                            <div class="dropdown">
+                                <button class="dropdown-btn">Explore <i class="fas fa-chevron-down"></i></button>
+                                <div class="dropdown-content">
+                                    <a href="#" onclick="showCalendar()">Calendar</a>
+                                    <a href="#" onclick="showFAQ()">FAQ</a>
+                                    <a href="#" onclick="showTickets()">Tickets</a>
+                                </div>
+                            </div>
+                            <!-- Profile Link (with image) -->
+                            <a href="#" onclick="showProfile()" class="profile-link" id="profileLink">
+                                <i class="fas fa-user-circle" id="profileIcon" style="display: inline-block;"></i>
+                                <img id="profileNavImage" src="" alt="Profile" style="display: none; width:30px; height:30px; border-radius:50%; object-fit:cover;">
+                                <span id="profileNameShort">User</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kem-menu-btn" id="menuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            
+            <div class="kem-mobile-nav" id="mobileNav">
+                <a href="#" onclick="showHome()">Home</a>
+                <a href="#" onclick="showEvents()">Events</a>
+                <span id="mobileOrganizerLink" style="display: none;">
+                    <a href="#" onclick="showDashboard()">Organizer</a>
+                </span>
+                <a href="#" onclick="showCalendar()">Calendar</a>
+                <a href="#" onclick="showFAQ()">FAQ</a>
+                <a href="#" onclick="showTickets()">Tickets</a>
+                <a href="#" onclick="showProfile()">Profile</a>
+                <div style="border-top:1px solid #e2e8f0; padding:10px;">
+                    <button onclick="logout()" style="margin-top:10px; background:#1e3a8a; color:white; border:none; padding:5px 15px; border-radius:50px;">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT AREA - Dynamic views -->
+        <div id="mainContent">
+            <!-- HOME VIEW -->
+            <div id="homeView">
+                <section class="kem-hero">
+                    <div class="kem-hero-container">
+                        <div class="kem-hero-left hero-bg">
+                            <div class="hero-overlay">
+                                <h1>UNFORGETTABLE<br>CELEBRATIONS &<br>EVENTS</h1>
+                                <p>A modern platform to discover, manage and participate in campus events.</p>
+                                <a href="#" onclick="showEvents()" class="kem-hero-btn">View Upcoming Events</a>
+                            </div>
+                        </div>
+                        <div class="kem-hero-right">
+                            <div class="kem-train-container">
+                                <div class="kem-train-slideshow" id="trainEvents"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="kem-features">
+                    <div class="container">
+                        <div class="kem-features-grid">
+                            <a href="#" onclick="showTickets()">
+                                <div class="kem-feature">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    <h3>Easy Ticketing</h3>
+                                </div>
+                            </a>
+                            <a href="#" onclick="showCalendar()">
+                                <div class="kem-feature">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <h3>Smart Calendar</h3>
+                                </div>
+                            </a>
+                            <a href="#" onclick="showFAQ()">
+                                <div class="kem-feature">
+                                    <i class="fas fa-users"></i>
+                                    <h3>Campus Community</h3>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- EVENTS VIEW -->
+            <div id="eventsView" style="display: none;">
+                <section class="kem-page-header">
+                    <div class="container">
+                        <h1>All Events</h1>
+                        <p>Discover amazing events happening near you</p>
+                    </div>
+                </section>
+
+                <section class="events-filter">
+                    <div class="container">
+                        <div class="filter-bar">
+                            <div class="filter-group">
+                                <label for="categoryFilter"><i class="fas fa-filter"></i> Category:</label>
+                                <select id="categoryFilter" class="filter-select">
+                                    <option value="All">All Categories</option>
+                                    <option value="Academic">Academic</option>
+                                    <option value="Social">Social</option>
+                                    <option value="Tech">Technology</option>
+                                    <option value="Music">Music</option>
+                                    <option value="Arts">Arts</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="searchEvents"><i class="fas fa-search"></i> Search:</label>
+                                <input type="text" id="searchEvents" class="filter-input" placeholder="Search events...">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="all-events">
+                    <div class="container">
+                        <div class="events-grid" id="eventsGrid"></div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- DASHBOARD VIEW (Organizer) -->
+            <div id="dashboardView" style="display: none;">
+                <section class="kem-page-header">
+                    <div class="container">
+                        <h1>Organizer Dashboard</h1>
+                        <p>Manage your events and registrations</p>
+                    </div>
+                </section>
+
+                <section class="dashboard-section">
+                    <div class="container">
+                        <div class="dashboard-split">
+                            <div class="form-column">
+                                <h2><i class="fas fa-plus-circle"></i> Create a New Event</h2>
+                                <form id="eventForm" class="event-form">
+                                    <input type="hidden" id="editId">
+                                    <div class="form-group">
+                                        <label for="title">Event Title</label>
+                                        <input type="text" id="title" class="form-control" required placeholder="e.g., AI Seminar" oninput="updatePreview()">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="date">Date</label>
+                                        <input type="date" id="date" class="form-control" required onchange="updatePreview()">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="time">Time</label>
+                                        <input type="text" id="time" class="form-control" required placeholder="e.g., 10:00 AM" oninput="updatePreview()">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="venue">Venue</label>
+                                        <input type="text" id="venue" class="form-control" required placeholder="e.g., KNUST CCB" oninput="updatePreview()">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="category">Category</label>
+                                        <select id="category" class="form-control" required onchange="updatePreview()">
+                                            <option value="Academic">Academic</option>
+                                            <option value="Social">Social</option>
+                                            <option value="Tech">Technology</option>
+                                            <option value="Music">Music</option>
+                                            <option value="Arts">Arts</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ticket">Ticket Price (₵)</label>
+                                        <input type="number" id="ticket" class="form-control" required min="0" step="0.01" placeholder="0 for free" oninput="updatePreview()">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea id="description" class="form-control" rows="4" required placeholder="Describe your event..." oninput="updatePreview()"></textarea>
+                                    </div>
+                                    <!-- Event Image: URL and file upload -->
+                                    <div class="form-group">
+                                        <label for="eventImage">Event Image (URL)</label>
+                                        <input type="url" id="eventImage" class="form-control" placeholder="https://example.com/image.jpg" oninput="updatePreview(); document.getElementById('eventImageFile').value = '';">
+                                        <small style="color: #64748b;">Enter a direct link to an image</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="eventImageFile">Or upload an image</label>
+                                        <input type="file" id="eventImageFile" class="form-control" accept="image/*" onchange="handleEventImageUpload(event)">
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="kem-btn kem-btn-primary" onclick="saveEvent(event)">Save Event</button>
+                                        <button type="button" class="kem-btn kem-btn-secondary" onclick="clearForm()">Clear</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="preview-column">
+                                <h2><i class="fas fa-eye"></i> Event Preview</h2>
+                                <div class="event-preview-card" id="eventPreview">
+                                    <div class="preview-image" id="previewImage" style="background-image: url('https://via.placeholder.com/400x200?text=Event+Image');"></div>
+                                    <div class="preview-field">
+                                        <div class="preview-label">Title</div>
+                                        <div class="preview-value" id="previewTitle">Your Event Title</div>
+                                    </div>
+                                    <div class="preview-field">
+                                        <div class="preview-label">Date & Time</div>
+                                        <div class="preview-value" id="previewDateTime">dd/mm/yyyy | 20:00</div>
+                                    </div>
+                                    <div class="preview-field">
+                                        <div class="preview-label">Venue</div>
+                                        <div class="preview-value" id="previewVenue">Venue name</div>
+                                    </div>
+                                    <div class="preview-field">
+                                        <div class="preview-label">Category</div>
+                                        <div class="preview-value" id="previewCategory">Academic</div>
+                                    </div>
+                                    <div class="preview-field">
+                                        <div class="preview-label">Ticket</div>
+                                        <div class="preview-value" id="previewTicket">Free</div>
+                                    </div>
+                                    <div class="preview-field">
+                                        <div class="preview-label">Description</div>
+                                        <div class="preview-value" id="previewDescription">Event description will appear here...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card mt-4">
+                            <h2><i class="fas fa-calendar-alt"></i> My Events</h2>
+                            <div class="table-responsive">
+                                <table class="dashboard-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Date</th>
+                                            <th>Category</th>
+                                            <th>Ticket</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="eventTable"></tbody>
+                                </table>
+                            </div>
+
+                            <h2 class="mt-4"><i class="fas fa-users"></i> Recent Registrations</h2>
+                            <div class="table-responsive">
+                                <table class="dashboard-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Event</th>
+                                            <th>Student ID</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="registrationsTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- EVENT DETAILS VIEW -->
+            <div id="detailsView" style="display: none;">
+                <section class="kem-details-hero">
+                    <div class="container">
+                        <a href="#" onclick="showEvents()" class="kem-back-btn"><i class="fas fa-arrow-left"></i> Back to Events</a>
+                    </div>
+                </section>
+
+                <section class="kem-event-details">
+                    <div class="container">
+                        <div class="kem-details-grid" id="eventDetailsContainer"></div>
+                    </div>
+                </section>
+
+                <section class="kem-related-events">
+                    <div class="container">
+                        <h2>You Might Also Like</h2>
+                        <div class="kem-related-grid" id="relatedEvents"></div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- TICKETS VIEW (spacing fixed) -->
+            <div id="ticketsView" style="display: none;">
+                <section class="kem-page-header">
+                    <div class="container">
+                        <h1>Your Tickets</h1>
+                        <p>You're one step away from the experience!</p>
+                    </div>
+                </section>
+
+                <section class="kem-tickets-section">
+                    <div class="container">
+                        <div class="kem-ticket-checkout" id="ticketCheckout"></div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- CALENDAR VIEW -->
+            <div id="calendarView" style="display: none;">
+                <section class="kem-page-header">
+                    <div class="container">
+                        <h1>Event Calendar</h1>
+                        <p>Browse events by month</p>
+                    </div>
+                </section>
+                <div class="container" style="margin-top:2rem;">
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <button class="nav-btn" id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                            <h2 id="currentMonth">March 2026</h2>
+                            <button class="nav-btn" id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="weekdays">
+                            <div class="weekday">Sun</div>
+                            <div class="weekday">Mon</div>
+                            <div class="weekday">Tue</div>
+                            <div class="weekday">Wed</div>
+                            <div class="weekday">Thu</div>
+                            <div class="weekday">Fri</div>
+                            <div class="weekday">Sat</div>
+                        </div>
+                        <div class="days-grid" id="calendarDays"></div>
+                        <div class="events-list" id="calendarEventList">
+                            <h3>Events on Selected Day</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ VIEW -->
+            <div id="faqView" style="display: none;">
+                <section class="kem-page-header">
+                    <div class="container">
+                        <h1>Frequently Asked Questions</h1>
+                        <p>Find answers to common questions</p>
+                    </div>
+                </section>
+                <section class="kem-faq">
+                    <div class="container">
+                        <div class="kem-faq-grid">
+                            <div class="kem-faq-item">
+                                <div class="kem-faq-question">
+                                    <h3>How do I purchase tickets?</h3>
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div class="kem-faq-answer">
+                                    <p>You can purchase tickets directly from our website by visiting the Events page, selecting your preferred event, and clicking the "Get Ticket" button. Payment can be made via mobile money or card.</p>
+                                </div>
+                            </div>
+                            <div class="kem-faq-item">
+                                <div class="kem-faq-question">
+                                    <h3>Can I get a refund?</h3>
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div class="kem-faq-answer">
+                                    <p>Refunds are available up to 7 days before the event. Please contact our support team with your ticket reference number.</p>
+                                </div>
+                            </div>
+                            <div class="kem-faq-item">
+                                <div class="kem-faq-question">
+                                    <h3>How do I become an organizer?</h3>
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div class="kem-faq-answer">
+                                    <p>Click on the "Organizer" tab in the navigation menu to access the dashboard where you can create and manage events.</p>
+                                </div>
+                            </div>
+                            <div class="kem-faq-item">
+                                <div class="kem-faq-question">
+                                    <h3>Is there parking available?</h3>
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div class="kem-faq-answer">
+                                    <p>Most venues offer parking facilities. Check the specific event page for parking information.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PROFILE VIEW -->
+            <div id="profileView" style="display: none;">
+                <section class="kem-page-header">
+                    <div class="container">
+                        <h1>Your Profile</h1>
+                        <p>Manage your account settings</p>
+                    </div>
+                </section>
+                <div class="container">
+                    <div class="profile-container">
+                        <div class="profile-header">
+                            <div id="profileAvatarContainer">
+                                <img id="profileAvatarImg" src="" alt="Profile" class="profile-avatar" style="display: none;">
+                                <div id="profileAvatarPlaceholder" class="profile-avatar-placeholder">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h2 id="profileDisplayName">User Name</h2>
+                                <p id="profileDisplayEmail">user@example.com</p>
+                                <p id="profileDisplayRole">Role: Student</p>
+                            </div>
+                        </div>
+
+                        <form id="profileForm">
+                            <div class="profile-field">
+                                <label for="profileName">Full Name</label>
+                                <input type="text" id="profileName" value="">
+                            </div>
+                            <div class="profile-field">
+                                <label for="profileEmail">Email</label>
+                                <input type="email" id="profileEmail" value="">
+                            </div>
+                            <div class="profile-field">
+                                <label for="profilePhone">Phone Number</label>
+                                <input type="tel" id="profilePhone" value="">
+                            </div>
+                            <div class="profile-field">
+                                <label for="profileStudentId">Student ID</label>
+                                <input type="text" id="profileStudentId" value="">
+                            </div>
+                            <div class="profile-field">
+                                <label for="profileAvatarUrl">Profile Picture URL</label>
+                                <input type="url" id="profileAvatarUrl" placeholder="https://example.com/avatar.jpg" oninput="previewAvatar()">
+                                <small style="color: #64748b;">Enter a direct link to an image</small>
+                            </div>
+                            <div class="profile-field">
+                                <label for="profileAvatarFile">Or upload an image</label>
+                                <input type="file" id="profileAvatarFile" accept="image/*" onchange="handleAvatarUpload(event)">
+                            </div>
+                            <div class="profile-field">
+                                <label for="profileRole">Role</label>
+                                <input type="text" id="profileRole" readonly value="">
+                            </div>
+                            <button type="button" class="profile-save-btn" onclick="saveProfile()">Save Changes</button>
+                            <button type="button" class="profile-save-btn logout" onclick="logout()">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="kem-footer">
+            <div class="container">
+                <div class="kem-footer-content">
+                    <div class="kem-footer-section">
+                        <h3>KEM</h3>
+                        <p>Campus Event Manager</p>
+                    </div>
+                    <div class="kem-footer-section">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="#" onclick="showHome()">Home</a></li>
+                            <li><a href="#" onclick="showEvents()">Events</a></li>
+                            <li><a href="#" onclick="showDashboard()">Organizer</a></li>
+                            <li><a href="#" onclick="showTickets()">Tickets</a></li>
+                            <li><a href="#" onclick="showCalendar()">Calendar</a></li>
+                            <li><a href="#" onclick="showFAQ()">FAQ</a></li>
+                            <li><a href="#" onclick="showProfile()">Profile</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="kem-footer-bottom">
+                    <p>&copy; 2026 KNUST EVENT MANAGEMENT(KEM).</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast-notification"></div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

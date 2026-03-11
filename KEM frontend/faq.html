@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KEM | FAQ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .kem-faq-item {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1rem;
+            overflow: hidden;
+            background: white;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.3s ease;
+        }
+        .kem-faq-item:hover {
+            box-shadow: var(--shadow-md);
+        }
+        .kem-faq-question {
+            background: var(--bg-light);
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .kem-faq-question:hover {
+            background: rgba(30, 58, 138, 0.05);
+        }
+        .kem-faq-question h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .kem-faq-question i {
+            color: var(--primary);
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        .kem-faq-item.active .kem-faq-question i {
+            transform: rotate(45deg);
+        }
+        .kem-faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background: white;
+        }
+        .kem-faq-item.active .kem-faq-answer {
+            padding: 1.5rem;
+            max-height: 500px;
+        }
+        .kem-faq-answer p {
+            margin: 0;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<!-- FLOATING NAVBAR with LOGO outside pill -->
+    <nav class="kem-nav">
+        <div class="kem-nav-container">
+            <!-- Logo outside the pill -->
+            <div class="kem-logo">
+                <img src="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0" alt="KEM Logo" class="kem-logo-img">
+            </div>
+            
+            <!-- White pill containing navigation -->
+            <div class="kem-nav-pill">
+                <div class="kem-pill-content">
+                    <span class="kem-brand">KEM</span>
+                    
+                    <div class="kem-nav-links">
+                        <a href="index.html" class="active">Home</a>
+                        <a href="#" onclick="showEvents()">Events</a>
+                        <a href="#" onclick="showDashboard()">Organizer</a>
+                        <div class="dropdown">
+                            <button class="dropdown-btn">Explore <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-content">
+                                <a href="calendar.html">Calendar</a>
+                                <a href="faq.html">FAQ</a>
+                                <a href="tickets.html">Tickets</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile menu button -->
+            <div class="kem-menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <!-- Mobile navigation -->
+        <div class="kem-mobile-nav" id="mobileNav">
+            <a href="index.html" class="active">Home</a>
+            <a href="#" onclick="showEvents()">Events</a>
+            <a href="#" onclick="showDashboard()">Organizer</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="faq.html">FAQ</a>
+        </div>
+    </nav>
+    <section class="kem-page-header">
+        <div class="container">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions</p>
+        </div>
+    </section>
+
+    <section class="kem-faq">
+        <div class="container">
+            <div class="kem-faq-grid">
+                <div class="kem-faq-item">
+                    <div class="kem-faq-question">
+                        <h3>How do I purchase tickets?</h3>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="kem-faq-answer">
+                        <p>You can purchase tickets directly from our website by visiting the Events page, selecting your preferred event, and clicking the "Get Ticket" button. Payment can be made via mobile money or card.</p>
+                    </div>
+                </div>
+
+                <div class="kem-faq-item">
+                    <div class="kem-faq-question">
+                        <h3>Can I get a refund?</h3>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="kem-faq-answer">
+                        <p>Refunds are available up to 7 days before the event. Please contact our support team with your ticket reference number.</p>
+                    </div>
+                </div>
+
+                <div class="kem-faq-item">
+                    <div class="kem-faq-question">
+                        <h3>How do I become an organizer?</h3>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="kem-faq-answer">
+                        <p>Click on the "Organizer" tab in the navigation menu to access the dashboard where you can create and manage events.</p>
+                    </div>
+                </div>
+
+                <div class="kem-faq-item">
+                    <div class="kem-faq-question">
+                        <h3>Is there parking available?</h3>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="kem-faq-answer">
+                        <p>Most venues offer parking facilities. Check the specific event page for parking information.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="kem-footer">
+        <div class="container">
+            <div class="kem-footer-bottom">
+                <p>&copy; 2026 KNUST EVENT MANAGEMENT(KEM).</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ toggle functionality
+        document.querySelectorAll('.kem-faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                // Close all
+                document.querySelectorAll('.kem-faq-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                
+                // Open clicked if it wasn't active
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
