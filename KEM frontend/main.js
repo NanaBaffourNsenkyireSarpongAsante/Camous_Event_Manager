@@ -124,6 +124,7 @@ function handleLogin(e) {
     const errorEl = document.getElementById('loginError');
     errorEl.style.display = 'none';
     errorEl.textContent = '';
+    document.getElementById('loginSuccess').style.display = 'none';
 
     if (email && password) {
         // Call backend login API
@@ -138,7 +139,7 @@ function handleLogin(e) {
         .then(data => {
             if (data.success) {
                 saveUser(data.user);
-                showRoleSelection();
+                showMainApp();
             } else {
                 errorEl.textContent = data.message || 'Login failed';
                 errorEl.style.display = 'block';
@@ -155,54 +156,37 @@ function handleLogin(e) {
     }
 }
 
+let pendingSignupData = null;
+
+function showSignupError(msg) {
+    const el = document.getElementById('signupError');
+    el.textContent = msg;
+    el.style.display = 'block';
+}
+
 function handleSignup(e) {
     e.preventDefault();
+    document.getElementById('signupError').style.display = 'none';
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
     const phone = document.getElementById('signupPhone').value;
     const studentId = document.getElementById('signupStudentId').value;
     const password = document.getElementById('signupPassword').value;
     const confirm = document.getElementById('signupConfirmPassword').value;
-    
-    if (password !== confirm) {
-        alert('Passwords do not match');
+
+    if (!name || !email || !phone || !studentId || !password || !confirm) {
+        showSignupError('Please fill in all fields.');
         return;
     }
-    
-    if (name && email && phone && studentId && password) {
-        // Call backend register API
-        fetch('/api/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name,
-                email,
-                phone,
-                studentId,
-                password,
-                confirmPassword: confirm
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                saveUser(data.user);
-                // Clear form
-                document.getElementById('signupForm').reset();
-                showRoleSelection();
-            } else {
-                alert(data.message || 'Registration failed');
-            }
-        })
-        .catch(err => {
-            console.error('Signup error:', err);
-            alert('Registration error. Please check your connection.');
-        });
-    } else {
-        alert('Please fill all fields');
+
+    if (password !== confirm) {
+        showSignupError('Passwords do not match.');
+        return;
     }
+
+    pendingSignupData = { name, email, phone, studentId, password, confirmPassword: confirm };
+    document.querySelector('#signupForm form').reset();
+    showRoleSelection();
 }
 
 let selectedRole = null;
@@ -217,14 +201,47 @@ function selectRole(role) {
     }
 }
 
+function showRoleError(msg) {
+    const el = document.getElementById('roleError');
+    el.textContent = msg;
+    el.style.display = 'block';
+}
+
 function confirmRole() {
+    document.getElementById('roleError').style.display = 'none';
+
     if (!selectedRole) {
-        alert('Please select a role');
+        showRoleError('Please select a role to continue.');
         return;
     }
-    currentUser.role = selectedRole;
-    saveUser(currentUser);
-    showMainApp();
+    if (!pendingSignupData) {
+        showRoleError('Something went wrong. Please sign up again.');
+        return;
+    }
+
+    fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...pendingSignupData, role: selectedRole })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            pendingSignupData = null;
+            selectedRole = null;
+            document.getElementById('roleContainer').style.display = 'none';
+            document.getElementById('authContainer').style.display = 'flex';
+            switchAuthTab('login');
+            const successEl = document.getElementById('loginSuccess');
+            successEl.textContent = 'Registration successful! A verification email has been sent to your inbox. Please verify before logging in.';
+            successEl.style.display = 'block';
+        } else {
+            showRoleError(data.message || 'Registration failed.');
+        }
+    })
+    .catch(() => {
+        showRoleError('Registration error. Please check your connection.');
+    });
 }
 
 // Profile functions
@@ -1010,7 +1027,17 @@ function updatePreview() {
 // ========== EVENT LISTENERS ==========
 
 document.addEventListener('DOMContentLoaded', function() {
-    if (loadUser()) {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('verified') === 'true') {
+        showAuth();
+        switchAuthTab('login');
+        alert('Email verified successfully! You can now log in.');
+        window.history.replaceState({}, '', '/');
+    } else if (params.get('verified') === 'false') {
+        showAuth();
+        alert('Verification link is invalid or has expired. Please sign up again.');
+        window.history.replaceState({}, '', '/');
+    } else if (loadUser()) {
         if (currentUser.role) {
             showMainApp();
         } else {
