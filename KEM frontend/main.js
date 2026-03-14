@@ -179,13 +179,22 @@ function handleSignup(e) {
         return;
     }
 
+    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)) {
+        showSignupError('Only Gmail addresses (@gmail.com) are allowed.');
+        return;
+    }
+
+    if (!/(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/.test(password)) {
+        showSignupError('Password must contain at least one uppercase letter and one symbol.');
+        return;
+    }
+
     if (password !== confirm) {
         showSignupError('Passwords do not match.');
         return;
     }
 
     pendingSignupData = { name, email, phone, studentId, password, confirmPassword: confirm };
-    document.querySelector('#signupForm form').reset();
     showRoleSelection();
 }
 
@@ -229,18 +238,29 @@ function confirmRole() {
         if (data.success) {
             pendingSignupData = null;
             selectedRole = null;
+            document.querySelector('#signupForm form').reset();
             document.getElementById('roleContainer').style.display = 'none';
             document.getElementById('authContainer').style.display = 'flex';
-            switchAuthTab('login');
-            const successEl = document.getElementById('loginSuccess');
-            successEl.textContent = 'Registration successful! A verification email has been sent to your inbox. Please verify before logging in.';
-            successEl.style.display = 'block';
+            const successMsg = 'Registration successful! A verification email has been sent to your inbox. Please verify before logging in.';
+            showToast(successMsg);
+            setTimeout(() => {
+                switchAuthTab('login');
+                const successEl = document.getElementById('loginSuccess');
+                successEl.textContent = successMsg;
+                successEl.style.display = 'block';
+            }, 2500);
         } else {
-            showRoleError(data.message || 'Registration failed.');
+            document.getElementById('roleContainer').style.display = 'none';
+            document.getElementById('authContainer').style.display = 'flex';
+            switchAuthTab('signup');
+            showSignupError(data.message || 'Registration failed.');
         }
     })
     .catch(() => {
-        showRoleError('Registration error. Please check your connection.');
+        document.getElementById('roleContainer').style.display = 'none';
+        document.getElementById('authContainer').style.display = 'flex';
+        switchAuthTab('signup');
+        showSignupError('Registration error. Please check your connection.');
     });
 }
 

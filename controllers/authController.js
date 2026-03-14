@@ -1,6 +1,5 @@
 const crypto = require('crypto');
 const User = require('../models/user');
-const bcrypt = require('bcrypt');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('../utils/mailer');
@@ -21,10 +20,14 @@ const register = async (req, res) => {
     // validate request body with Joi
     const schema = Joi.object({
       name: Joi.string().trim().required(),
-      email: Joi.string().email().required(),
+      email: Joi.string().pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/).required().messages({
+        'string.pattern.base': 'Only Gmail addresses (@gmail.com) are allowed.',
+      }),
       phone: Joi.string().required(),
       studentId: Joi.string().length(8).required(),
-      password: Joi.string().min(6).required(),
+      password: Joi.string().min(6).pattern(/(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/).required().messages({
+        'string.pattern.base': 'Password must contain at least one uppercase letter and one symbol.',
+      }),
       confirmPassword: Joi.ref('password'),
       role: Joi.string().valid('student', 'organizer').required(),
     });
