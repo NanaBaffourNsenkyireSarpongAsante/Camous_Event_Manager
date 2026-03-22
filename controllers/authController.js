@@ -194,4 +194,33 @@ const verifyEmail = async (req, res) => {
   }
 };
 
-module.exports = { register, login, updateRole, verifyEmail };
+// profile update handler — name, phone, avatar only (email + studentId are immutable)
+const updateProfile = async (req, res) => {
+  try {
+    const { name, phone, avatar } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ success: false, message: 'Name cannot be empty' });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      { name: name.trim(), phone, avatar: avatar || null },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    const userResponse = user.toObject();
+    delete userResponse.password;
+
+    res.json({ success: true, user: userResponse });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.status(500).json({ success: false, message: 'Server error updating profile' });
+  }
+};
+
+module.exports = { register, login, updateRole, verifyEmail, updateProfile };
