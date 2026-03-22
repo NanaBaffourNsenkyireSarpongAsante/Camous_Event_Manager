@@ -2,6 +2,7 @@
 
 let currentUser = null; // { name, email, role, avatar, phone, studentId }
 
+
 function loadUser() {
     const user = localStorage.getItem('kem_user');
     if (user) {
@@ -20,6 +21,7 @@ function saveUser(user) {
 
 function logout() {
     localStorage.removeItem('kem_user');
+    localStorage.removeItem('kem_token');
     window.location.reload();
 }
 
@@ -138,8 +140,9 @@ function handleLogin(e) {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
+                localStorage.setItem('kem_token', data.token);
                 saveUser(data.user);
-                showMainApp();
+                loadEventsFromAPI().then(() => showMainApp());
             } else {
                 errorEl.textContent = data.message || 'Login failed';
                 errorEl.style.display = 'block';
@@ -291,26 +294,38 @@ function handleAvatarUpload(event) {
 }
 
 function saveProfile() {
-    const name = document.getElementById('profileName').value.trim();
-    const email = document.getElementById('profileEmail').value.trim();
-    const phone = document.getElementById('profilePhone').value.trim();
-    const studentId = document.getElementById('profileStudentId').value.trim();
+    const name   = document.getElementById('profileName').value.trim();
+    const phone  = document.getElementById('profilePhone').value.trim();
     const avatar = document.getElementById('profileAvatarUrl').value.trim() || null;
-    
-    if (!name || !email) {
-        showToast('Name and email cannot be empty');
+
+    if (!name) {
+        showToast('Name cannot be empty');
         return;
     }
-    
-    currentUser.name = name;
-    currentUser.email = email;
-    currentUser.phone = phone;
-    currentUser.studentId = studentId;
-    currentUser.avatar = avatar;
-    saveUser(currentUser);
-    showToast('Profile updated successfully');
-    updateProfileUI();
-    updateNavbarProfile();
+
+    const token = localStorage.getItem('kem_token');
+
+    fetch('/api/auth/profile', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ name, phone, avatar })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            currentUser = { ...currentUser, ...data.user };
+            saveUser(currentUser);
+            updateProfileUI();
+            updateNavbarProfile();
+            showToast('Profile updated successfully');
+        } else {
+            showToast(data.message || 'Failed to update profile.');
+        }
+    })
+    .catch(() => showToast('Network error. Could not update profile.'));
 }
 
 // ========== DATA MANAGEMENT ==========
@@ -389,8 +404,25 @@ function getEvents() {
     return events ? JSON.parse(events) : defaultEvents;
 }
 
-function saveEvents(events) {
-    localStorage.setItem('kem_events', JSON.stringify(events));
+function saveEvents(evts) {
+    localStorage.setItem('kem_events', JSON.stringify(evts));
+}
+
+// Fetch all events from backend and refresh the local events array.
+// If the backend returns no events (empty DB), fall back to the hardcoded defaultEvents
+// so the app always has content to display.
+function loadEventsFromAPI() {
+    return fetch('/api/events')
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                events = data.events.length > 0 ? data.events : defaultEvents;
+                saveEvents(events);
+            }
+        })
+        .catch(() => {
+            events = getEvents();
+        });
 }
 
 function getRegistrations() {
@@ -444,9 +476,24 @@ function showDashboard() {
 
 function showEventDetails(id) {
     currentEventId = id;
-    const event = events.find(e => e.id == id);
+    const event = events.find(e => e.id == id || e._id == id);
     if (!event) return;
-    
+
+    // Set hero background image
+    const hero = document.getElementById('detailsHero');
+    hero.style.backgroundImage = `url('${event.image || 'https://picsum.photos/1400/500?random=' + id}')`;
+
+    // Populate hero title overlay
+    document.getElementById('detailsHeroContent').innerHTML = `
+        <h1 class="details-hero-title">${event.title}</h1>
+        <div class="details-hero-badges">
+            <span class="kem-badge ${event.ticket == 0 ? 'kem-badge-free' : 'kem-badge-ticketed'}">
+                ${event.ticket == 0 ? 'Free' : '₵' + event.ticket}
+            </span>
+            <span class="details-hero-category">${event.category}</span>
+        </div>
+    `;
+
     hideAllViews();
     document.getElementById('detailsView').style.display = 'block';
     renderEventDetails(event);
@@ -458,7 +505,103 @@ function showTickets(eventId = null) {
     hideAllViews();
     document.getElementById('ticketsView').style.display = 'block';
     updateActiveNav('tickets');
-    renderTicketCheckout();
+
+    const myBookingsContainer = document.getElementById('myBookingsContainer');
+    const ticketCheckout      = document.getElementById('ticketCheckout');
+
+    if (eventId) {
+        // Came from "Get Ticket" — show checkout form
+        document.getElementById('ticketsViewTitle').textContent    = 'Complete Your Booking';
+        document.getElementById('ticketsViewSubtitle').textContent = 'You\'re one step away from the experience!';
+        myBookingsContainer.style.display = 'none';
+        ticketCheckout.style.display      = 'block';
+        renderTicketCheckout();
+    } else {
+        // Came from navbar — show their booked events
+        document.getElementById('ticketsViewTitle').textContent    = 'My Tickets';
+        document.getElementById('ticketsViewSubtitle').textContent = 'Events you\'ve booked';
+        ticketCheckout.style.display      = 'none';
+        myBookingsContainer.style.display = 'block';
+        renderMyBookings();
+    }
+}
+
+function buildGoogleCalendarUrl(ev) {
+    const dateStr = (ev.date || '').replace(/-/g, '');
+    const match   = (ev.time || '').match(/(\d+):(\d+)\s*(AM|PM)?/i);
+    let h = 0, m = 0;
+    if (match) {
+        h = parseInt(match[1]);
+        m = parseInt(match[2]);
+        const period = (match[3] || '').toUpperCase();
+        if (period === 'PM' && h !== 12) h += 12;
+        if (period === 'AM' && h === 12) h = 0;
+    }
+    const pad  = n => String(n).padStart(2, '0');
+    const start = `${dateStr}T${pad(h)}${pad(m)}00`;
+    const end   = `${dateStr}T${pad((h + 2) % 24)}${pad(m)}00`;
+    const p = new URLSearchParams({
+        action:   'TEMPLATE',
+        text:     ev.title,
+        dates:    `${start}/${end}`,
+        location: ev.venue,
+    });
+    return `https://calendar.google.com/calendar/render?${p.toString()}`;
+}
+
+function renderMyBookings() {
+    const container = document.getElementById('myBookingsContainer');
+    const token = localStorage.getItem('kem_token');
+
+    container.innerHTML = '<p class="text-muted"><i class="fas fa-spinner fa-spin"></i> Loading your tickets...</p>';
+
+    fetch('/api/bookings/mine', {
+        headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.success || data.bookings.length === 0) {
+            container.innerHTML = `
+                <div style="text-align:center; padding:3rem 1rem;">
+                    <i class="fas fa-ticket-alt" style="font-size:3rem; color:#cbd5e1; margin-bottom:1rem;"></i>
+                    <h3 style="color:#64748b; margin-bottom:0.5rem;">No tickets yet</h3>
+                    <p style="color:#94a3b8; margin-bottom:1.5rem;">You haven't booked any events. Browse events to get started.</p>
+                    <a href="#" onclick="showEvents()" class="kem-btn kem-btn-primary">Browse Events</a>
+                </div>`;
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:1.5rem;">
+                ${data.bookings.map(booking => {
+                    const ev = booking.event;
+                    const ticketLabel = ev.ticket > 0 ? `₵${ev.ticket} × ${booking.quantity}` : 'Free';
+                    const bookedDate  = new Date(booking.bookedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+                    return `
+                    <div style="background:white; border-radius:1rem; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.08); display:flex; flex-direction:column;">
+                        <img src="${ev.image || 'https://picsum.photos/400/200?random=' + ev._id}" alt="${ev.title}"
+                             style="width:100%; height:160px; object-fit:cover;">
+                        <div style="padding:1.25rem; flex:1; display:flex; flex-direction:column; gap:0.5rem;">
+                            <h3 style="margin:0; color:#0f172a; font-size:1.1rem;">${ev.title}</h3>
+                            <p style="margin:0; color:#64748b; font-size:0.9rem;"><i class="fas fa-calendar" style="color:#1e3a8a; margin-right:6px;"></i>${ev.date} &nbsp;·&nbsp; ${ev.time}</p>
+                            <p style="margin:0; color:#64748b; font-size:0.9rem;"><i class="fas fa-map-marker-alt" style="color:#1e3a8a; margin-right:6px;"></i>${ev.venue}</p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:0.75rem; border-top:1px solid #e2e8f0;">
+                                <span style="background:${ev.ticket > 0 ? '#2563eb' : '#10b981'}; color:white; padding:0.25rem 0.75rem; border-radius:999px; font-size:0.78rem; font-weight:600;">${ticketLabel}</span>
+                                <span style="color:#94a3b8; font-size:0.8rem;">Booked ${bookedDate}</span>
+                            </div>
+                            <a href="${buildGoogleCalendarUrl(ev)}" target="_blank" rel="noopener"
+                               style="display:flex; align-items:center; justify-content:center; gap:8px; margin-top:0.75rem; padding:0.6rem; border-radius:8px; border:1px solid #e2e8f0; color:#1e3a8a; text-decoration:none; font-size:0.85rem; font-weight:600; transition:background 0.2s;"
+                               onmouseover="this.style.background='#f0f4ff'" onmouseout="this.style.background='transparent'">
+                                <i class="fas fa-calendar-plus"></i> Add to Google Calendar
+                            </a>
+                        </div>
+                    </div>`;
+                }).join('')}
+            </div>`;
+    })
+    .catch(() => {
+        container.innerHTML = '<p class="text-muted">Could not load your tickets. Please try again.</p>';
+    });
 }
 
 function showCalendar() {
@@ -510,7 +653,7 @@ function renderTrainEvents() {
     trainContainer.innerHTML = `
         <div class="kem-train-column kem-column-up">
             ${leftEvents.map(event => `
-                <div class="kem-train-carriage" onclick="showEventDetails(${event.id})">
+                <div class="kem-train-carriage" onclick="showEventDetails('${event.id}')">
                     <img src="${event.image || 'https://picsum.photos/300/200?random=' + event.id}" alt="${event.title}" class="kem-train-image">
                     <div class="kem-carriage-content">
                         <h3>${event.title}</h3>
@@ -519,7 +662,7 @@ function renderTrainEvents() {
                             <span class="kem-badge ${event.ticket == 0 ? 'kem-badge-free' : 'kem-badge-ticketed'}">
                                 ${event.ticket == 0 ? 'Free' : '₵' + event.ticket}
                             </span>
-                            <button class="kem-ticket-link" onclick="event.stopPropagation(); showTickets(${event.id})">
+                            <button class="kem-ticket-link" onclick="event.stopPropagation(); showTickets('${event.id}')">
                                 Get Ticket
                             </button>
                         </div>
@@ -527,7 +670,7 @@ function renderTrainEvents() {
                 </div>
             `).join('')}
             ${leftEvents.map(event => `
-                <div class="kem-train-carriage" onclick="showEventDetails(${event.id})">
+                <div class="kem-train-carriage" onclick="showEventDetails('${event.id}')">
                     <img src="${event.image || 'https://picsum.photos/300/200?random=' + event.id}" alt="${event.title}" class="kem-train-image">
                     <div class="kem-carriage-content">
                         <h3>${event.title}</h3>
@@ -536,7 +679,7 @@ function renderTrainEvents() {
                             <span class="kem-badge ${event.ticket == 0 ? 'kem-badge-free' : 'kem-badge-ticketed'}">
                                 ${event.ticket == 0 ? 'Free' : '₵' + event.ticket}
                             </span>
-                            <button class="kem-ticket-link" onclick="event.stopPropagation(); showTickets(${event.id})">
+                            <button class="kem-ticket-link" onclick="event.stopPropagation(); showTickets('${event.id}')">
                                 Get Ticket
                             </button>
                         </div>
@@ -546,7 +689,7 @@ function renderTrainEvents() {
         </div>
         <div class="kem-train-column kem-column-down">
             ${rightEvents.map(event => `
-                <div class="kem-train-carriage" onclick="showEventDetails(${event.id})">
+                <div class="kem-train-carriage" onclick="showEventDetails('${event.id}')">
                     <img src="${event.image || 'https://picsum.photos/300/200?random=' + event.id}" alt="${event.title}" class="kem-train-image">
                     <div class="kem-carriage-content">
                         <h3>${event.title}</h3>
@@ -555,7 +698,7 @@ function renderTrainEvents() {
                             <span class="kem-badge ${event.ticket == 0 ? 'kem-badge-free' : 'kem-badge-ticketed'}">
                                 ${event.ticket == 0 ? 'Free' : '₵' + event.ticket}
                             </span>
-                            <button class="kem-ticket-link" onclick="event.stopPropagation(); showTickets(${event.id})">
+                            <button class="kem-ticket-link" onclick="event.stopPropagation(); showTickets('${event.id}')">
                                 Get Ticket
                             </button>
                         </div>
@@ -563,7 +706,7 @@ function renderTrainEvents() {
                 </div>
             `).join('')}
             ${rightEvents.map(event => `
-                <div class="kem-train-carriage" onclick="showEventDetails(${event.id})">
+                <div class="kem-train-carriage" onclick="showEventDetails('${event.id}')">
                     <img src="${event.image || 'https://picsum.photos/300/200?random=' + event.id}" alt="${event.title}" class="kem-train-image">
                     <div class="kem-carriage-content">
                         <h3>${event.title}</h3>
@@ -572,7 +715,7 @@ function renderTrainEvents() {
                             <span class="kem-badge ${event.ticket == 0 ? 'kem-badge-free' : 'kem-badge-ticketed'}">
                                 ${event.ticket == 0 ? 'Free' : '₵' + event.ticket}
                             </span>
-                            <button class="kem-ticket-link" onclick="event.stopPropagation(); showTickets(${event.id})">
+                            <button class="kem-ticket-link" onclick="event.stopPropagation(); showTickets('${event.id}')">
                                 Get Ticket
                             </button>
                         </div>
@@ -602,7 +745,7 @@ function renderEventsGrid() {
     }
     
     grid.innerHTML = filteredEvents.map(event => `
-        <div class="event-card" onclick="showEventDetails(${event.id})">
+        <div class="event-card" onclick="showEventDetails('${event.id}')">
             <img src="${event.image || 'https://picsum.photos/400/200?random=' + event.id}" alt="${event.title}" class="event-img">
             <div class="event-content">
                 <h3>${event.title}</h3>
@@ -635,8 +778,8 @@ function renderDashboard() {
             <td>${event.category}</td>
             <td><span class="kem-badge ${event.ticket == 0 ? 'kem-badge-free' : 'kem-badge-ticketed'}">${event.ticket == 0 ? 'Free' : '₵' + event.ticket}</span></td>
             <td>
-                <button class="btn-small" onclick="editEvent(${event.id})"><i class="fas fa-edit"></i></button>
-                <button class="btn-small btn-danger" onclick="deleteEvent(${event.id})"><i class="fas fa-trash"></i></button>
+                <button class="btn-small" onclick="editEvent('${event.id}')"><i class="fas fa-edit"></i></button>
+                <button class="btn-small btn-danger" onclick="deleteEvent('${event.id}')"><i class="fas fa-trash"></i></button>
             </td>
         </tr>
     `).join('');
@@ -646,63 +789,85 @@ function renderDashboard() {
 
 function renderRegistrations() {
     const table = document.getElementById('registrationsTable');
-    const registrations = getRegistrations();
-    
-    table.innerHTML = registrations.slice(-5).reverse().map(reg => {
-        const event = events.find(e => e.id == reg.eventId);
-        return `
-            <tr>
-                <td>${reg.name}</td>
-                <td>${reg.email}</td>
-                <td>${event ? event.title : 'Unknown Event'}</td>
-                <td>${reg.studentId}</td>
-            </tr>
-        `;
-    }).join('');
+    const token = localStorage.getItem('kem_token');
+
+    fetch('/api/bookings/organizer', {
+        headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            const bookings = data.bookings.slice(0, 5);
+            table.innerHTML = bookings.length === 0
+                ? `<tr><td colspan="4" style="text-align:center; color:#64748b;">No bookings yet</td></tr>`
+                : bookings.map(b => `
+                    <tr>
+                        <td>${b.name}</td>
+                        <td>${b.email}</td>
+                        <td>${b.event ? b.event.title : 'Unknown Event'}</td>
+                        <td>${b.studentId}</td>
+                    </tr>
+                `).join('');
+        }
+    })
+    .catch(() => {
+        // Fallback to localStorage if API fails
+        const registrations = getRegistrations();
+        table.innerHTML = registrations.slice(-5).reverse().map(reg => {
+            const event = events.find(e => e.id == reg.eventId);
+            return `
+                <tr>
+                    <td>${reg.name}</td>
+                    <td>${reg.email}</td>
+                    <td>${event ? event.title : 'Unknown Event'}</td>
+                    <td>${reg.studentId}</td>
+                </tr>
+            `;
+        }).join('');
+    });
 }
 
 function renderEventDetails(event) {
     const container = document.getElementById('eventDetailsContainer');
-    
+
     container.innerHTML = `
         <div class="kem-details-main">
-            <img src="${event.image || 'https://via.placeholder.com/800x400?text=No+Image'}" alt="${event.title}" style="width:100%; max-height:400px; object-fit:cover; border-radius:12px; margin-bottom:1.5rem;">
-            <div class="kem-details-header">
-                <h1>${event.title}</h1>
-                <div class="kem-details-badges">
-                    <span class="kem-badge ${event.ticket == 0 ? 'kem-badge-free' : 'kem-badge-ticketed'}">${event.ticket == 0 ? 'Free' : '₵' + event.ticket}</span>
-                    <span class="kem-details-category">${event.category}</span>
-                </div>
-            </div>
-
             <div class="kem-details-meta">
-                <div class="kem-meta-item">
+                <div class="kem-meta-chip">
                     <i class="fas fa-calendar"></i>
-                    <span>${event.date}</span>
+                    <div><span class="kem-meta-label">Date</span><span class="kem-meta-value">${event.date}</span></div>
                 </div>
-                <div class="kem-meta-item">
+                <div class="kem-meta-chip">
                     <i class="fas fa-clock"></i>
-                    <span>${event.time}</span>
+                    <div><span class="kem-meta-label">Time</span><span class="kem-meta-value">${event.time}</span></div>
                 </div>
-                <div class="kem-meta-item">
+                <div class="kem-meta-chip">
                     <i class="fas fa-map-marker-alt"></i>
-                    <span>${event.venue}</span>
+                    <div><span class="kem-meta-label">Venue</span><span class="kem-meta-value">${event.venue}</span></div>
+                </div>
+                <div class="kem-meta-chip">
+                    <i class="fas fa-tag"></i>
+                    <div><span class="kem-meta-label">Category</span><span class="kem-meta-value">${event.category}</span></div>
                 </div>
             </div>
 
             <div class="kem-details-description">
                 <h2>About This Event</h2>
-                <p>${event.description}</p>
+                <p>${event.description || 'No description provided.'}</p>
             </div>
         </div>
 
         <div class="kem-details-sidebar">
             <div class="kem-ticket-card">
-                <h3>Get Your Ticket</h3>
+                <p class="kem-ticket-label">Ticket Price</p>
                 <div class="kem-ticket-price">${event.ticket == 0 ? 'Free' : '₵' + event.ticket}</div>
-                <p class="kem-ticket-availability"><i class="fas fa-users"></i> Limited spots available</p>
-                
-                <button class="kem-ticket-link" onclick="showTickets(${event.id})" style="width: 100%; padding: 1rem;">
+                <div class="kem-ticket-meta">
+                    <span><i class="fas fa-calendar"></i> ${event.date}</span>
+                    <span><i class="fas fa-clock"></i> ${event.time}</span>
+                    <span><i class="fas fa-map-marker-alt"></i> ${event.venue}</span>
+                </div>
+                <button class="kem-ticket-link" onclick="showTickets('${event.id}')"
+                    style="width:100%; padding:1rem; margin-top:1.5rem; font-size:1rem;">
                     <i class="fas fa-ticket-alt"></i> Get Ticket
                 </button>
             </div>
@@ -720,9 +885,11 @@ function renderRelatedEvents(currentCategory, currentId) {
     
     if (related.length > 0) {
         container.innerHTML = related.map(event => `
-            <div class="kem-related-card" onclick="showEventDetails(${event.id})">
-                <h4>${event.title}</h4>
-                <p>${event.date} | ${event.time}</p>
+            <div class="kem-related-card" onclick="showEventDetails('${event.id}')">
+                <img src="${event.image || 'https://picsum.photos/300/160?random=' + event.id}"
+                     alt="${event.title}" style="width:100%;height:130px;object-fit:cover;border-radius:10px;margin-bottom:0.75rem;">
+                <h4 style="margin:0 0 0.4rem;color:#0f172a;font-size:1rem;">${event.title}</h4>
+                <p style="margin:0 0 0.5rem;color:#64748b;font-size:0.85rem;"><i class="fas fa-calendar" style="color:#1e3a8a;margin-right:4px;"></i>${event.date}</p>
                 <span class="kem-badge ${event.ticket == 0 ? 'kem-badge-free' : 'kem-badge-ticketed'}">
                     ${event.ticket == 0 ? 'Free' : '₵' + event.ticket}
                 </span>
@@ -735,54 +902,83 @@ function renderRelatedEvents(currentCategory, currentId) {
 
 function renderTicketCheckout() {
     const container = document.getElementById('ticketCheckout');
-    const event = events.find(e => e.id == currentEventId);
-    
+    const event = events.find(e => e.id == currentEventId || e._id == currentEventId);
+
     if (!event) {
         container.innerHTML = `
-            <h2>Complete Your Purchase</h2>
-            <p>Please select an event to purchase tickets.</p>
-            <a href="#" onclick="showEvents()" class="kem-btn kem-btn-primary">Browse Events</a>
-        `;
+            <div style="text-align:center; padding:3rem 1rem;">
+                <i class="fas fa-ticket-alt" style="font-size:3rem; color:#cbd5e1; margin-bottom:1rem;"></i>
+                <h3 style="color:#64748b; margin-bottom:0.5rem;">No event selected</h3>
+                <p style="color:#94a3b8; margin-bottom:1.5rem;">Please browse events and click "Get Ticket" to continue.</p>
+                <a href="#" onclick="showEvents()" class="kem-btn kem-btn-primary">Browse Events</a>
+            </div>`;
         return;
     }
-    
+
+    const isFree      = event.ticket == 0;
+    const priceLabel  = isFree ? 'Free' : `₵${event.ticket}`;
+    const prefillName = currentUser?.name  || '';
+    const prefillEmail= currentUser?.email || '';
+    const prefillId   = currentUser?.studentId || '';
+
     container.innerHTML = `
-        <h2>Complete Your Purchase</h2>
-        <div class="ticket-summary">
-            <h3>${event.title}</h3>
-            <p><i class="fas fa-calendar"></i> ${event.date} at ${event.time}</p>
-            <p><i class="fas fa-map-marker-alt"></i> ${event.venue}</p>
-            <div class="ticket-price">${event.ticket == 0 ? 'Free' : '₵' + event.ticket + ' per ticket'}</div>
-        </div>
-        
-        <div class="registration-form">
-            <h3>Your Information</h3>
-            <div class="form-group">
-                <label for="regName">Full Name</label>
-                <input type="text" id="regName" class="form-control" required placeholder="Enter your full name">
+        <div class="checkout-grid">
+
+            <!-- LEFT: Event summary -->
+            <div class="checkout-summary">
+                <img src="${event.image || 'https://picsum.photos/400/220?random=' + event.id}"
+                     alt="${event.title}" class="checkout-event-img">
+                <div class="checkout-summary-body">
+                    <span class="kem-badge ${isFree ? 'kem-badge-free' : 'kem-badge-ticketed'}" style="margin-bottom:0.75rem; display:inline-block;">${priceLabel}</span>
+                    <h2 class="checkout-event-title">${event.title}</h2>
+                    <div class="checkout-event-meta">
+                        <div class="checkout-meta-row"><i class="fas fa-calendar"></i><span>${event.date}</span></div>
+                        <div class="checkout-meta-row"><i class="fas fa-clock"></i><span>${event.time}</span></div>
+                        <div class="checkout-meta-row"><i class="fas fa-map-marker-alt"></i><span>${event.venue}</span></div>
+                    </div>
+                    ${!isFree ? `
+                    <div class="checkout-total" id="checkoutTotal">
+                        <span>Total</span>
+                        <strong>₵${event.ticket}</strong>
+                    </div>` : ''}
+                </div>
             </div>
-            <div class="form-group">
-                <label for="regEmail">Email Address</label>
-                <input type="email" id="regEmail" class="form-control" required placeholder="Enter your email">
+
+            <!-- RIGHT: Form -->
+            <div class="checkout-form-panel">
+                <h3 class="checkout-form-title">Your Details</h3>
+
+                <div class="checkout-form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="regName" class="checkout-input" placeholder="John Doe" value="${prefillName}">
+                </div>
+                <div class="checkout-form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="regEmail" class="checkout-input" placeholder="you@email.com" value="${prefillEmail}">
+                </div>
+                <div class="checkout-form-group">
+                    <label>Student ID</label>
+                    <input type="text" id="regStudentId" class="checkout-input" placeholder="e.g. 20234567" value="${prefillId}">
+                </div>
+                ${!isFree ? `
+                <div class="checkout-form-group">
+                    <label>Quantity</label>
+                    <select id="ticketQuantity" class="checkout-input"
+                        onchange="document.querySelector('#checkoutTotal strong').textContent = '₵' + (${event.ticket} * this.value)">
+                        <option value="1">1 ticket</option>
+                        <option value="2">2 tickets</option>
+                        <option value="3">3 tickets</option>
+                        <option value="4">4 tickets</option>
+                        <option value="5">5 tickets</option>
+                    </select>
+                </div>` : `<input type="hidden" id="ticketQuantity" value="1">`}
+
+                <button class="checkout-submit-btn" onclick="submitRegistration()">
+                    <i class="fas fa-check-circle"></i>
+                    ${isFree ? 'Confirm Registration' : 'Confirm & Book'}
+                </button>
+                <p class="checkout-note"><i class="fas fa-envelope"></i> A confirmation will be sent to your email.</p>
             </div>
-            <div class="form-group">
-                <label for="regStudentId">Student ID</label>
-                <input type="text" id="regStudentId" class="form-control" required placeholder="Enter your student ID">
-            </div>
-            <div class="form-group">
-                <label for="ticketQuantity">Quantity</label>
-                <select id="ticketQuantity" class="form-control">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
-            
-            <button class="kem-ticket-link" onclick="submitRegistration()" style="width: 100%; padding: 1rem; margin-top: 1rem;">
-                <i class="fas fa-check-circle"></i> Confirm Registration
-            </button>
         </div>
     `;
 }
@@ -846,7 +1042,7 @@ function showEventsForDate(date) {
         list.innerHTML = `
             <h3>Events on Selected Day</h3>
             ${dayEvents.map(event => `
-                <div class="event-item" onclick="showEventDetails(${event.id})">
+                <div class="event-item" onclick="showEventDetails('${event.id}')">
                     <h4>${event.title}</h4>
                     <p>${event.time} | ${event.venue}</p>
                 </div>
@@ -891,7 +1087,8 @@ function handleEventImageUpload(event) {
 
 function saveEvent(e) {
     e.preventDefault();
-    
+
+    const token = localStorage.getItem('kem_token');
     const eventData = {
         title: document.getElementById('title').value,
         date: document.getElementById('date').value,
@@ -902,27 +1099,44 @@ function saveEvent(e) {
         description: document.getElementById('description').value,
         image: document.getElementById('eventImage').value || 'https://via.placeholder.com/400x200?text=Event+Image'
     };
-    
+
     const editId = document.getElementById('editId').value;
-    
-    if (editId) {
-        const index = events.findIndex(e => e.id == editId);
-        events[index] = { ...eventData, id: parseInt(editId) };
-        showToast('Event updated successfully!');
-    } else {
-        events.push({ id: Date.now(), ...eventData });
-        showToast('Event created successfully!');
-    }
-    
-    saveEvents(events);
-    clearForm();
-    renderDashboard();
-    renderEventsGrid();
-    renderTrainEvents();
+    const url    = editId ? `/api/events/${editId}` : '/api/events';
+    const method = editId ? 'PUT' : 'POST';
+
+    fetch(url, {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(eventData)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            if (editId) {
+                const index = events.findIndex(ev => ev.id == editId || ev._id == editId);
+                if (index !== -1) events[index] = data.event;
+                showToast('Event updated successfully!');
+            } else {
+                events.unshift(data.event);
+                showToast('Event created successfully!');
+            }
+            saveEvents(events);
+            clearForm();
+            renderDashboard();
+            renderEventsGrid();
+            renderTrainEvents();
+        } else {
+            showToast(data.message || 'Failed to save event.');
+        }
+    })
+    .catch(() => showToast('Network error. Could not save event.'));
 }
 
 function editEvent(id) {
-    const event = events.find(e => e.id === id);
+    const event = events.find(e => e.id == id || e._id == id);
     
     document.getElementById('editId').value = event.id;
     document.getElementById('title').value = event.title;
@@ -944,14 +1158,32 @@ function editEvent(id) {
 
 function deleteEvent(id) {
     if (!confirm('Are you sure you want to delete this event?')) return;
-    
-    events = events.filter(e => e.id !== id);
-    saveEvents(events);
-    renderDashboard();
-    renderEventsGrid();
-    renderTrainEvents();
-    showToast('Event deleted successfully!');
+
+    const token = localStorage.getItem('kem_token');
+
+    fetch(`/api/events/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            events = events.filter(ev => ev.id != id && ev._id != id);
+            saveEvents(events);
+            renderDashboard();
+            renderEventsGrid();
+            renderTrainEvents();
+            showToast('Event deleted successfully!');
+        } else {
+            showToast(data.message || 'Failed to delete event.');
+        }
+    })
+    .catch(() => showToast('Network error. Could not delete event.'));
 }
+
 
 function clearForm() {
     document.getElementById('editId').value = '';
@@ -968,39 +1200,68 @@ function clearForm() {
 // ========== REGISTRATION ==========
 
 function submitRegistration() {
-    const name = document.getElementById('regName')?.value;
-    const email = document.getElementById('regEmail')?.value;
-    const studentId = document.getElementById('regStudentId')?.value;
-    const quantity = document.getElementById('ticketQuantity')?.value || 1;
-    
+    const name      = document.getElementById('regName')?.value?.trim();
+    const email     = document.getElementById('regEmail')?.value?.trim();
+    const studentId = document.getElementById('regStudentId')?.value?.trim();
+    const quantity  = parseInt(document.getElementById('ticketQuantity')?.value) || 1;
+
     if (!name || !email || !studentId) {
         showToast('Please fill in all fields');
         return;
     }
-    
-    const registrations = getRegistrations();
-    
-    registrations.push({
-        id: Date.now(),
-        eventId: currentEventId,
-        name,
-        email,
-        studentId,
-        quantity: parseInt(quantity),
-        date: new Date().toISOString()
-    });
-    
-    saveRegistrations(registrations);
-    
-    showToast('Registration successful! Check your email for confirmation.');
-    
-    document.getElementById('regName').value = '';
-    document.getElementById('regEmail').value = '';
-    document.getElementById('regStudentId').value = '';
-    
-    setTimeout(() => {
-        showEvents();
-    }, 2000);
+
+    const event = events.find(e => e.id == currentEventId || e._id == currentEventId);
+    if (!event) { showToast('Event not found.'); return; }
+
+    const token = localStorage.getItem('kem_token');
+
+    if (event.ticket <= 0) {
+        // ── FREE EVENT: book directly ──────────────────────────────────
+        fetch('/api/bookings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ eventId: currentEventId, name, email, studentId, quantity })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                clearRegistrationForm();
+                showToast('Booking successful! Your free ticket has been confirmed.');
+                setTimeout(() => showEvents(), 2000);
+            } else {
+                showToast(data.message || 'Booking failed. Please try again.');
+            }
+        })
+        .catch(() => showToast('Network error. Could not complete booking.'));
+
+    } else {
+        // ── PAID EVENT: book directly (payment coming soon) ────────────
+        fetch('/api/bookings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ eventId: currentEventId, name, email, studentId, quantity })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                clearRegistrationForm();
+                showToast('Booking confirmed!');
+                setTimeout(() => showEvents(), 2000);
+            } else {
+                showToast(data.message || 'Booking failed. Please try again.');
+            }
+        })
+        .catch(() => showToast('Network error. Could not complete booking.'));
+    }
+}
+
+function clearRegistrationForm() {
+    const regName = document.getElementById('regName');
+    const regEmail = document.getElementById('regEmail');
+    const regStudentId = document.getElementById('regStudentId');
+    if (regName) regName.value = '';
+    if (regEmail) regEmail.value = '';
+    if (regStudentId) regStudentId.value = '';
 }
 
 // ========== UTILITIES ==========
@@ -1059,7 +1320,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window.history.replaceState({}, '', '/');
     } else if (loadUser()) {
         if (currentUser.role) {
-            showMainApp();
+            loadEventsFromAPI().then(() => showMainApp());
         } else {
             showRoleSelection();
         }
