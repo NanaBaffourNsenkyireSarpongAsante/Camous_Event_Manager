@@ -1321,6 +1321,49 @@
 
         <!-- Toast Notification -->
         <div id="toast" class="toast-notification"></div>
+
+        <!-- ===== CHATBOT ===== -->
+        <!-- Floating toggle button -->
+        <button id="chatToggleBtn" onclick="toggleChat()" aria-label="Open KEM Assistant">
+            <i id="chatOpenIcon" class="fas fa-comment-dots"></i>
+            <i id="chatCloseIcon" class="fas fa-times" style="display:none;"></i>
+        </button>
+
+        <!-- Chat panel -->
+        <div id="chatPanel" style="display:none;">
+            <div id="chatHeader">
+                <div style="display:flex; align-items:center; gap:0.6rem;">
+                    <div id="chatAvatar"><i class="fas fa-robot"></i></div>
+                    <div>
+                        <div style="font-weight:700; font-size:0.95rem;">KEM Assistant</div>
+                        <div style="font-size:0.72rem; opacity:0.8;">Ask me anything</div>
+                    </div>
+                </div>
+                <button onclick="clearChat()" title="Clear chat" id="chatClearBtn">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+
+            <div id="chatMessages">
+                <div class="chat-msg assistant">
+                    <div class="chat-bubble">Hey! 👋 I'm the KEM Assistant. Ask me anything about campus events, how to book tickets, or anything about the platform!</div>
+                </div>
+            </div>
+
+            <div id="chatInputArea">
+                <input
+                    type="text"
+                    id="chatInput"
+                    placeholder="Ask me anything…"
+                    onkeydown="if(event.key==='Enter') sendChatMessage()"
+                    autocomplete="off"
+                />
+                <button id="chatSendBtn" onclick="sendChatMessage()" aria-label="Send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        <!-- ===== END CHATBOT ===== -->
     </div>
 
     <script src="main.js"></script>
