@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/events', require('./routes/events'));
 app.use('/api/bookings', require('./routes/bookings'));
+app.use('/api/chat',    require('./routes/chat'));
 
 // Serve static files from KEM frontend
 app.use(express.static(path.join(__dirname, 'KEM frontend')));
