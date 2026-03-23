@@ -1363,11 +1363,136 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.addEventListener('click', function(event) {
-        if (mobileNav && mobileNav.classList.contains('active') && 
-            !mobileNav.contains(event.target) && 
+        if (mobileNav && mobileNav.classList.contains('active') &&
+            !mobileNav.contains(event.target) &&
             !menuBtn.contains(event.target)) {
             mobileNav.classList.remove('active');
             menuBtn.classList.remove('active');
         }
     });
 });
+
+// ========== CHATBOT ==========
+
+let chatHistory = [];
+let chatIsStreaming = false;
+
+function toggleChat() {
+    const panel = document.getElementById('chatPanel');
+    const openIcon = document.getElementById('chatOpenIcon');
+    const closeIcon = document.getElementById('chatCloseIcon');
+    const isOpen = panel.style.display !== 'none';
+
+    panel.style.display = isOpen ? 'none' : 'flex';
+    openIcon.style.display = isOpen ? 'inline-block' : 'none';
+    closeIcon.style.display = isOpen ? 'none' : 'inline-block';
+
+    if (!isOpen) document.getElementById('chatInput').focus();
+}
+
+function clearChat() {
+    chatHistory = [];
+    document.getElementById('chatMessages').innerHTML = `
+        <div class="chat-msg assistant">
+            <div class="chat-bubble">Hey! 👋 I'm the KEM Assistant. Ask me anything about campus events, how to book tickets, or anything about the platform!</div>
+        </div>`;
+}
+
+function appendChatMessage(role, text) {
+    const msgs = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = `chat-msg ${role}`;
+    div.innerHTML = `<div class="chat-bubble">${text}</div>`;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div.querySelector('.chat-bubble');
+}
+
+function showTypingIndicator() {
+    const msgs = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = 'chat-msg assistant';
+    div.id = 'chatTyping';
+    div.innerHTML = `<div class="chat-bubble chat-typing"><span></span><span></span><span></span></div>`;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTypingIndicator() {
+    const el = document.getElementById('chatTyping');
+    if (el) el.remove();
+}
+
+async function sendChatMessage() {
+    if (chatIsStreaming) return;
+
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    chatIsStreaming = true;
+    document.getElementById('chatSendBtn').disabled = true;
+
+    appendChatMessage('user', text);
+    chatHistory.push({ role: 'user', content: text });
+    showTypingIndicator();
+
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: chatHistory }),
+        });
+
+        removeTypingIndicator();
+
+        if (!response.ok) {
+            appendChatMessage('assistant', 'Sorry, something went wrong. Please try again.');
+            chatIsStreaming = false;
+            document.getElementById('chatSendBtn').disabled = false;
+            return;
+        }
+
+        const bubble = appendChatMessage('assistant', '');
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let assistantText = '';
+        let buffer = '';
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+
+            for (const line of lines) {
+                if (!line.startsWith('data: ')) continue;
+                const payload = line.slice(6).trim();
+                if (payload === '[DONE]') break;
+                try {
+                    const parsed = JSON.parse(payload);
+                    if (parsed.error) { bubble.textContent = parsed.error; break; }
+                    if (parsed.text) {
+                        assistantText += parsed.text;
+                        bubble.textContent = assistantText;
+                        document.getElementById('chatMessages').scrollTop =
+                            document.getElementById('chatMessages').scrollHeight;
+                    }
+                } catch (_) {}
+            }
+        }
+
+        if (assistantText) chatHistory.push({ role: 'assistant', content: assistantText });
+
+    } catch (err) {
+        removeTypingIndicator();
+        appendChatMessage('assistant', 'Network error. Please check your connection.');
+    }
+
+    chatIsStreaming = false;
+    document.getElementById('chatSendBtn').disabled = false;
+    document.getElementById('chatInput').focus();
+}
