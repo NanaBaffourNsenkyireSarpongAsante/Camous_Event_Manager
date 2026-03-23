@@ -1496,3 +1496,4 @@ async function sendChatMessage() {
     document.getElementById('chatSendBtn').disabled = false;
     document.getElementById('chatInput').focus();
 }
+
