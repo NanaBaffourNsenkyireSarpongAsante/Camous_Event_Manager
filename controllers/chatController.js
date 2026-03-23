@@ -1,7 +1,7 @@
-const Anthropic = require('@anthropic-ai/sdk');
+const { Mistral } = require('@mistralai/mistralai');
 const Event = require('../models/event');
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const client = new Mistral({ apiKey: process.env.MISTRAL_API_KEY });
 
 // POST /api/chat  — streams Claude's reply back as SSE
 const chat = async (req, res) => {
@@ -53,19 +53,19 @@ Rules:
     res.flushHeaders();
 
     try {
-        const stream = client.messages.stream({
-            model: 'claude-opus-4-6',
+        const stream = await client.chat.stream({
+            model: 'mistral-small-latest',
             max_tokens: 1024,
-            system: systemPrompt,
-            messages,
+            messages: [
+                { role: 'system', content: systemPrompt },
+                ...messages,
+            ],
         });
 
-        for await (const event of stream) {
-            if (
-                event.type === 'content_block_delta' &&
-                event.delta.type === 'text_delta'
-            ) {
-                res.write(`data: ${JSON.stringify({ text: event.delta.text })}\n\n`);
+        for await (const chunk of stream) {
+            const text = chunk.data.choices[0]?.delta?.content;
+            if (text) {
+                res.write(`data: ${JSON.stringify({ text })}\n\n`);
             }
         }
 
