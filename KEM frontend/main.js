@@ -231,6 +231,12 @@ function confirmRole() {
         return;
     }
 
+    const confirmBtn = document.querySelector('#roleContainer .auth-btn');
+    if (confirmBtn) {
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'Please wait...';
+    }
+
     fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -251,7 +257,7 @@ function confirmRole() {
                 const successEl = document.getElementById('loginSuccess');
                 successEl.textContent = successMsg;
                 successEl.style.display = 'block';
-            }, 2500);
+            }, 1000);
         } else {
             document.getElementById('roleContainer').style.display = 'none';
             document.getElementById('authContainer').style.display = 'flex';
@@ -264,6 +270,12 @@ function confirmRole() {
         document.getElementById('authContainer').style.display = 'flex';
         switchAuthTab('signup');
         showSignupError('Registration error. Please check your connection.');
+    })
+    .finally(() => {
+        if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Continue';
+        }
     });
 }
 
