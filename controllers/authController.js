@@ -67,9 +67,9 @@ const register = async (req, res) => {
 
     await user.save();
 
-    // Send verification email
+    // Send verification email in the background — do not block the response
     const verifyUrl = `${process.env.CLIENT_URL}/api/auth/verify/${verificationToken}`;
-    await sendEmail({
+    sendEmail({
       to: email,
       subject: 'Verify your Campus Event Manager account',
       html: `
@@ -79,7 +79,7 @@ const register = async (req, res) => {
         <p>This link expires in 24 hours.</p>
         <p>If you did not create an account, ignore this email.</p>
       `,
-    });
+    }).catch(err => console.error('Verification email failed to send:', err));
 
     res.status(201).json({
       success: true,
