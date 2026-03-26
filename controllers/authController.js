@@ -20,8 +20,9 @@ const register = async (req, res) => {
     // validate request body with Joi
     const schema = Joi.object({
       name: Joi.string().trim().required(),
-      email: Joi.string().pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/).required().messages({
-        'string.pattern.base': 'Only Gmail addresses (@gmail.com) are allowed.',
+      email: Joi.string().pattern(/^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook|hotmail|icloud|live|me)\.(com|net|org)$/).required().messages({
+        'string.pattern.base': 'Invalid email.',
+        'string.empty': 'Invalid email.',
       }),
       phone: Joi.string().required(),
       studentId: Joi.string().length(8).required(),

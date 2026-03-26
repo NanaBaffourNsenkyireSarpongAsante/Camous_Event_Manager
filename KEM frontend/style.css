@@ -1040,30 +1040,58 @@ body {
     .kem-nav-pill {
         display: none;
     }
-    
+
     .kem-menu-btn {
         display: flex;
     }
-    
+
     .kem-mobile-nav.active {
         display: flex;
     }
-    
+
     .kem-hero-container {
         grid-template-columns: 1fr;
         text-align: center;
     }
-    
+
+    /* Hide the train slideshow on mobile — show hero text only */
+    .kem-train-container {
+        display: none;
+    }
+
     .kem-hero-title {
         font-size: 2rem;
     }
-    
+
+    .hero-overlay h1 {
+        font-size: 2rem;
+    }
+
+    .hero-overlay p {
+        font-size: 1rem;
+    }
+
+    /* Single column event cards on mobile */
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+
     .filter-bar {
         flex-direction: column;
     }
-    
+
     .event-form .form-row {
         grid-template-columns: 1fr;
+    }
+
+    /* Fix card buttons overflowing */
+    .kem-carriage-footer {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .kem-hero {
+        padding: 7rem 1rem 2rem;
     }
 }
 
@@ -1071,14 +1099,28 @@ body {
     .kem-hero-title {
         font-size: 1.5rem;
     }
-    
+
+    .hero-overlay h1 {
+        font-size: 1.5rem;
+    }
+
     .kem-hero-btn {
         padding: 0.75rem 1.5rem;
+        width: 100%;
+        text-align: center;
     }
-    
+
     .kem-footer-content {
         grid-template-columns: 1fr;
         text-align: center;
+    }
+
+    .kem-carriage-content h3 {
+        font-size: 0.95rem;
+    }
+
+    .kem-datetime {
+        font-size: 0.8rem;
     }
 }
 
