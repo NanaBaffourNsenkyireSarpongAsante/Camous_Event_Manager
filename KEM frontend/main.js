@@ -461,8 +461,17 @@ function hideAllViews() {
     document.getElementById('profileView').style.display = 'none';
 }
 
+function closeMobileNav() {
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    if (mobileNav) mobileNav.classList.remove('active');
+    if (menuBtn) menuBtn.classList.remove('active');
+}
+
 function showHome(pushState = true) {
+    closeMobileNav();
     hideAllViews();
+    window.scrollTo(0, 0);
     document.getElementById('homeView').style.display = 'block';
     updateActiveNav('home');
     renderTrainEvents();
@@ -470,6 +479,7 @@ function showHome(pushState = true) {
 }
 
 function showEvents(pushState = true) {
+    closeMobileNav();
     hideAllViews();
     document.getElementById('eventsView').style.display = 'block';
     updateActiveNav('events');
@@ -478,6 +488,7 @@ function showEvents(pushState = true) {
 }
 
 function showDashboard(pushState = true) {
+    closeMobileNav();
     if (currentUser?.role !== 'organizer') {
         showToast('Only organizers can access this page.');
         return;
@@ -517,6 +528,7 @@ function showEventDetails(id, pushState = true) {
 }
 
 function showTickets(eventId = null, pushState = true) {
+    closeMobileNav();
     if (eventId) currentEventId = eventId;
     hideAllViews();
     document.getElementById('ticketsView').style.display = 'block';
@@ -622,6 +634,7 @@ function renderMyBookings() {
 }
 
 function showCalendar(pushState = true) {
+    closeMobileNav();
     hideAllViews();
     document.getElementById('calendarView').style.display = 'block';
     updateActiveNav('calendar');
@@ -630,6 +643,7 @@ function showCalendar(pushState = true) {
 }
 
 function showFAQ(pushState = true) {
+    closeMobileNav();
     hideAllViews();
     document.getElementById('faqView').style.display = 'block';
     updateActiveNav('faq');
@@ -638,6 +652,7 @@ function showFAQ(pushState = true) {
 }
 
 function showProfile(pushState = true) {
+    closeMobileNav();
     hideAllViews();
     document.getElementById('profileView').style.display = 'block';
     updateActiveNav('profile');
@@ -690,7 +705,7 @@ function renderTrainEvents() {
     trainContainer.innerHTML = `
         <div class="kem-train-column kem-column-up">
             ${leftEvents.map(event => `
-                <div class="kem-train-carriage" onclick="showEventDetails('${event.id}')">
+                <div class="kem-train-carriage" role="button" tabindex="0" onclick="showEventDetails('${event.id}')">
                     <img src="${event.image || 'https://picsum.photos/300/200?random=' + event.id}" alt="${event.title}" class="kem-train-image">
                     <div class="kem-carriage-content">
                         <h3>${event.title}</h3>
@@ -707,7 +722,7 @@ function renderTrainEvents() {
                 </div>
             `).join('')}
             ${leftEvents.map(event => `
-                <div class="kem-train-carriage" onclick="showEventDetails('${event.id}')">
+                <div class="kem-train-carriage" role="button" tabindex="0" onclick="showEventDetails('${event.id}')">
                     <img src="${event.image || 'https://picsum.photos/300/200?random=' + event.id}" alt="${event.title}" class="kem-train-image">
                     <div class="kem-carriage-content">
                         <h3>${event.title}</h3>
@@ -726,7 +741,7 @@ function renderTrainEvents() {
         </div>
         <div class="kem-train-column kem-column-down">
             ${rightEvents.map(event => `
-                <div class="kem-train-carriage" onclick="showEventDetails('${event.id}')">
+                <div class="kem-train-carriage" role="button" tabindex="0" onclick="showEventDetails('${event.id}')">
                     <img src="${event.image || 'https://picsum.photos/300/200?random=' + event.id}" alt="${event.title}" class="kem-train-image">
                     <div class="kem-carriage-content">
                         <h3>${event.title}</h3>
@@ -743,7 +758,7 @@ function renderTrainEvents() {
                 </div>
             `).join('')}
             ${rightEvents.map(event => `
-                <div class="kem-train-carriage" onclick="showEventDetails('${event.id}')">
+                <div class="kem-train-carriage" role="button" tabindex="0" onclick="showEventDetails('${event.id}')">
                     <img src="${event.image || 'https://picsum.photos/300/200?random=' + event.id}" alt="${event.title}" class="kem-train-image">
                     <div class="kem-carriage-content">
                         <h3>${event.title}</h3>
@@ -782,7 +797,7 @@ function renderEventsGrid() {
     }
     
     grid.innerHTML = filteredEvents.map(event => `
-        <div class="event-card" onclick="showEventDetails('${event.id}')">
+        <div class="event-card" role="button" tabindex="0" onclick="showEventDetails('${event.id}')">
             <img src="${event.image || 'https://picsum.photos/400/200?random=' + event.id}" alt="${event.title}" class="event-img">
             <div class="event-content">
                 <h3>${event.title}</h3>

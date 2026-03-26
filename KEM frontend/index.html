@@ -245,6 +245,15 @@
             align-items: center;
             justify-content: center;
         }
+        @media (max-width: 768px) {
+            .hero-bg {
+                min-height: 260px;
+                border-radius: 12px;
+            }
+            .hero-overlay {
+                padding: 1.5rem;
+            }
+        }
         .hero-overlay h1 {
             font-size: 3.5rem;
             font-weight: bold;
@@ -836,21 +845,21 @@
                         <span class="kem-brand">KEM</span>
                         
                         <div class="kem-nav-links">
-                            <a href="#" onclick="showHome()" class="active">Home</a>
-                            <a href="#" onclick="showEvents()">Events</a>
+                            <a href="javascript:void(0)" onclick="showHome()" class="active">Home</a>
+                            <a href="javascript:void(0)" onclick="showEvents()">Events</a>
                             <span id="organizerLink" style="display: none;">
-                                <a href="#" onclick="showDashboard()">Organizer</a>
+                                <a href="javascript:void(0)" onclick="showDashboard()">Organizer</a>
                             </span>
                             <div class="dropdown">
                                 <button class="dropdown-btn">Explore <i class="fas fa-chevron-down"></i></button>
                                 <div class="dropdown-content">
-                                    <a href="#" onclick="showCalendar()">Calendar</a>
-                                    <a href="#" onclick="showFAQ()">FAQ</a>
-                                    <a href="#" onclick="showTickets()">Tickets</a>
+                                    <a href="javascript:void(0)" onclick="showCalendar()">Calendar</a>
+                                    <a href="javascript:void(0)" onclick="showFAQ()">FAQ</a>
+                                    <a href="javascript:void(0)" onclick="showTickets()">Tickets</a>
                                 </div>
                             </div>
                             <!-- Profile Link (with image) -->
-                            <a href="#" onclick="showProfile()" class="profile-link" id="profileLink">
+                            <a href="javascript:void(0)" onclick="showProfile()" class="profile-link" id="profileLink">
                                 <i class="fas fa-user-circle" id="profileIcon" style="display: inline-block;"></i>
                                 <img id="profileNavImage" src="" alt="Profile" style="display: none; width:30px; height:30px; border-radius:50%; object-fit:cover;">
                                 <span id="profileNameShort">User</span>
@@ -867,15 +876,15 @@
             </div>
             
             <div class="kem-mobile-nav" id="mobileNav">
-                <a href="#" onclick="showHome()">Home</a>
-                <a href="#" onclick="showEvents()">Events</a>
+                <a href="javascript:void(0)" onclick="showHome()">Home</a>
+                <a href="javascript:void(0)" onclick="showEvents()">Events</a>
                 <span id="mobileOrganizerLink" style="display: none;">
-                    <a href="#" onclick="showDashboard()">Organizer</a>
+                    <a href="javascript:void(0)" onclick="showDashboard()">Organizer</a>
                 </span>
-                <a href="#" onclick="showCalendar()">Calendar</a>
-                <a href="#" onclick="showFAQ()">FAQ</a>
-                <a href="#" onclick="showTickets()">Tickets</a>
-                <a href="#" onclick="showProfile()">Profile</a>
+                <a href="javascript:void(0)" onclick="showCalendar()">Calendar</a>
+                <a href="javascript:void(0)" onclick="showFAQ()">FAQ</a>
+                <a href="javascript:void(0)" onclick="showTickets()">Tickets</a>
+                <a href="javascript:void(0)" onclick="showProfile()">Profile</a>
                 <div style="border-top:1px solid #e2e8f0; padding:10px;">
                     <button onclick="logout()" style="margin-top:10px; background:#1e3a8a; color:white; border:none; padding:5px 15px; border-radius:50px;">Logout</button>
                 </div>
@@ -892,7 +901,7 @@
                             <div class="hero-overlay">
                                 <h1>UNFORGETTABLE<br>CELEBRATIONS &<br>EVENTS</h1>
                                 <p>A modern platform to discover, manage and participate in campus events.</p>
-                                <a href="#" onclick="showEvents()" class="kem-hero-btn">View Upcoming Events</a>
+                                <a href="javascript:void(0)" onclick="showEvents()" class="kem-hero-btn">View Upcoming Events</a>
                             </div>
                         </div>
                         <div class="kem-hero-right">
@@ -906,19 +915,19 @@
                 <section class="kem-features">
                     <div class="container">
                         <div class="kem-features-grid">
-                            <a href="#" onclick="showTickets()">
+                            <a href="javascript:void(0)" onclick="showTickets()">
                                 <div class="kem-feature">
                                     <i class="fas fa-ticket-alt"></i>
                                     <h3>Your Events</h3>
                                 </div>
                             </a>
-                            <a href="#" onclick="showCalendar()">
+                            <a href="javascript:void(0)" onclick="showCalendar()">
                                 <div class="kem-feature">
                                     <i class="fas fa-calendar-check"></i>
                                     <h3>Smart Calendar</h3>
                                 </div>
                             </a>
-                            <a href="#" onclick="showFAQ()">
+                            <a href="javascript:void(0)" onclick="showFAQ()">
                                 <div class="kem-feature">
                                     <i class="fas fa-users"></i>
                                     <h3>Campus Community</h3>
@@ -1107,7 +1116,7 @@
                 <section class="kem-details-hero" id="detailsHero">
                     <div class="kem-details-hero-overlay">
                         <div class="container">
-                            <a href="#" onclick="showEvents()" class="kem-back-btn"><i class="fas fa-arrow-left"></i> Back to Events</a>
+                            <a href="javascript:void(0)" onclick="showEvents()" class="kem-back-btn"><i class="fas fa-arrow-left"></i> Back to Events</a>
                             <div id="detailsHeroContent"></div>
                         </div>
                     </div>
@@ -1303,13 +1312,13 @@
                     <div class="kem-footer-section">
                         <h4>Quick Links</h4>
                         <ul>
-                            <li><a href="#" onclick="showHome()">Home</a></li>
-                            <li><a href="#" onclick="showEvents()">Events</a></li>
-                            <li><a href="#" onclick="showDashboard()">Organizer</a></li>
-                            <li><a href="#" onclick="showTickets()">Tickets</a></li>
-                            <li><a href="#" onclick="showCalendar()">Calendar</a></li>
-                            <li><a href="#" onclick="showFAQ()">FAQ</a></li>
-                            <li><a href="#" onclick="showProfile()">Profile</a></li>
+                            <li><a href="javascript:void(0)" onclick="showHome()">Home</a></li>
+                            <li><a href="javascript:void(0)" onclick="showEvents()">Events</a></li>
+                            <li><a href="javascript:void(0)" onclick="showDashboard()">Organizer</a></li>
+                            <li><a href="javascript:void(0)" onclick="showTickets()">Tickets</a></li>
+                            <li><a href="javascript:void(0)" onclick="showCalendar()">Calendar</a></li>
+                            <li><a href="javascript:void(0)" onclick="showFAQ()">FAQ</a></li>
+                            <li><a href="javascript:void(0)" onclick="showProfile()">Profile</a></li>
                         </ul>
                     </div>
                 </div>
