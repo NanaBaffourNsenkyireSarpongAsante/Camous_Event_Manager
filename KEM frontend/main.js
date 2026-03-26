@@ -22,7 +22,7 @@ function saveUser(user) {
 function logout() {
     localStorage.removeItem('kem_user');
     localStorage.removeItem('kem_token');
-    window.location.reload();
+    window.location.href = '/index.html';
 }
 
 function showAuth() {

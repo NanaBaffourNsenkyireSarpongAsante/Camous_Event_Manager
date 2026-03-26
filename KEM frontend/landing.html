@@ -327,7 +327,16 @@
     <script>
         const menuBtn = document.getElementById('menuBtn');
         const mobileNav = document.getElementById('mobileNav');
-        menuBtn.addEventListener('click', () => mobileNav.classList.toggle('active'));
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+        });
+        mobileNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+                menuBtn.classList.remove('active');
+            });
+        });
 
         async function loadLandingEvents() {
             const container = document.getElementById('landing-events');
