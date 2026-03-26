@@ -8,468 +8,365 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a1a3a;
-            color: #fff;
-            overflow-x: hidden;
+        .land-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
-
-        /* ── NAV ── */
-        .land-nav {
-            position: fixed;
-            top: 1rem;
-            left: 0; right: 0;
-            z-index: 100;
-            padding: 0 2rem;
+        .land-feature-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        .land-nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 9999px;
-            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        .land-feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
         }
-        .land-brand {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #1e3a8a;
-            letter-spacing: -0.5px;
-        }
-        .land-nav-links {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-        .land-nav-links a {
-            color: #1f2937;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.2s;
-        }
-        .land-nav-links a:hover { background: rgba(30,58,138,0.1); color: #1e3a8a; }
-        .land-cta-btn {
-            background: #1e3a8a;
-            color: white !important;
-            padding: 0.55rem 1.5rem !important;
-            border-radius: 9999px !important;
-            font-weight: 600 !important;
-            transition: background 0.2s !important;
-        }
-        .land-cta-btn:hover { background: #2563eb !important; }
-
-        /* ── HERO ── */
-        .hero {
-            min-height: 100vh;
+        .land-feature-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(30,58,138,0.08);
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 7rem 2rem 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at 60% 40%, rgba(37,99,235,0.25) 0%, transparent 60%),
-                        radial-gradient(ellipse at 20% 80%, rgba(30,58,138,0.3) 0%, transparent 50%);
-        }
-        .hero-content { position: relative; max-width: 780px; }
-        .hero-badge {
-            display: inline-block;
-            background: rgba(37,99,235,0.2);
-            border: 1px solid rgba(37,99,235,0.4);
-            color: #93c5fd;
-            padding: 0.4rem 1.2rem;
-            border-radius: 9999px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            margin-bottom: 1.5rem;
-        }
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -1px;
-        }
-        .hero h1 span { color: #3b82f6; }
-        .hero p {
+            color: var(--primary);
             font-size: 1.2rem;
-            color: #94a3b8;
-            max-width: 560px;
-            margin: 0 auto 2.5rem;
-            line-height: 1.7;
-        }
-        .hero-btns {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .btn-primary {
-            background: #2563eb;
-            color: white;
-            padding: 0.85rem 2.5rem;
-            border-radius: 9999px;
-            font-weight: 700;
-            font-size: 1rem;
-            text-decoration: none;
-            transition: all 0.2s;
-            box-shadow: 0 4px 20px rgba(37,99,235,0.4);
-        }
-        .btn-primary:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 6px 25px rgba(37,99,235,0.5); }
-        .btn-ghost {
-            background: rgba(255,255,255,0.08);
-            color: white;
-            padding: 0.85rem 2.5rem;
-            border-radius: 9999px;
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            border: 1px solid rgba(255,255,255,0.15);
-            transition: all 0.2s;
-        }
-        .btn-ghost:hover { background: rgba(255,255,255,0.14); transform: translateY(-2px); }
-
-        /* ── STATS ── */
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            flex-wrap: wrap;
-            margin-top: 4rem;
-            padding-top: 3rem;
-            border-top: 1px solid rgba(255,255,255,0.08);
-        }
-        .stat { text-align: center; }
-        .stat-num { font-size: 2rem; font-weight: 800; color: #3b82f6; }
-        .stat-label { font-size: 0.85rem; color: #64748b; margin-top: 0.2rem; }
-
-        /* ── FEATURES ── */
-        .section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
-        .section-tag {
-            text-align: center;
-            color: #3b82f6;
-            font-weight: 600;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 0.75rem;
-        }
-        .section-title {
-            text-align: center;
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            font-weight: 800;
             margin-bottom: 1rem;
-            letter-spacing: -0.5px;
         }
-        .section-sub {
-            text-align: center;
-            color: #64748b;
-            font-size: 1.05rem;
-            max-width: 500px;
-            margin: 0 auto 3.5rem;
-            line-height: 1.7;
+        .land-feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
-
-        .features-grid {
+        .land-feature-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .land-roles-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
+            margin-top: 2rem;
         }
-        .feature-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 1.25rem;
+        .land-role-card {
+            background: white;
+            border-radius: var(--radius-lg);
             padding: 2rem;
-            transition: all 0.3s;
+            box-shadow: var(--shadow-md);
         }
-        .feature-card:hover {
-            background: rgba(255,255,255,0.07);
-            border-color: rgba(59,130,246,0.3);
-            transform: translateY(-4px);
+        .land-role-card.primary {
+            background: var(--primary);
+            color: white;
         }
-        .feature-icon {
-            width: 52px; height: 52px;
-            background: rgba(37,99,235,0.15);
-            border-radius: 0.875rem;
+        .land-role-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        .land-role-card.primary h3 {
+            color: white;
+        }
+        .land-role-card ul {
+            list-style: none;
+        }
+        .land-role-card ul li {
+            padding: 0.4rem 0;
+            font-size: 0.95rem;
+            color: var(--text-light);
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            color: #3b82f6;
-            margin-bottom: 1.25rem;
+            gap: 0.6rem;
         }
-        .feature-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .feature-card p { color: #64748b; font-size: 0.95rem; line-height: 1.6; }
-
-        /* ── HOW IT WORKS ── */
-        .how-section { background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 2rem;
+        .land-role-card.primary ul li {
+            color: rgba(255,255,255,0.85);
         }
-        .step { text-align: center; padding: 1.5rem; }
-        .step-num {
-            width: 56px; height: 56px;
-            background: #1e3a8a;
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
+        .land-role-card ul li i {
+            color: var(--secondary);
+            font-size: 0.8rem;
+        }
+        .land-role-card.primary ul li i {
+            color: #93c5fd;
+        }
+        .land-section {
+            padding: 5rem 0;
+            background: var(--bg-light);
+        }
+        .land-section-white {
+            padding: 5rem 0;
+            background: white;
+        }
+        .land-section-title {
+            text-align: center;
+            font-size: 2rem;
             font-weight: 800;
-            color: #3b82f6;
-            margin: 0 auto 1.25rem;
-            border: 2px solid rgba(59,130,246,0.3);
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
-        .step h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .step p { color: #64748b; font-size: 0.9rem; line-height: 1.6; }
-
-        /* ── ROLES ── */
-        .roles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-        .role-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 1.25rem;
-            padding: 2.5rem 2rem;
+        .land-section-sub {
             text-align: center;
-            transition: all 0.3s;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
         }
-        .role-card:hover { background: rgba(255,255,255,0.07); transform: translateY(-4px); }
-        .role-card.highlight {
-            background: linear-gradient(135deg, rgba(30,58,138,0.5), rgba(37,99,235,0.3));
-            border-color: rgba(59,130,246,0.4);
+        .hero-right-mockup {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
-        .role-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-        .role-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; }
-        .role-card p { color: #94a3b8; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; }
-        .role-list { list-style: none; text-align: left; }
-        .role-list li {
-            color: #cbd5e1;
-            font-size: 0.9rem;
-            padding: 0.3rem 0;
+        .mock-event {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 1rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
         }
-        .role-list li::before { content: '✓'; color: #3b82f6; font-weight: 700; }
-
-        /* ── CTA ── */
-        .cta-section {
+        .mock-date {
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-sm);
+            padding: 0.4rem 0.7rem;
             text-align: center;
-            padding: 5rem 2rem;
-            background: linear-gradient(135deg, rgba(30,58,138,0.4) 0%, rgba(37,99,235,0.2) 100%);
-            border-top: 1px solid rgba(59,130,246,0.2);
+            min-width: 52px;
         }
-        .cta-section h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; margin-bottom: 1rem; }
-        .cta-section p { color: #94a3b8; font-size: 1.05rem; margin-bottom: 2.5rem; }
-
-        /* ── FOOTER ── */
-        footer {
+        .mock-date .day { display: block; font-size: 1.3rem; font-weight: 800; line-height: 1; }
+        .mock-date .month { display: block; font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; }
+        .mock-info h4 { font-size: 0.95rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.2rem; }
+        .mock-info p { font-size: 0.8rem; color: var(--text-light); }
+        .mock-badge {
+            margin-left: auto;
+            background: #dcfce7;
+            color: #16a34a;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: var(--radius-full);
+        }
+        .land-cta-section {
+            background: var(--primary);
+            padding: 5rem 0;
             text-align: center;
-            padding: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            color: #475569;
-            font-size: 0.9rem;
+            color: white;
         }
-        footer span { color: #3b82f6; }
-
-        @media (max-width: 640px) {
-            .land-nav-links a:not(.land-cta-btn) { display: none; }
-            .stats { gap: 2rem; }
+        .land-cta-section h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .land-cta-section p {
+            opacity: 0.85;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- NAV -->
-    <nav class="land-nav">
-        <div class="land-nav-inner">
-            <span class="land-brand">KEM</span>
-            <div class="land-nav-links">
-                <a href="#features">Features</a>
-                <a href="#how">How it works</a>
-                <a href="#roles">For you</a>
-                <a href="index.html" class="land-cta-btn">Get Started</a>
+    <!-- NAVBAR — same structure as all other pages -->
+    <nav class="kem-nav">
+        <div class="kem-nav-container">
+            <div class="kem-logo">
+                <img src="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0" alt="KEM Logo" class="kem-logo-img">
             </div>
+            <div class="kem-nav-pill">
+                <div class="kem-pill-content">
+                    <span class="kem-brand">KEM</span>
+                    <div class="kem-nav-links">
+                        <a href="#features">Features</a>
+                        <a href="#for-you">For you</a>
+                        <a href="faq.html">FAQ</a>
+                        <a href="index.html" class="kem-btn-pill">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            <div class="kem-menu-btn" id="menuBtn">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="kem-mobile-nav" id="mobileNav">
+            <a href="#features">Features</a>
+            <a href="#for-you">For you</a>
+            <a href="faq.html">FAQ</a>
+            <a href="index.html" class="kem-mobile-btn">Get Started</a>
         </div>
     </nav>
 
     <!-- HERO -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge"><i class="fas fa-bolt"></i> &nbsp;KNUST Campus Event Manager</div>
-            <h1>Discover, Book &<br><span>Manage Events</span><br>on Campus</h1>
-            <p>The all-in-one platform for KNUST students and organizers — find events, book tickets, and manage everything in one place.</p>
-            <div class="hero-btns">
-                <a href="index.html" class="btn-primary"><i class="fas fa-rocket"></i> &nbsp;Get Started Free</a>
-                <a href="#features" class="btn-ghost"><i class="fas fa-play-circle"></i> &nbsp;See How It Works</a>
+    <section class="kem-hero">
+        <div class="kem-hero-container">
+            <div class="kem-hero-left">
+                <h1 class="kem-hero-title">
+                    Campus events,<br>all in one place.
+                </h1>
+                <p class="kem-hero-description">
+                    KEM makes it easy for KNUST students to discover events and book tickets — and for organizers to create and manage them without the stress.
+                </p>
+                <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                    <a href="index.html" class="kem-hero-btn">Get started free</a>
+                    <a href="#features" class="kem-hero-btn" style="background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.3);">See features</a>
+                </div>
             </div>
 
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-num">100+</div>
-                    <div class="stat-label">Events Hosted</div>
+            <!-- Right side: live events -->
+            <div class="hero-right-mockup">
+                <p style="color:rgba(255,255,255,0.7); font-size:0.85rem; font-weight:600; letter-spacing:0.5px;">UPCOMING EVENTS</p>
+                <div id="landing-events">
+                    <div style="color:rgba(255,255,255,0.4); font-size:0.9rem; text-align:center; padding:1.5rem 0;">
+                        <i class="fas fa-spinner fa-spin"></i> Loading events...
+                    </div>
                 </div>
-                <div class="stat">
-                    <div class="stat-num">500+</div>
-                    <div class="stat-label">Students Served</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-num">50+</div>
-                    <div class="stat-label">Organizers</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-num">24/7</div>
-                    <div class="stat-label">Always Available</div>
-                </div>
+                <a href="index.html" style="text-align:center; color:rgba(255,255,255,0.7); font-size:0.85rem; text-decoration:none; padding:0.5rem;">
+                    Sign in to see all events <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
 
     <!-- FEATURES -->
-    <div id="features">
-        <div class="section">
-            <div class="section-tag">Features</div>
-            <h2 class="section-title">Everything You Need</h2>
-            <p class="section-sub">Powerful tools for students to discover events and organizers to manage them.</p>
+    <section class="land-section" id="features">
+        <div class="container">
+            <h2 class="land-section-title">What KEM does</h2>
+            <p class="land-section-sub">Everything you need to find events, book tickets, or run your own.</p>
 
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
+            <div class="land-feature-grid">
+                <div class="land-feature-card">
+                    <div class="land-feature-icon"><i class="fas fa-calendar-alt"></i></div>
                     <h3>Browse Events</h3>
-                    <p>Discover upcoming campus events — lectures, parties, sports, and more — all in one place.</p>
+                    <p>See everything happening on campus, filtered by date, type, or organizer.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-ticket-alt"></i></div>
-                    <h3>Instant Booking</h3>
-                    <p>Book your spot in seconds. Get digital tickets sent straight to your email.</p>
+                <div class="land-feature-card">
+                    <div class="land-feature-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <h3>Book Tickets</h3>
+                    <p>Reserve your spot in seconds. A confirmation lands in your inbox right away.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-bell"></i></div>
-                    <h3>Smart Reminders</h3>
-                    <p>Never miss an event. Get automated email reminders before events you've booked.</p>
+                <div class="land-feature-card">
+                    <div class="land-feature-icon"><i class="fas fa-bell"></i></div>
+                    <h3>Event Reminders</h3>
+                    <p>Get an email reminder before every event you've booked — no more forgetting.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                <div class="land-feature-card">
+                    <div class="land-feature-icon"><i class="fas fa-th-large"></i></div>
                     <h3>Organizer Dashboard</h3>
-                    <p>Create events, track bookings, and manage attendees from a single dashboard.</p>
+                    <p>Create events, set capacity, and track who's coming — all from one dashboard.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                <div class="land-feature-card">
+                    <div class="land-feature-icon"><i class="fas fa-comment-dots"></i></div>
                     <h3>AI Assistant</h3>
-                    <p>Get instant answers about events, booking, and campus activities with our built-in chatbot.</p>
+                    <p>Ask the built-in chatbot anything about events or bookings and get instant answers.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Secure & Verified</h3>
-                    <p>Email verification and JWT-secured accounts keep your data safe at all times.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- HOW IT WORKS -->
-    <div id="how" class="how-section">
-        <div class="section">
-            <div class="section-tag">Process</div>
-            <h2 class="section-title">How It Works</h2>
-            <p class="section-sub">Up and running in under a minute.</p>
-
-            <div class="steps-grid">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <h3>Create Account</h3>
-                    <p>Sign up with your email and verify your account instantly.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <h3>Explore Events</h3>
-                    <p>Browse all upcoming events on campus filtered by category or date.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <h3>Book Your Spot</h3>
-                    <p>Reserve your ticket with one click and receive confirmation by email.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">4</div>
-                    <h3>Show Up & Enjoy</h3>
-                    <p>Get reminded before the event and attend with your digital ticket.</p>
+                <div class="land-feature-card">
+                    <div class="land-feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Verified Accounts</h3>
+                    <p>Email verification and secure login keep your bookings and data safe.</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- ROLES -->
-    <div id="roles">
-        <div class="section">
-            <div class="section-tag">For Everyone</div>
-            <h2 class="section-title">Built for Students & Organizers</h2>
-            <p class="section-sub">Whether you're attending or hosting, KEM has you covered.</p>
+    <!-- FOR YOU -->
+    <section class="land-section-white" id="for-you">
+        <div class="container">
+            <h2 class="land-section-title">Built for students & organizers</h2>
+            <p class="land-section-sub">Pick your role and get started.</p>
 
-            <div class="roles-grid">
-                <div class="role-card">
-                    <div class="role-icon">🎓</div>
-                    <h3>For Students</h3>
-                    <p>Find and attend the best campus events without the hassle.</p>
-                    <ul class="role-list">
-                        <li>Browse all campus events</li>
-                        <li>Book tickets instantly</li>
-                        <li>Get email reminders</li>
-                        <li>View your booking history</li>
-                        <li>Chat with AI assistant</li>
+            <div class="land-roles-grid">
+                <div class="land-role-card">
+                    <h3><i class="fas fa-user-graduate" style="margin-right:0.5rem;"></i>For Students</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Browse all campus events</li>
+                        <li><i class="fas fa-check-circle"></i> Book tickets with one click</li>
+                        <li><i class="fas fa-check-circle"></i> Get email reminders</li>
+                        <li><i class="fas fa-check-circle"></i> View all your bookings</li>
+                        <li><i class="fas fa-check-circle"></i> Chat with the AI assistant</li>
                     </ul>
                 </div>
-                <div class="role-card highlight">
-                    <div class="role-icon">🎤</div>
-                    <h3>For Organizers</h3>
-                    <p>Create, promote, and manage your campus events with ease.</p>
-                    <ul class="role-list">
-                        <li>Create & publish events</li>
-                        <li>Track attendees in real-time</li>
-                        <li>Manage event capacity</li>
-                        <li>Send updates to attendees</li>
-                        <li>View analytics & reports</li>
+                <div class="land-role-card primary">
+                    <h3><i class="fas fa-users" style="margin-right:0.5rem;"></i>For Organizers</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Create and publish events</li>
+                        <li><i class="fas fa-check-circle"></i> Track attendance in real time</li>
+                        <li><i class="fas fa-check-circle"></i> Set and manage capacity</li>
+                        <li><i class="fas fa-check-circle"></i> Manage your event listings</li>
+                        <li><i class="fas fa-check-circle"></i> View attendance analytics</li>
                     </ul>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- CTA -->
-    <section class="cta-section">
-        <h2>Ready to Get Started?</h2>
-        <p>Join hundreds of KNUST students and organizers already using KEM.</p>
-        <a href="index.html" class="btn-primary" style="font-size:1.1rem; padding: 1rem 3rem;">
-            <i class="fas fa-arrow-right"></i> &nbsp;Launch KEM
-        </a>
+    <section class="land-cta-section">
+        <div class="container">
+            <img src="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0" alt="KEM" style="width:60px; height:60px; border-radius:50%; object-fit:cover; margin-bottom:1.25rem; border:2px solid rgba(255,255,255,0.3);">
+            <h2>Ready to get in on it?</h2>
+            <p>Hundreds of KNUST students and organizers are already on KEM.</p>
+            <a href="index.html" class="kem-hero-btn">Open KEM &rarr;</a>
+        </div>
     </section>
 
     <!-- FOOTER -->
-    <footer>
-        <p>Built with <span>♥</span> for KNUST &nbsp;·&nbsp; &copy; 2026 KEM &nbsp;·&nbsp; Campus Event Manager</p>
+    <footer class="kem-footer">
+        <div class="container">
+            <div class="kem-footer-bottom">
+                <p>&copy; 2026 KNUST EVENT MANAGEMENT (KEM).</p>
+            </div>
+        </div>
     </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        menuBtn.addEventListener('click', () => mobileNav.classList.toggle('active'));
+
+        async function loadLandingEvents() {
+            const container = document.getElementById('landing-events');
+            try {
+                const res = await fetch('/api/events');
+                const events = await res.json();
+
+                if (!events.length) {
+                    container.innerHTML = `<p style="color:rgba(255,255,255,0.4); font-size:0.9rem; text-align:center; padding:1.5rem 0;">No events yet. Check back soon.</p>`;
+                    return;
+                }
+
+                // Show up to 3 upcoming events
+                const upcoming = events.slice(0, 3);
+                container.innerHTML = upcoming.map(event => {
+                    const d = new Date(event.date);
+                    const day = isNaN(d) ? '--' : d.getDate();
+                    const month = isNaN(d) ? '---' : d.toLocaleString('default', { month: 'short' }).toUpperCase();
+                    const price = event.ticket > 0 ? `GHS ${event.ticket}` : 'Free';
+                    return `
+                        <div class="mock-event">
+                            <div class="mock-date">
+                                <span class="day">${day}</span>
+                                <span class="month">${month}</span>
+                            </div>
+                            <div class="mock-info">
+                                <h4>${event.title}</h4>
+                                <p><i class="fas fa-map-marker-alt"></i> ${event.venue}</p>
+                            </div>
+                            <span class="mock-badge">${price}</span>
+                        </div>`;
+                }).join('');
+            } catch (err) {
+                container.innerHTML = `<p style="color:rgba(255,255,255,0.4); font-size:0.9rem; text-align:center; padding:1.5rem 0;">Could not load events.</p>`;
+            }
+        }
+
+        loadLandingEvents();
+    </script>
 
 </body>
 </html>

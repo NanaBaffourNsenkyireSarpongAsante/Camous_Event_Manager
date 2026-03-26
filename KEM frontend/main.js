@@ -461,21 +461,23 @@ function hideAllViews() {
     document.getElementById('profileView').style.display = 'none';
 }
 
-function showHome() {
+function showHome(pushState = true) {
     hideAllViews();
     document.getElementById('homeView').style.display = 'block';
     updateActiveNav('home');
     renderTrainEvents();
+    if (pushState) history.pushState({ view: 'home' }, '', '#home');
 }
 
-function showEvents() {
+function showEvents(pushState = true) {
     hideAllViews();
     document.getElementById('eventsView').style.display = 'block';
     updateActiveNav('events');
     renderEventsGrid();
+    if (pushState) history.pushState({ view: 'events' }, '', '#events');
 }
 
-function showDashboard() {
+function showDashboard(pushState = true) {
     if (currentUser?.role !== 'organizer') {
         showToast('Only organizers can access this page.');
         return;
@@ -484,12 +486,14 @@ function showDashboard() {
     document.getElementById('dashboardView').style.display = 'block';
     updateActiveNav('dashboard');
     renderDashboard();
+    if (pushState) history.pushState({ view: 'dashboard' }, '', '#dashboard');
 }
 
-function showEventDetails(id) {
+function showEventDetails(id, pushState = true) {
     currentEventId = id;
     const event = events.find(e => e.id == id || e._id == id);
     if (!event) return;
+    if (pushState) history.pushState({ view: 'eventDetails', id }, '', `#event-${id}`);
 
     // Set hero background image
     const hero = document.getElementById('detailsHero');
@@ -512,11 +516,12 @@ function showEventDetails(id) {
     renderRelatedEvents(event.category, id);
 }
 
-function showTickets(eventId = null) {
+function showTickets(eventId = null, pushState = true) {
     if (eventId) currentEventId = eventId;
     hideAllViews();
     document.getElementById('ticketsView').style.display = 'block';
     updateActiveNav('tickets');
+    if (pushState) history.pushState({ view: 'tickets', eventId }, '', '#tickets');
 
     const myBookingsContainer = document.getElementById('myBookingsContainer');
     const ticketCheckout      = document.getElementById('ticketCheckout');
@@ -616,26 +621,46 @@ function renderMyBookings() {
     });
 }
 
-function showCalendar() {
+function showCalendar(pushState = true) {
     hideAllViews();
     document.getElementById('calendarView').style.display = 'block';
     updateActiveNav('calendar');
     renderCalendar();
+    if (pushState) history.pushState({ view: 'calendar' }, '', '#calendar');
 }
 
-function showFAQ() {
+function showFAQ(pushState = true) {
     hideAllViews();
     document.getElementById('faqView').style.display = 'block';
     updateActiveNav('faq');
     initFAQ();
+    if (pushState) history.pushState({ view: 'faq' }, '', '#faq');
 }
 
-function showProfile() {
+function showProfile(pushState = true) {
     hideAllViews();
     document.getElementById('profileView').style.display = 'block';
     updateActiveNav('profile');
     updateProfileUI();
+    if (pushState) history.pushState({ view: 'profile' }, '', '#profile');
 }
+
+// Handle browser back/forward
+window.addEventListener('popstate', (e) => {
+    const view = e.state?.view;
+    if (!view) { showHome(false); return; }
+    const map = {
+        home:         () => showHome(false),
+        events:       () => showEvents(false),
+        dashboard:    () => showDashboard(false),
+        tickets:      () => showTickets(e.state.eventId || null, false),
+        calendar:     () => showCalendar(false),
+        faq:          () => showFAQ(false),
+        profile:      () => showProfile(false),
+        eventDetails: () => showEventDetails(e.state.id, false),
+    };
+    if (map[view]) map[view]();
+});
 
 function updateActiveNav(page) {
     const navLinks = document.querySelectorAll('.kem-nav-links a, .kem-mobile-nav a');
