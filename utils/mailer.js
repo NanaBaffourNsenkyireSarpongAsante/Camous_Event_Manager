@@ -1,17 +1,18 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  host: process.env.MAILTRAP_HOST,
-  port: process.env.MAILTRAP_PORT,
+  host: process.env.BREVO_HOST,
+  port: Number(process.env.BREVO_PORT),
+  secure: false,
   auth: {
-    user: process.env.MAILTRAP_USER,
-    pass: process.env.MAILTRAP_PASS,
+    user: process.env.BREVO_USER,
+    pass: process.env.BREVO_PASS,
   },
 });
 
 const sendEmail = async ({ to, subject, html }) => {
   await transporter.sendMail({
-    from: '"Campus Event Manager" <no-reply@kem.com>',
+    from: `"Campus Event Manager" <${process.env.BREVO_FROM}>`,
     to,
     subject,
     html,
