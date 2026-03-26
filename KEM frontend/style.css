@@ -1045,8 +1045,14 @@ body {
         display: flex;
     }
 
+    /* Mobile nav only captures pointer events when open */
+    .kem-mobile-nav {
+        pointer-events: none;
+    }
+
     .kem-mobile-nav.active {
         display: flex;
+        pointer-events: auto;
     }
 
     .kem-hero-container {
@@ -1054,21 +1060,27 @@ body {
         text-align: center;
     }
 
-    /* Hide the train slideshow on mobile — show hero text only */
-    .kem-train-container {
+    /* Slideshow: single column, shorter height on mobile */
+    .kem-train-slideshow {
+        grid-template-columns: 1fr;
+        height: 280px;
+    }
+
+    /* Hide second column of slideshow, show only first */
+    .kem-train-column:last-child {
         display: none;
     }
 
     .kem-hero-title {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
 
     .hero-overlay h1 {
-        font-size: 2rem;
+        font-size: 1.4rem;
     }
 
     .hero-overlay p {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
 
     /* Single column event cards on mobile */
@@ -1091,17 +1103,28 @@ body {
     }
 
     .kem-hero {
-        padding: 7rem 1rem 2rem;
+        padding: 6rem 1rem 2rem;
+    }
+
+    /* Bigger tap targets for mobile */
+    .kem-hero-btn,
+    .kem-btn-pill,
+    .kem-mobile-btn,
+    .kem-ticket-link {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 
 @media (max-width: 480px) {
     .kem-hero-title {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
 
     .hero-overlay h1 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
 
     .kem-hero-btn {
