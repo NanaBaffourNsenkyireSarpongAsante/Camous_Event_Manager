@@ -24,7 +24,7 @@ app.use('/api/chat',    require('./routes/chat'));
 app.use(express.static(path.join(__dirname, 'KEM frontend')));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'KEM frontend', 'index.html'));
+  res.sendFile(path.join(__dirname, 'KEM frontend', 'landing.html'));
 });
 
 app.listen(PORT, () => {

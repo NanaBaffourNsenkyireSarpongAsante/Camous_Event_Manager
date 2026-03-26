@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Event Manager — Project Changes Documentation</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #1a1a2e;
+      background: #f4f6fb;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: #1e3a8a;
+      color: #fff;
+      padding: 40px 60px 32px;
+    }
+    header .project-label {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #93c5fd;
+      margin-bottom: 8px;
+    }
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    header .subtitle {
+      font-size: 14px;
+      color: #bfdbfe;
+      margin-bottom: 20px;
+    }
+    .meta-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .meta-pill {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 3px 14px;
+      font-size: 12.5px;
+      color: #e0f2fe;
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      max-width: 960px;
+      margin: 36px auto;
+      padding: 0 24px 60px;
+    }
+
+    /* ── SUMMARY BOX ── */
+    .summary-box {
+      background: #fff;
+      border: 2px solid #1e3a8a;
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-bottom: 40px;
+    }
+    .summary-box h2 {
+      color: #1e3a8a;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .summary-box h2::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background: #1e3a8a;
+      border-radius: 2px;
+    }
+    .file-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 10px;
+    }
+    .file-entry {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f0f4ff;
+      border-radius: 6px;
+      padding: 10px 14px;
+    }
+    .badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      border-radius: 4px;
+      padding: 2px 7px;
+      white-space: nowrap;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .badge-new    { background: #dcfce7; color: #166534; }
+    .badge-updated { background: #fef9c3; color: #854d0e; }
+    .file-entry code {
+      font-size: 12.5px;
+      font-family: "Cascadia Code", "Fira Mono", "Consolas", monospace;
+      color: #1e3a8a;
+      word-break: break-all;
+    }
+
+    /* ── SECTION CARDS ── */
+    .section-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(30,58,138,0.08);
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+    .section-header {
+      background: #1e3a8a;
+      color: #fff;
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .section-number {
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
+    }
+    .section-header .file-tag {
+      margin-left: auto;
+      font-size: 11.5px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 4px;
+      padding: 2px 10px;
+      font-family: "Cascadia Code", "Fira Mono", "Consolas", monospace;
+      white-space: nowrap;
+    }
+    .section-body {
+      padding: 24px 28px;
+    }
+
+    /* ── PREAMBLE (what was already done) ── */
+    .preamble-card {
+      background: #fff7ed;
+      border: 1.5px solid #fb923c;
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin-bottom: 32px;
+    }
+    .preamble-card h2 {
+      color: #9a3412;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .preamble-card h2::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background: #f97316;
+      border-radius: 2px;
+    }
+
+    /* ── TYPOGRAPHY INSIDE CARDS ── */
+    h3 {
+      color: #1e3a8a;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 20px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    h3:first-child { margin-top: 0; }
+
+    p { margin-bottom: 12px; }
+    p:last-child { margin-bottom: 0; }
+
+    ul, ol {
+      padding-left: 22px;
+      margin-bottom: 12px;
+    }
+    li { margin-bottom: 4px; }
+    li:last-child { margin-bottom: 0; }
+
+    strong { color: #1e3a8a; }
+
+    /* ── CODE ── */
+    code {
+      font-family: "Cascadia Code", "Fira Mono", "Consolas", monospace;
+      font-size: 12.5px;
+      background: #f1f5f9;
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: #0f172a;
+    }
+    pre {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      margin: 14px 0;
+      line-height: 1.55;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: 12.5px;
+      color: #0f172a;
+    }
+    .code-broken {
+      background: #fff1f2;
+      border-color: #fca5a5;
+    }
+    .code-broken code { color: #7f1d1d; }
+    .code-fixed {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+    .code-fixed code { color: #14532d; }
+    .code-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .label-broken { color: #dc2626; }
+    .label-fixed  { color: #16a34a; }
+
+    /* ── FIELD TABLE ── */
+    .field-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13.5px;
+    }
+    .field-table th {
+      background: #1e3a8a;
+      color: #fff;
+      padding: 9px 14px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .field-table td {
+      padding: 8px 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .field-table tr:nth-child(even) td { background: #f8fafc; }
+    .field-table tr:last-child td { border-bottom: none; }
+    .field-table code { font-size: 12px; }
+
+    /* ── API TABLE ── */
+    .api-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      margin: 12px 0;
+    }
+    .api-table th {
+      background: #1e3a8a;
+      color: #fff;
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .api-table td {
+      padding: 9px 16px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: middle;
+    }
+    .api-table tr:nth-child(even) td { background: #f8fafc; }
+    .api-table tr:last-child td { border-bottom: none; }
+    .method {
+      font-family: "Cascadia Code", "Fira Mono", "Consolas", monospace;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .method-get    { background: #dbeafe; color: #1d4ed8; }
+    .method-post   { background: #dcfce7; color: #166534; }
+    .method-put    { background: #fef9c3; color: #854d0e; }
+    .method-delete { background: #fee2e2; color: #991b1b; }
+    .auth-yes { color: #166534; font-weight: 600; }
+    .auth-no  { color: #6b7280; }
+
+    /* ── ARCHITECTURE BOX ── */
+    .arch-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 20px 24px;
+      font-family: "Cascadia Code", "Fira Mono", "Consolas", monospace;
+      font-size: 12.5px;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin: 14px 0;
+    }
+
+    /* ── CALLOUT ── */
+    .callout {
+      border-left: 4px solid #3b82f6;
+      background: #eff6ff;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+      font-size: 13.5px;
+    }
+    .callout.warn {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+    .callout.success {
+      border-color: #22c55e;
+      background: #f0fdf4;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid #e2e8f0;
+      margin: 20px 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 40px;
+      font-size: 12px;
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: #fff; font-size: 13px; }
+      header { padding: 28px 40px 24px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      main { margin: 24px auto; padding: 0 20px 40px; }
+      .section-card, .summary-box, .preamble-card { box-shadow: none; border: 1.5px solid #cbd5e1; }
+      .section-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .field-table th, .api-table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .arch-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .section-card { page-break-inside: avoid; }
+      pre { page-break-inside: avoid; }
+      footer { padding-bottom: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header>
+  <div class="project-label">Project Documentation</div>
+  <h1>Campus Event Manager (KEM) — Project Changes</h1>
+  <div class="subtitle">Full-stack implementation: Express.js + MongoDB + JWT + Vanilla JS Frontend</div>
+  <div class="meta-pills">
+    <span class="meta-pill">Generated: March 20, 2026</span>
+    <span class="meta-pill">Branch: Jeff</span>
+    <span class="meta-pill">Stack: Node/Express · MongoDB/Mongoose · JWT · Vanilla JS</span>
+    <span class="meta-pill">Files Changed: 8</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ═══════════════════════════ SUMMARY BOX ═══════════════════════════ -->
+  <div class="summary-box">
+    <h2>Files Changed — At a Glance</h2>
+    <div class="file-grid">
+      <div class="file-entry">
+        <span class="badge badge-new">NEW</span>
+        <code>models/event.js</code>
+      </div>
+      <div class="file-entry">
+        <span class="badge badge-new">NEW</span>
+        <code>controllers/eventController.js</code>
+      </div>
+      <div class="file-entry">
+        <span class="badge badge-new">NEW</span>
+        <code>routes/events.js</code>
+      </div>
+      <div class="file-entry">
+        <span class="badge badge-updated">UPDATED</span>
+        <code>controllers/authController.js</code>
+      </div>
+      <div class="file-entry">
+        <span class="badge badge-updated">UPDATED</span>
+        <code>routes/auth.js</code>
+      </div>
+      <div class="file-entry">
+        <span class="badge badge-updated">UPDATED</span>
+        <code>server.js</code>
+      </div>
+      <div class="file-entry">
+        <span class="badge badge-updated">UPDATED</span>
+        <code>KEM frontend/main.js</code>
+      </div>
+      <div class="file-entry">
+        <span class="badge badge-updated">UPDATED</span>
+        <code>KEM frontend/index.html</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ PREAMBLE — WHAT WAS DONE ═══════════════════════ -->
+  <div class="preamble-card">
+    <h2>What Was Already in Place (Before These Changes)</h2>
+    <p>The following features were fully working before any of the changes documented here were applied:</p>
+    <ul>
+      <li><strong>Authentication system:</strong> user registration, login, email verification flow, and JWT-based session management.</li>
+      <li><strong>Frontend views:</strong> Home, Events listing, Organizer Dashboard, Event Details, Tickets, Calendar, FAQ, and Profile pages — all built with Vanilla JS.</li>
+      <li><strong>Auth frontend wired to the backend:</strong> the signup, login, and email-verification forms communicated with <code>/api/auth/register</code>, <code>/api/auth/login</code>, and <code>/api/auth/verify/:token</code> correctly.</li>
+      <li><strong>Event CRUD on the frontend:</strong> organizers could create and edit events, but all data was stored only in <code>localStorage</code>. Nothing was persisted to a database.</li>
+      <li><strong>Broken <code>deleteEvent()</code>:</strong> the function existed but was completely non-functional. It used <code>.error()</code> (which is not a method on a Promise), referenced <code>res</code> (a server-side Express object that does not exist in the browser), and even when the fetch succeeded, the result was discarded and local state was never updated.</li>
+    </ul>
+  </div>
+
+  <!-- ═══════════════════════════ SECTION 1 ═══════════════════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <h2>models/event.js — Mongoose Event Schema</h2>
+      <span class="file-tag badge-new" style="background:rgba(220,252,231,0.25);color:#bbf7d0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.5px;margin-left:auto;">NEW FILE</span>
+    </div>
+    <div class="section-body">
+      <p>This file defines the data shape for every event stored in MongoDB. Without this schema, there was no way for the backend to read or write events to the database.</p>
+
+      <h3>Schema Fields</h3>
+      <table class="field-table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Rules</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>title</code></td><td>String</td><td>Required</td><td>Event name</td></tr>
+          <tr><td><code>date</code></td><td>String</td><td>Required</td><td>Date string (e.g., "2026-04-15")</td></tr>
+          <tr><td><code>time</code></td><td>String</td><td>Required</td><td>Time string (e.g., "14:00")</td></tr>
+          <tr><td><code>venue</code></td><td>String</td><td>Required</td><td>Location of the event</td></tr>
+          <tr><td><code>category</code></td><td>String (enum)</td><td>Required</td><td>Academic / Social / Tech / Arts / Music / Sports / Other</td></tr>
+          <tr><td><code>ticket</code></td><td>Number</td><td>Default: 0</td><td>Price in Ghana Cedis; 0 means Free</td></tr>
+          <tr><td><code>description</code></td><td>String</td><td>Required</td><td>Full event description</td></tr>
+          <tr><td><code>image</code></td><td>String</td><td>Optional</td><td>URL to a cover image; nullable</td></tr>
+          <tr><td><code>organizer</code></td><td>ObjectId (ref: User)</td><td>Optional at schema level</td><td>Set at creation time from JWT; enables ownership checks</td></tr>
+          <tr><td><code>createdAt</code></td><td>Date</td><td>Auto (timestamps)</td><td>Automatically managed by Mongoose</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Virtual ID Field</h3>
+      <p>The schema includes <code>eventSchema.set('toJSON', { virtuals: true })</code>. This instructs Mongoose to include an <code>id</code> string field (a plain-string alias for <code>_id</code>) in every JSON response. This is important because the frontend uses <code>event.id</code> — if this line were omitted, the frontend would receive only <code>event._id</code> (an ObjectId object), and all event lookups by ID on the client would silently fail.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ SECTION 2 ═══════════════════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <h2>controllers/eventController.js — Event API Handlers</h2>
+      <span class="file-tag" style="background:rgba(220,252,231,0.25);color:#bbf7d0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.5px;margin-left:auto;">NEW FILE</span>
+    </div>
+    <div class="section-body">
+      <p>This file contains the four request handler functions that implement the events API. Each handler is an <code>async</code> function wrapped in a <code>try/catch</code> block so unexpected errors are logged and return a proper 500 response instead of crashing the server.</p>
+
+      <h3>getEvents — GET /api/events (Public)</h3>
+      <p>Queries the <code>Event</code> collection for all documents, sorted by <code>createdAt</code> descending (newest first), and returns them as a JSON array. No authentication is required — anyone can browse published events.</p>
+
+      <h3>createEvent — POST /api/events (Auth Required)</h3>
+      <p>Validates that all required fields are present in the request body. If any are missing, it returns HTTP 400 with a descriptive error. On success, it sets <code>organizer</code> to <code>req.userId</code> (populated by the JWT middleware), saves the document, and returns the newly created event object with its real MongoDB <code>_id</code>.</p>
+
+      <h3>updateEvent — PUT /api/events/:id (Auth Required)</h3>
+      <p>Uses <code>findOneAndUpdate</code> with a filter of <strong>both</strong> <code>{ _id: req.params.id, organizer: req.userId }</code>. This dual-condition filter is the ownership check: an organizer can only edit an event they created. If the event does not exist, or belongs to a different user, the query returns <code>null</code> and the handler responds with HTTP 404.</p>
+
+      <h3>deleteEvent — DELETE /api/events/:id (Auth Required)</h3>
+      <p>Uses <code>findOneAndDelete</code> with the same dual-condition filter as <code>updateEvent</code>. Responds with <code>{ success: true, message: 'Event deleted successfully' }</code> on success, or HTTP 404 if the event is not found or not owned by the requesting user.</p>
+
+      <div class="callout success">
+        <strong>Security note:</strong> Because every mutating operation (create, update, delete) passes through the <code>authMiddleware</code> before reaching these handlers, unauthenticated requests are rejected before a single database query is made.
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ SECTION 3 ═══════════════════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <h2>routes/events.js — Event Router</h2>
+      <span class="file-tag" style="background:rgba(220,252,231,0.25);color:#bbf7d0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.5px;margin-left:auto;">NEW FILE</span>
+    </div>
+    <div class="section-body">
+      <p>This Express router maps HTTP method + path combinations to the correct middleware and handler functions. It is intentionally thin — its only job is routing.</p>
+
+      <table class="field-table">
+        <thead>
+          <tr><th>Method</th><th>Path</th><th>Middleware</th><th>Handler</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>GET</code></td><td><code>/</code></td><td>None</td><td><code>getEvents</code></td></tr>
+          <tr><td><code>POST</code></td><td><code>/</code></td><td><code>authMiddleware</code></td><td><code>createEvent</code></td></tr>
+          <tr><td><code>PUT</code></td><td><code>/:id</code></td><td><code>authMiddleware</code></td><td><code>updateEvent</code></td></tr>
+          <tr><td><code>DELETE</code></td><td><code>/:id</code></td><td><code>authMiddleware</code></td><td><code>deleteEvent</code></td></tr>
+        </tbody>
+      </table>
+
+      <p>When this router is mounted at <code>/api/events</code> in <code>server.js</code>, the full URLs become <code>/api/events</code> and <code>/api/events/:id</code>.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ SECTION 4 ═══════════════════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <h2>controllers/authController.js — updateProfile Added</h2>
+      <span class="file-tag" style="background:rgba(254,249,195,0.25);color:#fde68a;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.5px;margin-left:auto;">UPDATED</span>
+    </div>
+    <div class="section-body">
+      <p>A new handler function <code>updateProfile</code> was added to the existing auth controller. This handler allows a logged-in user to update their display name, phone number, and avatar URL.</p>
+
+      <h3>What Can Be Updated</h3>
+      <ul>
+        <li><strong>name</strong> — validated to be non-empty before saving</li>
+        <li><strong>phone</strong> — optional contact number</li>
+        <li><strong>avatar</strong> — URL to a profile image</li>
+      </ul>
+
+      <h3>What Cannot Be Updated</h3>
+      <p><strong>email</strong> and <strong>studentId</strong> are identity fields — they are used for login and verification and must remain immutable once set. Even if a client sends these fields in the request body, the handler ignores them.</p>
+
+      <h3>Implementation Detail</h3>
+      <p>The handler uses <code>findByIdAndUpdate(req.userId, { name, phone, avatar }, { new: true })</code>. The <code>req.userId</code> value comes from the JWT middleware, so there is no way for a user to accidentally update someone else's profile by guessing an ID. The returned user object has the password field removed before it is sent back to the client.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ SECTION 5 ═══════════════════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <h2>routes/auth.js — Profile Route Added</h2>
+      <span class="file-tag" style="background:rgba(254,249,195,0.25);color:#fde68a;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.5px;margin-left:auto;">UPDATED</span>
+    </div>
+    <div class="section-body">
+      <p>One new route was added to the existing auth router:</p>
+      <pre><code>PUT /profile  →  authMiddleware  →  updateProfile</code></pre>
+      <p>This becomes <code>PUT /api/auth/profile</code> when the router is mounted. The route requires a valid JWT (enforced by <code>authMiddleware</code>).</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ SECTION 6 ═══════════════════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <h2>server.js — Events Router Mounted</h2>
+      <span class="file-tag" style="background:rgba(254,249,195,0.25);color:#fde68a;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.5px;margin-left:auto;">UPDATED</span>
+    </div>
+    <div class="section-body">
+      <p>A single line was added to register the new events router with the Express application:</p>
+      <pre><code>app.use('/api/events', require('./routes/events'));</code></pre>
+      <p>Without this line, all requests to <code>/api/events/*</code> would return a 404, even with the router and controller files in place. This line is what connects the URL namespace to the route handler logic.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ SECTION 7 ═══════════════════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">7</div>
+      <h2>KEM frontend/main.js — Multiple Frontend Fixes</h2>
+      <span class="file-tag" style="background:rgba(254,249,195,0.25);color:#fde68a;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.5px;margin-left:auto;">UPDATED</span>
+    </div>
+    <div class="section-body">
+      <p>This was the most extensive set of changes. Seven individual fixes were applied to wire the frontend to the real backend APIs and correct broken logic.</p>
+
+      <hr class="divider" />
+
+      <h3>Fix A — Token Storage After Login</h3>
+      <p><strong>Problem:</strong> The backend's login endpoint returned a JWT token in <code>data.token</code>, but <code>handleLogin()</code> never stored it anywhere. Every subsequent API call that required authentication had no token to send, so they all failed silently.</p>
+      <p><strong>Fix:</strong> Added <code>localStorage.setItem('kem_token', data.token)</code> immediately after a successful login response. This token is now available for all subsequent authenticated API requests.</p>
+
+      <hr class="divider" />
+
+      <h3>Fix B — Token Cleared on Logout</h3>
+      <p><strong>Problem:</strong> The <code>logout()</code> function cleared <code>currentUser</code> from <code>localStorage</code> but left the JWT token in place. A user who logged out still had a valid token stored, which is a security concern.</p>
+      <p><strong>Fix:</strong> Added <code>localStorage.removeItem('kem_token')</code> to <code>logout()</code>.</p>
+
+      <hr class="divider" />
+
+      <h3>Fix C — loadEventsFromAPI() Function (New)</h3>
+      <p><strong>Problem:</strong> There was no mechanism to populate the frontend's <code>events</code> array from the database. Every page load started with whatever happened to be in <code>localStorage</code>.</p>
+      <p><strong>Fix:</strong> Added a new <code>async</code> function <code>loadEventsFromAPI()</code> that:</p>
+      <ul>
+        <li>Sends <code>GET /api/events</code> (no auth needed)</li>
+        <li>Stores the response in the module-level <code>events</code> array</li>
+        <li>Caches the result in <code>localStorage</code> as a fallback for offline use</li>
+      </ul>
+      <p>This function is called in two places: immediately after a successful login (before showing the main app), and on page load when an existing session is restored from <code>localStorage</code>.</p>
+
+      <hr class="divider" />
+
+      <h3>Fix D — saveEvent() Wired to API</h3>
+      <p><strong>Problem:</strong> Creating or editing an event used <code>Date.now()</code> as a fake numeric ID and saved only to <code>localStorage</code>. No data ever reached the database, and IDs were not compatible with MongoDB's ObjectId format used in the API routes.</p>
+      <p><strong>Fix:</strong> <code>saveEvent()</code> now reads the <code>#editId</code> hidden form field to distinguish between create and update operations:</p>
+      <ul>
+        <li>If <code>editId</code> is empty → sends <code>POST /api/events</code> with an Authorization header</li>
+        <li>If <code>editId</code> has a value → sends <code>PUT /api/events/:id</code> with an Authorization header</li>
+      </ul>
+      <p>On a successful response, the local <code>events</code> array is updated with the server's returned event object (which carries the real MongoDB <code>id</code>). The UI is then refreshed by calling <code>renderDashboard()</code>, <code>renderEventsGrid()</code>, and <code>renderTrainEvents()</code>.</p>
+
+      <hr class="divider" />
+
+      <h3>Fix E — deleteEvent() Completely Rewritten</h3>
+      <p>This was the most broken function in the codebase. Here is the original code followed by the corrected version:</p>
+
+      <span class="code-label label-broken">BEFORE (Broken)</span>
+      <pre class="code-broken"><code>const remove = fetch(`/events/${id}`, { method: 'DELETE', ... })
+  .then(response => {response.json()})   // missing return — result discarded
+  .error(() => {res.status(500)...})     // .error() does not exist on Promise
+                                         // res is a server-side Express object —
+                                         // it does not exist in the browser</code></pre>
+
+      <span class="code-label label-fixed">AFTER (Correct)</span>
+      <pre class="code-fixed"><code>const response = await fetch(`/api/events/${id}`, {
+  method: 'DELETE',
+  headers: { 'Authorization': `Bearer ${token}` }
+});
+const data = await response.json();
+if (data.success) {
+  events = events.filter(e => e.id !== id);
+  saveEvents(events);
+  renderDashboard();
+  renderEventsGrid();
+  renderTrainEvents();
+}
+// Error handling uses .catch() — the correct Promise API</code></pre>
+
+      <p>The three specific bugs that were fixed:</p>
+      <ol>
+        <li><strong><code>.error()</code> does not exist</strong> — Promises use <code>.catch()</code> for error handling.</li>
+        <li><strong><code>res</code> is undefined in the browser</strong> — <code>res</code> is Express's response object, which only exists on the server. Referencing it in frontend JavaScript causes a ReferenceError.</li>
+        <li><strong>Local state was never updated</strong> — even if the server deleted the record, the frontend <code>events</code> array still contained the deleted event, so it continued to appear in the UI.</li>
+      </ol>
+
+      <hr class="divider" />
+
+      <h3>Fix F — saveProfile() Wired to API</h3>
+      <p><strong>Problem:</strong> Profile updates changed only the in-memory <code>currentUser</code> object and saved it to <code>localStorage</code>, but never reached the backend. Refreshing the page would revert changes, and the database was never updated.</p>
+      <p><strong>Fix:</strong> <code>saveProfile()</code> now sends <code>PUT /api/auth/profile</code> with <code>name</code>, <code>phone</code>, and <code>avatar</code> in the request body (with an Authorization header). On a successful response, the returned <code>data.user</code> object is merged into <code>currentUser</code> and saved to <code>localStorage</code>.</p>
+      <div class="callout">
+        <strong>Note:</strong> The email and studentId fields are rendered as read-only in the profile form and are intentionally not included in the request body — they are identity fields that should never be changed after registration.
+      </div>
+
+      <hr class="divider" />
+
+      <h3>Fix G — saveEvents() Parameter Rename</h3>
+      <p><strong>Problem:</strong> The <code>saveEvents(events)</code> function had a parameter also named <code>events</code>, which shadowed the module-level <code>events</code> variable inside the function body. This is a subtle scoping bug — any code inside the function that intended to reference the module-level array would silently read the parameter instead.</p>
+      <p><strong>Fix:</strong> The parameter was renamed from <code>events</code> to <code>evts</code>, eliminating the variable shadowing.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ SECTION 8 ═══════════════════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">8</div>
+      <h2>KEM frontend/index.html — "Back to Sign Up" Button</h2>
+      <span class="file-tag" style="background:rgba(254,249,195,0.25);color:#fde68a;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.5px;margin-left:auto;">UPDATED</span>
+    </div>
+    <div class="section-body">
+      <p>A "Back to Sign Up" button was added to the Role Selection screen.</p>
+
+      <h3>Why This Was Needed</h3>
+      <p>The sign-up flow worked as follows: a user clicks "Sign Up", fills in the registration form, and submits. The frontend then hides the auth form and displays the Role Selection screen (where the user picks Student or Organizer). <strong>There was no way to go back.</strong></p>
+      <p>This was the root cause of user-reported confusion around "why can't I switch between sign up and sign in" — once the role selection screen appeared, the only option was to reload the page. The auth container was completely inaccessible.</p>
+
+      <h3>The Fix</h3>
+      <p>The new button calls <code>showAuth(); switchAuthTab('signup');</code> which performs two actions:</p>
+      <ol>
+        <li>Shows the auth container (hides the role selection screen)</li>
+        <li>Re-activates the Sign Up tab, so the user lands back exactly where they left off</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ ARCHITECTURE ═══════════════════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number" style="background:rgba(255,255,255,0.2);">&#9670;</div>
+      <h2>Architecture Summary (After All Changes)</h2>
+    </div>
+    <div class="section-body">
+      <div class="arch-box">Browser (main.js)
+    ↕  JWT in Authorization header
+Express Server (server.js)
+    /api/auth    → routes/auth.js    → controllers/authController.js
+    /api/events  → routes/events.js  → controllers/eventController.js
+    /            → serves KEM frontend/ (static files)
+        ↕
+MongoDB (Mongoose)
+    User model   (models/user.js)
+    Event model  (models/event.js)   ← NEW</div>
+
+      <h3>Data Flow for Event Creation</h3>
+      <ol>
+        <li>Organizer fills out the "Create Event" form in the browser.</li>
+        <li><code>saveEvent()</code> sends <code>POST /api/events</code> with the JWT in the <code>Authorization</code> header.</li>
+        <li><code>authMiddleware</code> verifies the token and attaches <code>req.userId</code>.</li>
+        <li><code>createEvent</code> controller validates fields, sets <code>organizer: req.userId</code>, and saves to MongoDB.</li>
+        <li>The server returns the saved event (with its real MongoDB <code>id</code>).</li>
+        <li>The frontend updates its local <code>events</code> array and re-renders all event lists.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ API REFERENCE ═══════════════════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number" style="background:rgba(255,255,255,0.2);">&#9670;</div>
+      <h2>Complete API Routes Reference</h2>
+    </div>
+    <div class="section-body">
+      <table class="api-table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Route</th>
+            <th>Auth Required</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="method method-post">POST</span></td>
+            <td><code>/api/auth/register</code></td>
+            <td class="auth-no">No</td>
+            <td>Register a new user account</td>
+          </tr>
+          <tr>
+            <td><span class="method method-post">POST</span></td>
+            <td><code>/api/auth/login</code></td>
+            <td class="auth-no">No</td>
+            <td>Login; returns JWT token</td>
+          </tr>
+          <tr>
+            <td><span class="method method-get">GET</span></td>
+            <td><code>/api/auth/verify/:token</code></td>
+            <td class="auth-no">No</td>
+            <td>Email verification via token link</td>
+          </tr>
+          <tr>
+            <td><span class="method method-put">PUT</span></td>
+            <td><code>/api/auth/role</code></td>
+            <td class="auth-yes">Yes</td>
+            <td>Set user role (Student / Organizer)</td>
+          </tr>
+          <tr>
+            <td><span class="method method-put">PUT</span></td>
+            <td><code>/api/auth/profile</code></td>
+            <td class="auth-yes">Yes</td>
+            <td>Update name, phone, and avatar — NEW</td>
+          </tr>
+          <tr>
+            <td><span class="method method-get">GET</span></td>
+            <td><code>/api/events</code></td>
+            <td class="auth-no">No</td>
+            <td>Retrieve all events (newest first) — NEW</td>
+          </tr>
+          <tr>
+            <td><span class="method method-post">POST</span></td>
+            <td><code>/api/events</code></td>
+            <td class="auth-yes">Yes</td>
+            <td>Create a new event (organizer only) — NEW</td>
+          </tr>
+          <tr>
+            <td><span class="method method-put">PUT</span></td>
+            <td><code>/api/events/:id</code></td>
+            <td class="auth-yes">Yes</td>
+            <td>Edit own event (ownership enforced) — NEW</td>
+          </tr>
+          <tr>
+            <td><span class="method method-delete">DELETE</span></td>
+            <td><code>/api/events/:id</code></td>
+            <td class="auth-yes">Yes</td>
+            <td>Delete own event (ownership enforced) — NEW</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Campus Event Manager (KEM) &mdash; Project Change Documentation &mdash; March 2026
+</footer>
+
+</body>
+</html>
