@@ -179,7 +179,7 @@ const verifyEmail = async (req, res) => {
     });
 
     if (!user) {
-      return res.redirect(`${process.env.CLIENT_URL}/?verified=false`);
+      return res.redirect(`${process.env.CLIENT_URL}/index.html?verified=false`);
     }
 
     user.isVerified = true;
@@ -187,10 +187,10 @@ const verifyEmail = async (req, res) => {
     user.verificationTokenExpiry = null;
     await user.save();
 
-    return res.redirect(`${process.env.CLIENT_URL}/?verified=true`);
+    return res.redirect(`${process.env.CLIENT_URL}/index.html?verified=true`);
   } catch (error) {
     console.error('Verify email error:', error);
-    return res.redirect(`${process.env.CLIENT_URL}/?verified=false`);
+    return res.redirect(`${process.env.CLIENT_URL}/index.html?verified=false`);
   }
 };
 
