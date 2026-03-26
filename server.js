@@ -20,12 +20,12 @@ app.use('/api/events', require('./routes/events'));
 app.use('/api/bookings', require('./routes/bookings'));
 app.use('/api/chat',    require('./routes/chat'));
 
-// Serve static files from KEM frontend
-app.use(express.static(path.join(__dirname, 'KEM frontend')));
-
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'KEM frontend', 'landing.html'));
 });
+
+// Serve static files from KEM frontend
+app.use(express.static(path.join(__dirname, 'KEM frontend')));
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
