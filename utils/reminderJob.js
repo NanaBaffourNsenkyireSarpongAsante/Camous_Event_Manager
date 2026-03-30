@@ -34,11 +34,11 @@ async function sendReminders() {
                     <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#f8fafc;border-radius:12px;overflow:hidden;">
                         <div style="background:#1e3a8a;padding:32px 24px;text-align:center;">
                             <div style="display:inline-flex;align-items:center;gap:12px;">
-                                <img src="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0"
-                                     alt="KEM Logo" style="width:48px;height:48px;border-radius:50%;object-fit:cover;background:white;padding:3px;">
-                                <h1 style="color:white;margin:0;font-size:1.8rem;">KEM</h1>
+                                <img src="${process.env.CLIENT_URL}/uem-logo.jpeg"
+                                     alt="UEM Logo" style="width:48px;height:48px;border-radius:50%;object-fit:cover;background:white;padding:3px;">
+                                <h1 style="color:white;margin:0;font-size:1.8rem;">UEM</h1>
                             </div>
-                            <p style="color:rgba(255,255,255,0.8);margin:10px 0 0;">Campus Event Manager</p>
+                            <p style="color:rgba(255,255,255,0.8);margin:10px 0 0;">University Events Manager</p>
                         </div>
                         <div style="padding:32px 24px;">
                             <h2 style="color:#1e3a8a;margin-top:0;">Your event is tomorrow! 🎉</h2>
@@ -55,7 +55,7 @@ async function sendReminders() {
                             </div>
 
                             <p style="color:#374151;">Don't forget to bring your Student ID for verification.</p>
-                            <p style="color:#6b7280;font-size:0.85rem;margin-top:32px;">This is an automated reminder from KEM – Campus Event Manager.</p>
+                            <p style="color:#6b7280;font-size:0.85rem;margin-top:32px;">This is an automated reminder from UEM – University Events Manager.</p>
                         </div>
                     </div>
                 `,

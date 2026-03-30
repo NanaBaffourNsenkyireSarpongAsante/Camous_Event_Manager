@@ -73,7 +73,7 @@ body {
 }
 
 .kem-logo {
-    background: white;
+    background: black;
     border-radius: var(--radius-full);
     padding: 0.5rem;
     box-shadow: var(--shadow-lg);

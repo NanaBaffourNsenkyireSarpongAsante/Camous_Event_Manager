@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KEM | Campus Event Manager</title>
+    <title>UEM | University Events Manager</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/png" href="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0">
+    <link rel="icon" type="image/png" href="uem-logo.jpeg">
     <style>
         .land-feature-grid {
             display: grid;
@@ -177,11 +177,11 @@
     <nav class="kem-nav">
         <div class="kem-nav-container">
             <div class="kem-logo">
-                <img src="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0" alt="KEM Logo" class="kem-logo-img">
+                <img src="uem-logo.jpeg" alt="UEM Logo" class="kem-logo-img">
             </div>
             <div class="kem-nav-pill">
                 <div class="kem-pill-content">
-                    <span class="kem-brand">KEM</span>
+                    <span class="kem-brand">UEM</span>
                     <div class="kem-nav-links">
                         <a href="#features">Features</a>
                         <a href="#for-you">For you</a>
@@ -210,7 +210,7 @@
                     Campus events,<br>all in one place.
                 </h1>
                 <p class="kem-hero-description">
-                    KEM makes it easy for KNUST students to discover events and book tickets — and for organizers to create and manage them without the stress.
+                    UEM makes it easy for students to discover events and book tickets — and for organizers to create and manage them without the stress.
                 </p>
                 <div style="display:flex; gap:1rem; flex-wrap:wrap;">
                     <a href="index.html" class="kem-hero-btn">Get started free</a>
@@ -236,7 +236,7 @@
     <!-- FEATURES -->
     <section class="land-section" id="features">
         <div class="container">
-            <h2 class="land-section-title">What KEM does</h2>
+            <h2 class="land-section-title">What UEM does</h2>
             <p class="land-section-sub">Everything you need to find events, book tickets, or run your own.</p>
 
             <div class="land-feature-grid">
@@ -308,10 +308,10 @@
     <!-- CTA -->
     <section class="land-cta-section">
         <div class="container">
-            <img src="https://th.bing.com/th/id/R.6d634fffb880acc7313e962fb3c1bdfd?rik=Y%2bTjwLY3kvg%2fcQ&pid=ImgRaw&r=0" alt="KEM" style="width:60px; height:60px; border-radius:50%; object-fit:cover; margin-bottom:1.25rem; border:2px solid rgba(255,255,255,0.3);">
+            <img src="uem-logo.jpeg" alt="UEM" style="width:60px; height:60px; border-radius:50%; object-fit:cover; margin-bottom:1.25rem; border:2px solid rgba(255,255,255,0.3);">
             <h2>Ready to get in on it?</h2>
-            <p>Hundreds of KNUST students and organizers are already on KEM.</p>
-            <a href="index.html" class="kem-hero-btn">Open KEM &rarr;</a>
+            <p>Hundreds of students and organizers are already on UEM.</p>
+            <a href="index.html" class="kem-hero-btn">Open UEM &rarr;</a>
         </div>
     </section>
 
@@ -319,7 +319,7 @@
     <footer class="kem-footer">
         <div class="container">
             <div class="kem-footer-bottom">
-                <p>&copy; 2026 KNUST EVENT MANAGEMENT (KEM).</p>
+                <p>&copy; 2026 UNIVERSITY EVENTS MANAGEMENT (UEM).</p>
             </div>
         </div>
     </footer>
@@ -342,7 +342,8 @@
             const container = document.getElementById('landing-events');
             try {
                 const res = await fetch('/api/events');
-                const events = await res.json();
+                const data = await res.json();
+                const events = data.events || [];
 
                 if (!events.length) {
                     container.innerHTML = `<p style="color:rgba(255,255,255,0.4); font-size:0.9rem; text-align:center; padding:1.5rem 0;">No events yet. Check back soon.</p>`;

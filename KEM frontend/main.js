@@ -1446,7 +1446,7 @@ function clearChat() {
     chatHistory = [];
     document.getElementById('chatMessages').innerHTML = `
         <div class="chat-msg assistant">
-            <div class="chat-bubble">Hey! 👋 I'm the KEM Assistant. Ask me anything about campus events, how to book tickets, or anything about the platform!</div>
+            <div class="chat-bubble">Hey! 👋 I'm the UEM Assistant. Ask me anything about campus events, how to book tickets, or anything about the platform!</div>
         </div>`;
 }
 

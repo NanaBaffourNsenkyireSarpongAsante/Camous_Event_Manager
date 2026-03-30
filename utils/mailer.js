@@ -2,7 +2,7 @@ const https = require('https');
 
 const sendEmail = async ({ to, subject, html }) => {
   const payload = JSON.stringify({
-    sender: { name: 'Campus Event Manager', email: process.env.BREVO_FROM },
+    sender: { name: 'University Events Manager', email: process.env.BREVO_FROM },
     to: [{ email: to }],
     subject,
     htmlContent: html,

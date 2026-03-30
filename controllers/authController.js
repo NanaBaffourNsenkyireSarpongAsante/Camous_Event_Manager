@@ -72,9 +72,9 @@ const register = async (req, res) => {
     const verifyUrl = `${process.env.CLIENT_URL}/api/auth/verify/${verificationToken}`;
     sendEmail({
       to: email,
-      subject: 'Verify your Campus Event Manager account',
+      subject: 'Verify your University Events Manager account',
       html: `
-        <h2>Welcome to Campus Event Manager, ${name}!</h2>
+        <h2>Welcome to University Events Manager, ${name}!</h2>
         <p>Please verify your email address by clicking the button below:</p>
         <a href="${verifyUrl}" style="display:inline-block;padding:12px 24px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:6px;">Verify Email</a>
         <p>This link expires in 24 hours.</p>
