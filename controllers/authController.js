@@ -25,7 +25,15 @@ const register = async (req, res) => {
         'string.empty': 'Invalid email.',
       }),
       phone: Joi.string().required(),
-      studentId: Joi.string().length(8).required(),
+      studentId: Joi.when('role', {
+        is: 'student',
+        then: Joi.string().length(8).required().messages({
+          'string.length': 'Student ID must be exactly 8 characters.',
+          'any.required': 'Student ID is required for student accounts.',
+          'string.empty': 'Student ID is required for student accounts.',
+        }),
+        otherwise: Joi.string().length(8).optional().allow('', null),
+      }),
       password: Joi.string().min(6).pattern(/(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/).required().messages({
         'string.pattern.base': 'Password must contain at least one uppercase letter and one symbol.',
       }),

@@ -73,7 +73,7 @@ body {
 }
 
 .kem-logo {
-    background: black;
+    background: #0a1a3a;
     border-radius: var(--radius-full);
     padding: 0.5rem;
     box-shadow: var(--shadow-lg);
@@ -307,7 +307,7 @@ body {
 /* ===== HERO SECTION ===== */
 .kem-hero {
     min-height: 100vh;
-    background: #1e3a8a; /* Changed from gradient to solid blue */
+    background: #1e3a8a;
     display: flex;
     align-items: center;
     padding: 6rem 2rem 2rem;
@@ -1626,6 +1626,7 @@ body {
 }
 #chatSendBtn:hover  { background: var(--primary-dark); }
 #chatSendBtn:disabled { background: #94a3b8; cursor: not-allowed; }
+
 
 @media (max-width: 480px) {
     #chatPanel { width: calc(100vw - 2rem); right: 1rem; bottom: 5rem; }

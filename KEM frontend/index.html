@@ -94,6 +94,17 @@
         .auth-btn:hover {
             background: #2563eb;
         }
+        .role-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: transparent;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
         .role-selection {
             text-align: center;
         }
@@ -222,9 +233,7 @@
         }
         /* Hero background */
         .hero-bg {
-            background-image: url('https://th.bing.com/th/id/OIP.bqiccBN1xTBAeR_T3-qKmAHaE8?w=252&h=183&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3');
-            background-size: cover;
-            background-position: center;
+            background: #0a1a3a;
             border-radius: 20px;
             min-height: 550px;
             display: flex;
@@ -232,9 +241,21 @@
             justify-content: center;
             overflow: hidden;
             width: 100%;
+            position: relative;
+        }
+        #canvas-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.45;
+            border-radius: 20px;
         }
         .hero-overlay {
-            background: rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+            background: transparent;
             color: white;
             padding: 3rem;
             text-align: left;
@@ -767,7 +788,7 @@
     <div id="authContainer" class="auth-container">
         <div class="auth-card">
             <div style="display:flex; align-items:center; justify-content:center; gap:0.75rem; margin-bottom:0.25rem;">
-                <img src="uem-logo.jpeg" style="width:48px; height:48px; border-radius:50%; background:black; object-fit:cover;">
+                <img src="uem-logo.jpeg" style="width:48px; height:48px; border-radius:50%; background:#0a1a3a; object-fit:cover;">
                 <h2 style="margin:0;">UEM</h2>
             </div>
             <div class="auth-tabs">
@@ -807,7 +828,7 @@
                         <label>Phone Number</label>
                         <input type="tel" id="signupPhone" placeholder="+233 24 123 4567" autocomplete="off">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="studentIdGroup">
                         <label>Student ID</label>
                         <input type="text" id="signupStudentId" placeholder="e.g., 20234567" autocomplete="off">
                     </div>
@@ -823,11 +844,12 @@
                     <button type="submit" class="auth-btn">Sign Up</button>
                 </form>
             </div>
+
         </div>
     </div>
 
-    <!-- ROLE SELECTION CONTAINER (hidden initially) -->
-    <div id="roleContainer" style="display: none;" class="auth-container">
+    <!-- ROLE SELECTION MODAL -->
+    <div id="roleContainer" style="display: none;" class="role-modal">
         <div class="auth-card role-selection">
             <h2>Choose Your Role</h2>
             <p style="color:#64748b; margin-bottom:1.5rem;">Select how you want to use UEM</p>
@@ -845,7 +867,6 @@
             </div>
             <div id="roleError" class="error-text" style="display:none; margin-top:1rem;"></div>
             <button class="auth-btn" onclick="confirmRole()" style="margin-top:1rem;">Continue</button>
-            <button class="auth-btn" onclick="showAuth(); switchAuthTab('signup');" style="margin-top:0.5rem; background:#64748b;">Back to Sign Up</button>
         </div>
     </div>
 

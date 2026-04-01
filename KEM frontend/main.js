@@ -32,7 +32,7 @@ function showAuth() {
 }
 
 function showRoleSelection() {
-    document.getElementById('authContainer').style.display = 'none';
+    document.getElementById('authContainer').style.display = 'flex';
     document.getElementById('roleContainer').style.display = 'flex';
     document.getElementById('mainApp').style.display = 'none';
 }
@@ -140,6 +140,13 @@ function handleLogin(e) {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
+                if (selectedRole && data.user.role !== selectedRole) {
+                    const selected = selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1);
+                    const actual = data.user.role.charAt(0).toUpperCase() + data.user.role.slice(1);
+                    errorEl.textContent = `You selected "${selected}" but your account is registered as a "${actual}". Please go back and select the correct role.`;
+                    errorEl.style.display = 'block';
+                    return;
+                }
                 localStorage.setItem('kem_token', data.token);
                 saveUser(data.user);
                 loadEventsFromAPI().then(() => showMainApp());
@@ -167,18 +174,23 @@ function showSignupError(msg) {
     el.style.display = 'block';
 }
 
-function handleSignup(e) {
+async function handleSignup(e) {
     e.preventDefault();
     document.getElementById('signupError').style.display = 'none';
-    const name = document.getElementById('signupName').value;
-    const email = document.getElementById('signupEmail').value;
-    const phone = document.getElementById('signupPhone').value;
-    const studentId = document.getElementById('signupStudentId').value;
+    const name = document.getElementById('signupName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const phone = document.getElementById('signupPhone').value.trim();
+    const studentId = document.getElementById('signupStudentId').value.trim();
     const password = document.getElementById('signupPassword').value;
     const confirm = document.getElementById('signupConfirmPassword').value;
 
-    if (!name || !email || !phone || !studentId || !password || !confirm) {
+    if (!name || !email || !phone || !password || !confirm) {
         showSignupError('Please fill in all fields.');
+        return;
+    }
+
+    if (selectedRole === 'student' && !studentId) {
+        showSignupError('Student ID is required for student accounts.');
         return;
     }
 
@@ -197,8 +209,33 @@ function handleSignup(e) {
         return;
     }
 
-    pendingSignupData = { name, email, phone, studentId, password, confirmPassword: confirm };
-    showRoleSelection();
+    const submitBtn = document.querySelector('#signupForm .auth-btn');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Please wait...'; }
+
+    try {
+        const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, phone, studentId, password, confirmPassword: confirm, role: selectedRole })
+        });
+        const data = await res.json();
+        if (data.success) {
+            document.querySelector('#signupForm form').reset();
+            updateSignupForRole(selectedRole);
+            const successMsg = 'Registration successful! A verification email has been sent to your inbox. Please verify before logging in.';
+            showToast(successMsg);
+            switchAuthTab('login');
+            const successEl = document.getElementById('loginSuccess');
+            successEl.textContent = successMsg;
+            successEl.style.display = 'block';
+        } else {
+            showSignupError(data.message || 'Registration failed. Please try again.');
+        }
+    } catch {
+        showSignupError('Registration error. Please check your connection.');
+    } finally {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Sign Up'; }
+    }
 }
 
 let selectedRole = null;
@@ -211,6 +248,7 @@ function selectRole(role) {
     } else {
         document.getElementById('roleOrganizer').classList.add('selected');
     }
+    updateSignupForRole(role);
 }
 
 function showRoleError(msg) {
@@ -221,62 +259,22 @@ function showRoleError(msg) {
 
 function confirmRole() {
     document.getElementById('roleError').style.display = 'none';
-
     if (!selectedRole) {
         showRoleError('Please select a role to continue.');
         return;
     }
-    if (!pendingSignupData) {
-        showRoleError('Something went wrong. Please sign up again.');
-        return;
-    }
+    updateSignupForRole(selectedRole);
+    document.getElementById('roleContainer').style.display = 'none';
+}
 
-    const confirmBtn = document.querySelector('#roleContainer .auth-btn');
-    if (confirmBtn) {
-        confirmBtn.disabled = true;
-        confirmBtn.textContent = 'Please wait...';
-    }
+function updateSignupForRole(role) {
+    const studentIdGroup = document.getElementById('studentIdGroup');
+    if (!studentIdGroup) return;
+    studentIdGroup.style.display = role === 'organizer' ? 'none' : 'block';
+}
 
-    fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...pendingSignupData, role: selectedRole })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            pendingSignupData = null;
-            selectedRole = null;
-            document.querySelector('#signupForm form').reset();
-            document.getElementById('roleContainer').style.display = 'none';
-            document.getElementById('authContainer').style.display = 'flex';
-            const successMsg = 'Registration successful! A verification email has been sent to your inbox. Please verify before logging in.';
-            showToast(successMsg);
-            setTimeout(() => {
-                switchAuthTab('login');
-                const successEl = document.getElementById('loginSuccess');
-                successEl.textContent = successMsg;
-                successEl.style.display = 'block';
-            }, 1000);
-        } else {
-            document.getElementById('roleContainer').style.display = 'none';
-            document.getElementById('authContainer').style.display = 'flex';
-            switchAuthTab('signup');
-            showSignupError(data.message || 'Registration failed.');
-        }
-    })
-    .catch(() => {
-        document.getElementById('roleContainer').style.display = 'none';
-        document.getElementById('authContainer').style.display = 'flex';
-        switchAuthTab('signup');
-        showSignupError('Registration error. Please check your connection.');
-    })
-    .finally(() => {
-        if (confirmBtn) {
-            confirmBtn.disabled = false;
-            confirmBtn.textContent = 'Continue';
-        }
-    });
+function goBackToRoleSelection() {
+    showRoleSelection();
 }
 
 // Profile functions
@@ -1377,7 +1375,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showRoleSelection();
         }
     } else {
-        showAuth();
+        showRoleSelection();
     }
 
     const menuBtn = document.getElementById('menuBtn');
@@ -1548,4 +1546,105 @@ async function sendChatMessage() {
     document.getElementById('chatSendBtn').disabled = false;
     document.getElementById('chatInput').focus();
 }
+
+// ========== CANVAS BACKGROUND EFFECT (NONI-STYLE) — hero section only ==========
+(function() {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'canvas-bg';
+    const ctx = canvas.getContext('2d');
+
+    let width, height, mouseX = -9999, mouseY = -9999;
+    let particles = [], animationId;
+
+    function attach() {
+        const hero = document.querySelector('.hero-bg');
+        if (!hero || hero.contains(canvas)) return;
+        hero.prepend(canvas);
+        resize();
+    }
+
+    function resize() {
+        const hero = document.querySelector('.hero-bg');
+        if (!hero) return;
+        width = hero.offsetWidth;
+        height = hero.offsetHeight;
+        canvas.width = width;
+        canvas.height = height;
+        initParticles();
+    }
+
+    function initParticles() {
+        particles = [];
+        const spacing = 42;
+        const cols = Math.ceil(width / spacing);
+        const rows = Math.ceil(height / spacing);
+        for (let i = 0; i <= cols; i++) {
+            for (let j = 0; j <= rows; j++) {
+                particles.push({ x: i * spacing, y: j * spacing, baseX: i * spacing, baseY: j * spacing, vx: 0, vy: 0 });
+            }
+        }
+    }
+
+    function animate() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, width, height);
+        for (const p of particles) {
+            const dx = mouseX - p.x, dy = mouseY - p.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const force = Math.max(0, 120 - dist) / 120;
+            const angle = Math.atan2(dy, dx);
+            const tx = p.baseX - Math.cos(angle) * force * 18;
+            const ty = p.baseY - Math.sin(angle) * force * 18;
+            p.vx += (tx - p.x) * 0.08; p.vy += (ty - p.y) * 0.08;
+            p.vx *= 0.92; p.vy *= 0.92;
+            p.x += p.vx; p.y += p.vy;
+        }
+        ctx.strokeStyle = '#3b82f630';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < particles.length; i++) {
+            const p1 = particles[i];
+            for (let j = i + 1; j < particles.length; j++) {
+                const p2 = particles[j];
+                const dx = p1.x - p2.x, dy = p1.y - p2.y;
+                if (Math.sqrt(dx * dx + dy * dy) < 60) {
+                    ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+                }
+            }
+        }
+        for (const p of particles) {
+            ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+            ctx.fillStyle = '#1e3a8a40'; ctx.fill();
+        }
+        animationId = requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+    document.addEventListener('mousemove', e => {
+        const hero = document.querySelector('.hero-bg');
+        if (!hero) return;
+        const rect = hero.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+    });
+
+    // Attach and start when home view becomes visible
+    const observer = new MutationObserver(() => {
+        const homeView = document.getElementById('homeView');
+        if (homeView && homeView.style.display !== 'none') {
+            attach();
+            if (!animationId) animate();
+        } else {
+            if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const homeView = document.getElementById('homeView');
+        if (homeView) observer.observe(homeView, { attributes: true, attributeFilter: ['style'] });
+    });
+
+    window.addEventListener('beforeunload', () => { if (animationId) cancelAnimationFrame(animationId); });
+})();
+
+
 
